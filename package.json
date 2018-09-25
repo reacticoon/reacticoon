@@ -1,8 +1,7 @@
 {
   "scripts": {
-    "test": "node /Volumes/DATA/dev/reacticoon/create-reacticoon-app/bin/reacticoon-scripts.js test",
-    "build": "node /Volumes/DATA/dev/reacticoon/create-reacticoon-app/bin/reacticoon-scripts.js build",
-    "build-library": "node /Volumes/DATA/dev/reacticoon/create-reacticoon-app/bin/reacticoon-scripts.js build-library"
+    "test": "reacticoon test",
+    "build": "reacticoon build-library"
   },
   "devDependencies": {
     "jest": "^20.0.4",
@@ -24,11 +23,14 @@
     "reselect": "^3.0.1"
   },
   "dependencies": {
+    "create-reacticoon-app": "0.0.2",
     "hoist-non-react-statics": "^2.5.5",
     "humps": "^2.0.1",
     "node-polyglot": "^2.2.2",
     "normalizr": "^3.2.4",
     "react-hot-loader": "^4.3.3",
+    "react-router": "3.2.0",
+    "react-router-redux": "4.0.8",
     "react-scripts": "^1.1.4",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.5",

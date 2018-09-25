@@ -24,6 +24,9 @@ It allows to easily:
 
 - refactor `ApiManager` to use `fetch` API
 
+
+- For now peerDependency must be duplicate in dev dependencies... see https://github.com/yarnpkg/yarn/issues/1503
+
 ### Plugins
 
 - forms

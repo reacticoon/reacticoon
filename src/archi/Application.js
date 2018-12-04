@@ -15,9 +15,8 @@ import { setCurrentEnv } from '../environment'
 import { registerModules, getModules } from '../module'
 import generateModuleEntities from '../module/generateModuleEntities'
 import generateModuleMiddlewares from '../module/generateModuleMiddlewares'
-import { registerHistory } from '../routing/config'
+import { registerHistory, registerRoutingEnum, registerRoutes } from '../routing/config'
 import { registerStore } from '../store'
-import { registerRoutingEnum } from '../routing/config'
 import { configureI18n } from '../i18n/index'
 import configureStore from './store/configureStore'
 import {
@@ -98,7 +97,9 @@ const Application = appOptions => {
   //
   // routes
   //
+  // TODO: rename to routingEnum
   registerRoutingEnum(appOptions.RoutingEnum)
+  registerRoutes(appOptions.routes)
 
   //
   // History

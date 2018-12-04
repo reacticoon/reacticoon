@@ -31,19 +31,16 @@ const generateRoute = route => {
   return null
 }
 
-const routeCreator = appOptions => {
-  registerRoutes(appOptions.routes)
+const configureRoutes = ({ routes }) => {
 
   // do not keep disabled routes
-  const routesToGenerate = appOptions.routes.filter(route => !route.disabled)
+  const routesToGenerate = routes.filter(route => !route.disabled)
 
-  const routes = store => (
+  return (
     <Route path="" component={Layout}>
       {map(routesToGenerate, route => generateRoute(route))}
     </Route>
   )
-
-  return routes
 }
 
-export default routeCreator
+export default configureRoutes

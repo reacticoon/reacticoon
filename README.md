@@ -2,6 +2,8 @@
 
 ![Reacticoon logo](./doc/logo.png)
 
+![travis build](https://travis-ci.org/reacticoon/reacticoon.svg?branch=master)
+
 ## Introduction
 
 Reacticoon is a library that provides abstractions around React and Redux.
@@ -24,8 +26,7 @@ It allows to easily:
 
 - refactor `ApiManager` to use `fetch` API
 
-
-- For now peerDependency must be duplicate in dev dependencies... see https://github.com/yarnpkg/yarn/issues/1503
+- For now peerDependency must be duplicate in dev dependencies... see [yarn issues](https://github.com/yarnpkg/yarn/issues/1503)
 
 ### Plugins
 

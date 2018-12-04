@@ -29,6 +29,7 @@ Link.propTypes = {
 }
 
 // Shortcut to access to RoutingEnum
+// TODO: rename getRoutinEnum?
 Link.getEnum = getRoutingEnum
 
 // Shortcut to retrieve a route config (to use in the `to` prop)

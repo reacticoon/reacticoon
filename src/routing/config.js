@@ -8,10 +8,10 @@ export const registerRoutes = routes => {
   _routes = routes
 }
 
-export const getRoutes = routes => _routes
+export const getRoutes = () => _routes
 
 export const getConfigForRoute = route =>
-  find(_routes, routeDefinition => route.name === routeDefinition.definition.name)
+  find(_routes, routeDefinition => route && route.name === routeDefinition.definition.name)
 
 //
 //
@@ -29,13 +29,13 @@ export const getHistory = () => _history
 //
 //
 
-let _RoutingEnum = null
+let _routingEnum = null
 
 export const registerRoutingEnum = RoutingEnum => {
-  _RoutingEnum = RoutingEnum
+  _routingEnum = RoutingEnum
 }
 
-export const getRoutingEnum = () => _RoutingEnum
+export const getRoutingEnum = () => _routingEnum
 
 export const getRoute = routeName => {
   const route = getRoutingEnum()[routeName]

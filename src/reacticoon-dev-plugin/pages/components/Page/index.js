@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Badge from '@material-ui/core/Badge'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import grey from '@material-ui/core/colors/grey'
 import { mainListItems, secondaryListItems } from './listItems'
 import ReacticoonLogo from '../svg/ReacticoonLogo'
 import DevToolsTheme from './DevToolsTheme'
@@ -31,6 +32,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingLeft: theme.spacing.unit * 2,
   },
   toolbarBrand: {
     display: 'flex',
@@ -51,6 +53,7 @@ const styles = theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    background: grey[800],
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,

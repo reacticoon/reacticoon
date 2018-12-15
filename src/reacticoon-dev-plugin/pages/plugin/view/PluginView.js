@@ -3,6 +3,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Section from '../../components/Section'
+import Pre from '../../components/Pre'
 import ModulesView from './ModulesView'
 import RoutingView from './RoutingView'
 import EventsView from './EventsView'
@@ -19,9 +20,9 @@ const PluginView = ({ plugin, config }) => (
     </Section>
 
     <Section title="Config">
-      <pre>
-        {JSON.stringify(config, null, 2)}
-      </pre>
+      <Pre
+        content={config}
+      />
     </Section>
 
     <Section title="Modules">

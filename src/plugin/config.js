@@ -2,6 +2,7 @@ import invariant from 'invariant'
 import find from 'lodash/find'
 import forEach from 'lodash/forEach'
 import isUndefined from 'lodash/isUndefined'
+import isEmpty from 'lodash/isEmpty'
 
 import { __DEV__ } from '../environment'
 
@@ -10,6 +11,8 @@ import validatePlugin from './validatePlugin'
 
 import generateModuleEntities from '../module/generateModuleEntities'
 import generateModuleMiddlewares from '../module/generateModuleMiddlewares'
+
+import { addRoutingEnum, addRoutes } from 'reacticoon/routing'
 
 //
 // array of plugins config
@@ -38,6 +41,8 @@ export const registerPlugins = pluginsConfig => {
 
     registerPluginEvents(plugin)
 
+    registerPluginRoutes(plugin)
+
     //
     // register config on the plugin
     //
@@ -50,7 +55,33 @@ const registerPluginEvents = plugin => {
   EventManager.addListeners(plugin.eventsHandler)
 }
 
-export const getPluginsConfig = () => _pluginsConfig
+const registerPluginRoutes = plugin => {
+  if (plugin.routing && !isEmpty(plugin.routing.routes)) {
+    const routing = plugin.routing
+    if (__DEV__) {
+      // add additionnal private debug var
+      forEach(routing.routingEnum, (definition) => {
+        definition.__plugin = plugin.name
+      })
+    }
+
+    addRoutes(routing.routes)
+    addRoutingEnum(routing.routingEnum)
+  }
+}
+
+export const getPlugins = () => _pluginsConfig
+
+export const getPlugin = pluginName => {
+  const pluginConfig = find(_pluginsConfig, pluginConfig => pluginConfig.plugin.name === pluginName)
+
+  invariant(!isUndefined(pluginConfig), `invalid plugin name '${pluginName}' or plugin not registed`)
+
+  // we call getConfig() instead if `pluginConfig.config` since the `registerConfig` could change
+  // the plugin configuration (add defaults, etc) and `pluginConfig.config` is the config set by
+  // the user
+  return pluginConfig.plugin
+}
 
 export const getPluginConfig = pluginName => {
   const pluginConfig = find(_pluginsConfig, pluginConfig => pluginConfig.plugin.name === pluginName)

@@ -4,18 +4,17 @@ import invariant from 'invariant'
 import isNil from 'lodash/isNil'
 
 import { render } from 'react-dom'
-
-// hot loader
+// hot loader inserted by create-reacticoon-app
 import { browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 
 import configureRootReducer from './utils/configureRootReducer'
 
-import { setCurrentEnv } from '../environment'
+import { setCurrentEnv, __DEV__ } from '../environment'
 import { registerModules, getModules } from '../module'
 import generateModuleEntities from '../module/generateModuleEntities'
 import generateModuleMiddlewares from '../module/generateModuleMiddlewares'
-import { registerHistory, registerRoutingEnum, registerRoutes } from '../routing/config'
+import { registerHistory, registerRoutesConfig } from '../routing/config'
 import { registerStore } from '../store'
 import { configureI18n } from '../i18n/index'
 import configureStore from './store/configureStore'
@@ -24,7 +23,6 @@ import {
   generatePluginEntities,
   generatePluginMiddlewares,
 } from '../plugin/config.js'
-import ReacticoonDefaultPlugin from '../reacticoon-default-plugin'
 
 import ApiManager from '../api/ApiManager'
 
@@ -64,14 +62,16 @@ const Application = appOptions => {
   // plugins
   //
 
-  // add default reacticoon plugin
-  appOptions.plugins = [ 
-    { 
-      plugin: ReacticoonDefaultPlugin,
-      config: {},
-    },
-    ...appOptions.plugins
-  ]
+  // add dev reacticoon plugin
+  if (__DEV__) {
+    appOptions.plugins = [
+      {
+        plugin: require("reacticoon/reacticoon-dev-plugin/index").default,
+        config: {},
+      },
+      ...appOptions.plugins
+    ]
+  }
 
   registerPlugins(appOptions.plugins, appOptions)
 
@@ -117,9 +117,7 @@ const Application = appOptions => {
   //
   // routes
   //
-  // TODO: rename to routingEnum
-  registerRoutingEnum(appOptions.RoutingEnum)
-  registerRoutes(appOptions.routes)
+  registerRoutesConfig(appOptions)
 
   //
   // History

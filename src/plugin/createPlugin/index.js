@@ -14,6 +14,11 @@ const generateDefaultPluginConfig = () => {
     eventsHandler: [],
     // no events to define
     events: [],
+    // routes of the plugin
+    routing: {
+      routeEnum: {}, // enumeration of the routes for the plugin
+      routes: [], // routes for this plugin
+    },
     // 
     // register the front config for this plugin
     //

@@ -37,6 +37,27 @@ const validatePlugin = plugin => {
       `plugin 'events' event ${event} must be created with 'createEvent'`
     )
   })
+
+  //
+  // routes
+  //
+  if (plugin.routing && !isEmpty(plugin.routing.routes)) {
+    const routing = plugin.routing
+    // TODO: validate routes
+    invariant(
+      !isUndefined(routing.routingEnum),
+      `[plugin][${plugin.name}] Invalid routing enum`
+    )
+
+    invariant(
+      !isUndefined(routing.routes),
+      `[plugin][${plugin.name}] Invalid routes`
+    )
+
+    routing.routes.forEach(route => {
+      invariant(!isUndefined(route.definition), `Missing route definition`)
+    })
+  }
 }
 
 export default validatePlugin

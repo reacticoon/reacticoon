@@ -27,14 +27,14 @@ export default class Route {
    * @param disable
    */
   constructor(name: string, path: string, authRequired: boolean = true,
-    disable: boolean = false) {
+    disabled: boolean = false) {
     invariant((path.indexOf(' ') === -1), `invalid path ${path} for route ${name}`)
     invariant((name.indexOf(' ') === -1), `invalid name ${name}`)
 
     this.name = name
     this.path = path
     this.authRequired = authRequired
-    this.disable = disable
+    this.disabled = disabled
   }
 
   formatQueryParams(parameters: Object): string {

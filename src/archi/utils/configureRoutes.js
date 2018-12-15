@@ -15,7 +15,7 @@ const generateRoute = route => {
   invariant(!isNil(route.definition), `definition does not exists for ${route.handler}`)
   invariant(!isNil(route.handler), `handler does not exists for ${route.definition.name}`)
 
-  if (!route.definition.disable) {
+  if (!route.definition.disabled) {
     return (
       <Route
         name={route.definition.name}

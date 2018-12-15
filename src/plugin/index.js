@@ -1,2 +1,2 @@
 export { default as createPlugin } from './createPlugin'
-export { getPluginConfig, getPluginsConfig } from './config'
+export { getPluginConfig, getPlugin, getPlugins } from './config'

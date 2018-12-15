@@ -2,16 +2,15 @@ import { createPlugin } from 'reacticoon/plugin'
 import { ReacticoonEvents } from 'reacticoon/event'
 
 import onAppInit from './events/onAppInit'
+import routing from './config/routing'
 
 //
-// Default plugin for reacticoon
-// `createPlugin` will verify that the given configuration is correct, and add default configuration
+// Dev plugin for reacticoon. Provides pages and debug utils
 //
-//
-const ReacticoonDefaultPlugin = createPlugin({
+const ReacticoonDevPlugin = createPlugin({
   // The plugin name. Must be unique. All Reacticoon plugins have the 'Reacticoon' prefix.
-  name: 'ReacticoonDefaultPlugin',
-  description: 'Default plugin of Reacticoon.',
+  name: 'ReacticoonDevPlugin',
+  description: 'Reacticoon plugin displayed on development.',
   // list of the modules that the plugin register.
   // optionnal.
   modules: [],
@@ -20,6 +19,7 @@ const ReacticoonDefaultPlugin = createPlugin({
   eventsHandler: [
     onAppInit,
   ],
+  routing,
 })
 
-export default ReacticoonDefaultPlugin
+export default ReacticoonDevPlugin

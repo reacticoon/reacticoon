@@ -2,8 +2,9 @@ import map from 'lodash/map'
 import forEach from 'lodash/forEach'
 import { EventManager, ReacticoonEvents, createEventHandler } from 'reacticoon/event'
 import { __DEV__ } from 'reacticoon/environment'
-import { getPluginsConfig } from 'reacticoon/plugin'
+import { getPlugins, getPluginConfig } from 'reacticoon/plugin'
 import { getModules } from 'reacticoon/module'
+import { getRoutes } from 'reacticoon/routing'
 
 const onAppInit = createEventHandler(ReacticoonEvents.ON_APP_INIT, () => {
   if (__DEV__) {
@@ -11,8 +12,10 @@ const onAppInit = createEventHandler(ReacticoonEvents.ON_APP_INIT, () => {
     // Plugins
     //
     console.groupCollapsed('[Reacticoon][Plugin][registered]');
-    getPluginsConfig().forEach(({ plugin, config }) => {
-      console.info(`${plugin.name} ${plugin.description}`)
+    getPlugins().forEach(({ plugin, config }) => {
+      console.groupCollapsed(`${plugin.name} ${plugin.description}`)
+      console.log(`[config]`, getPluginConfig(plugin.name))
+      console.groupEnd()
     })
     console.groupEnd('[Plugin][registered]');
 
@@ -48,6 +51,18 @@ const onAppInit = createEventHandler(ReacticoonEvents.ON_APP_INIT, () => {
       console.groupEnd();
     }))
     console.groupEnd();
+
+    //
+    // Routes
+    //
+    console.groupCollapsed('[Reacticoon][Routing]');
+    getRoutes().forEach(route => {
+      console.groupCollapsed(`${route.definition.name}`)
+      console.table(route.definition)
+      console.info(route)
+      console.groupEnd()
+    })
+    console.groupEnd()
 
     //
     // TODO:

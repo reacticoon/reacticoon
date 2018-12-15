@@ -1,4 +1,3 @@
-import Route from './Route'
 import { __DEV__ } from '../environment/getters'
 import { validateRoute } from './validation'
 
@@ -18,16 +17,7 @@ const createRoutingEnum = routingEnum => {
   }
 
   return {
-    //
-    // Add default Reacticoon routes
-    //
-
-    // generic 404 page
-    // https://stackoverflow.com/questions/32128978/react-router-no-not-found-route
-    PAGE_NOT_FOUND: new Route('PAGE_NOT_FOUND', '*'),
-
     // Spread use config routingEnum.
-
     ...routingEnum,
   }
 }

@@ -4,10 +4,10 @@
     "build": "reacticoon build-library"
   },
   "devDependencies": {
+    "classnames": "^2.2.6",
+    "immutable": "4.0.0-rc.12",
     "jest": "^20.0.4",
     "jest-cli": "^20.0.4",
-    "classnames": "^2.2.6",
-    "immutable": "^3.8.2",
     "lodash": "^4.17.5",
     "moment": "^2.22.2",
     "raven-js": "^3.26.3",

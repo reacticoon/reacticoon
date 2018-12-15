@@ -19,13 +19,14 @@ const myPlugin = createPlugin({
   modules: [
     
   ],
-  events: {
-    [reacticoon/event.ON_APP_INIT]: handleAppInit,
-    [MY_CUSTOM_EVENT]: handleMyCustomEvent,
+  eventsHandler: {
+    handleAppInit,
+    handleMyCustomEvent,
   },
-  customEvents: {
-    [MY_CUSTOM_EVENT]: 'documentation about the event',
-  },
+  events: [
+    [MY_CUSTOM_EVENT],
+    [myCustomEventHandler]
+  ],
 })
 ```
 

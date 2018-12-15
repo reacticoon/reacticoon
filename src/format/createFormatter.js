@@ -16,7 +16,7 @@ const createFormatter = (...functionsParams) => (data, props = {}) => {
   }
 
   // copy object
-  let res = isArray(res) ? [ ...res ] : { ...data }
+  let res = isArray(data) ? [ ...data ] : { ...data }
 
   // 
   // The rest parameters order is not keep (inversed), so we handle and array as first argument,

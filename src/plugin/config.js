@@ -3,6 +3,8 @@ import find from 'lodash/find'
 import forEach from 'lodash/forEach'
 import isUndefined from 'lodash/isUndefined'
 import isFunction from 'lodash/isFunction'
+import isEmpty from 'lodash/isEmpty'
+import isArray from 'lodash/isArray'
 
 import { __DEV__ } from '../environment'
 
@@ -27,10 +29,23 @@ const forEachPlugin = callback =>
   )
 
 export const registerPlugins = pluginsConfig => {
-  _pluginsConfig = pluginsConfig
+  console.group("[Plugin][registered]");
+
+  _pluginsConfig = Object.freeze(pluginsConfig)
 
   forEachPlugin(({ plugin, config }) => {
-    registerPluginEvent(plugin)
+    invariant(!isUndefined(plugin), `${plugin}: Invalid plugin given: plugin is undefined`)
+
+    invariant(isEmpty(plugin.eventsHandler) || isArray(plugin.eventsHandler), `plugin 'eventsHandler' must be an array`)
+    
+    plugin.eventsHandler.forEach(event => {
+      invariant(
+        event.IS_EVENT_HANDLER, 
+        `plugin 'eventsHandler' event ${event.name} must be created with 'createEventHandler'`
+      )
+    })
+
+    registerPluginEvents(plugin)
 
     //
     // register config on the plugin
@@ -43,18 +58,21 @@ export const registerPlugins = pluginsConfig => {
 
     // -- verify plugin config
     validatePlugin(plugin)
+
+    console.info(`${plugin.name}`)
   })
+  console.groupEnd("[Plugin][registered]");
 }
 
-const registerPluginEvent = plugin => {
-  EventManager.registerEvents(plugin.customEvents)
-  EventManager.addListeners(plugin.events)
+const registerPluginEvents = plugin => {
+  EventManager.registerEvents(plugin.events)
+  EventManager.addListeners(plugin.eventsHandler)
 }
 
 export const getPluginConfig = pluginName => {
   const pluginConfig = find(_pluginsConfig, pluginConfig => pluginConfig.plugin.name === pluginName)
 
-  invariant(!isUndefined(pluginConfig), `invalid plugin name '${pluginName}'`)
+  invariant(!isUndefined(pluginConfig), `invalid plugin name '${pluginName}' or plugin not registed`)
 
   // we call getConfig() instead if `pluginConfig.config` since the `registerConfig` could change
   // the plugin configuration (add defaults, etc) and `pluginConfig.config` is the config set by

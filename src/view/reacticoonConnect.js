@@ -33,7 +33,7 @@ const connect = (
   // following inspired by https://github.com/reactjs/react-redux/blob/master/src/components/connectAdvanced.js#L261:5
 
   invariant(
-    typeof WrappedComponent == 'function',
+    typeof WrappedComponent === 'function',
     `You must pass a component to the function returned by ` +
       `${methodName}. Instead received ${JSON.stringify(WrappedComponent)}`
   )

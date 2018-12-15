@@ -1,3 +1,5 @@
+import createEvent from './createEvent'
+
 /**
  * Listing of all the events used by Reacticoon.
  * All the events are public if it is not specified there are not.
@@ -18,7 +20,10 @@ const ReacticoonEvents = {
   // Props:
   // - appConfig
   //
-  ON_APP_INIT: 'REACTICOON::ON_APP_INIT',
+  ON_APP_INIT: createEvent( 
+    'REACTICOON::ON_APP_INIT', 
+    'Dispatched when the app is initialized',
+  ),
 
   //
   // -- Logger events
@@ -29,35 +34,50 @@ const ReacticoonEvents = {
   // - type
   // - detail
   //
-  LOG_WARN: 'REACTICOON::LOG::WARN',
+  LOG_WARN: createEvent(
+    'REACTICOON::LOG::WARN',
+    'For warning log'
+  ),
 
   //
   // props:
   // - type
   // - detail
   //
-  LOG_NOT_IMPLEMENTED: 'REACTICOON::LOG::NOT_IMPLEMENTED',
+  LOG_NOT_IMPLEMENTED: createEvent(
+    'REACTICOON::LOG::NOT_IMPLEMENTED',
+    'For not implemented warning'
+  ),
 
   //
   // props:
   // - type
   // - detail
   //
-  LOG_ERROR: 'REACTICOON::LOG::ERROR',
+  LOG_ERROR: createEvent(
+    'REACTICOON::LOG::ERROR',
+    'For errpr log'
+  ),
 
   //
   // props:
   // - ex
   // - context
   //
-  LOG_EXCEPTION: 'REACTICOON::LOG::EXCEPTION',
+  LOG_EXCEPTION: createEvent(
+    'REACTICOON::LOG::EXCEPTION',
+    'For exception error'
+  ),
 
   //
   // props:
   // - error
   // - info
   //
-  LOG_COMPONENT_DID_CATCH: 'REACTICOON::LOG::COMPONENT_DID_CATCH',
+  LOG_COMPONENT_DID_CATCH: createEvent(
+    'REACTICOON::LOG::COMPONENT_DID_CATCH',
+    'For componentDidCatch log'
+  ),
 
   //
   // Called when there is an exception on an action
@@ -67,15 +87,25 @@ const ReacticoonEvents = {
   // - action
   // - state
   //
-  LOG_REDUX_EXCEPTION: 'REACTICOON::LOG::LOG_REDUX_EXCEPTION',
+  LOG_REDUX_EXCEPTION: createEvent(
+    'REACTICOON::LOG::LOG_REDUX_EXCEPTION',
+    'For redux exception, exception that occured on an action dispatch'
+  ),
 
   //
   // -- User context events
   // User context is usefull for logging (console / error tracking (ex: sentry))
   //
 
-  SET_USER_CONTEXT: 'REACTICOON::USER_CONTEXT::SET',
-  CLEAR_USER_CONTEXT: 'REACTICOON::USER_CONTEXT::CLEAR',
+  SET_USER_CONTEXT: createEvent(
+    'REACTICOON::USER_CONTEXT::SET',
+    'Global event to set the user context'
+  ),
+
+  CLEAR_USER_CONTEXT: createEvent(
+    'REACTICOON::USER_CONTEXT::CLEAR',
+    'Global event to clear the user context'
+  ),
 
   //
   // -- form
@@ -83,7 +113,10 @@ const ReacticoonEvents = {
   // We consider it as a reacticoon/event, since form handling should be used on any Reacticoon
   // app.
   //
-  REGISTER_FORM: 'REACTICOON::REGISTER_FORM',
+  REGISTER_FORM: createEvent(
+    'REACTICOON::REGISTER_FORM',
+    'Global event to register a form'
+  ),
 }
 
 export default ReacticoonEvents

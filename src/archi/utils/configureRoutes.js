@@ -7,8 +7,6 @@ import invariant from 'invariant'
 
 import Layout from '../components/Layout'
 
-import { registerRoutes } from '../../routing/config'
-
 //
 // Take the appOptions provide by the projet and create the routes
 //

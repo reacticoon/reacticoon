@@ -27,7 +27,7 @@ const createApiCallAction = (type, request, data = null) => {
       [API_CALL]: {
         [TYPES]: [actionType.REQUEST, actionType.SUCCESS, actionType.FAILURE],
         [REQUEST]: getData(request, params),
-        [DATA]: getData(request, params),
+        [DATA]: getData(data, params),
       },
     }
 

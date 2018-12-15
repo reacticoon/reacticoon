@@ -9,10 +9,10 @@ const generateDefaultPluginConfig = () => {
   return {
     // empty list of modules
     modules: [],
-    // no events to use
-    events: {},
-    // no custom events
-    customEvents: {},
+    // no events handler to use
+    eventsHandler: [],
+    // no events to define
+    events: [],
     // 
     // register the front config for this plugin
     //

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import isEmpty from 'lodash/isEmpty'
-import { getRoutes } from 'reacticoon/routing'
+import { getRoutes, getRouteNameForRoute } from 'reacticoon/routing'
 
 import Typography from '@material-ui/core/Typography'
 import Table from '@material-ui/core/Table'
@@ -27,7 +27,7 @@ const RoutingView = ({ routing }) => isEmpty(routing.routes) ? (
     <TableBody>
       {routing.routes.map(route => (
         <TableRow>
-          <TableCell>{route.definition.name}</TableCell>
+          <TableCell>{getRouteNameForRoute(route)}</TableCell>
           <TableCell>{route.definition.path}</TableCell>
           <TableCell>{route.definition.authRequired ? "yes" : "no"}</TableCell>
           <TableCell>{route.definition.disabled ? "active" : "disabled"}</TableCell>

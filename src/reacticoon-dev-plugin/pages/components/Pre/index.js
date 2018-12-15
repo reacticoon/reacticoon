@@ -15,9 +15,10 @@ const styles = theme => ({
   },
 })
 
-const Pre = ({ content, classes }) => (
+const Pre = ({ content, code, classes }) => (
   <pre className={classes.root}>
-    {JSON.stringify(content, null, 2)}
+    {content && ( JSON.stringify(content, null, 2) )}
+    {code && ( code )}
   </pre>
 )
 

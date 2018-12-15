@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { getRoutes, Link } from 'reacticoon/routing'
+import { getRoutes, Link, getRouteNameForRoute } from 'reacticoon/routing'
 import Page from '../components/Page'
 import Section from '../components/Section'
 import Grid from '@material-ui/core/Grid'
@@ -32,7 +32,7 @@ class PluginsPage extends React.Component {
               <TableBody>
                 {getRoutes().map((route, index) => (
                   <TableRow key={index}>
-                    <TableCell>{route.definition.name}</TableCell>
+                    <TableCell>{getRouteNameForRoute(route)}</TableCell>
                     <TableCell>{route.definition.path}</TableCell>
                     <TableCell>
                       {route.definition.__plugin && (

@@ -10,6 +10,7 @@ import PeopleIcon from '@material-ui/icons/People'
 import LayersIcon from '@material-ui/icons/Layers'
 import AppsIcon from '@material-ui/icons/Apps'
 import ExploreIcon from '@material-ui/icons/Explore'
+import WhatshotIcon from '@material-ui/icons/Whatshot'
 import AssignmentIcon from '@material-ui/icons/Assignment'
 
 export const mainListItems = (
@@ -32,6 +33,15 @@ export const mainListItems = (
       </ListItem>
     </Link>
 
+    <Link to={Link.getRoute('REACTICOON_MY_APP')}>
+      <ListItem button>
+        <ListItemIcon>
+          <WhatshotIcon />
+        </ListItemIcon>
+        <ListItemText primary="App" />
+      </ListItem>
+    </Link>
+
     <Link to={Link.getRoute('REACTICOON_PLUGINS')}>
       <ListItem button>
         <ListItemIcon>
@@ -41,13 +51,15 @@ export const mainListItems = (
       </ListItem>
     </Link>
     
-    <ListItem button>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItem>
-    
+    <Link to={Link.getRoute('REACTICOON_REPORTS')}>
+      <ListItem button>
+        <ListItemIcon>
+          <LayersIcon />
+        </ListItemIcon>
+        <ListItemText primary="Reports" />
+      </ListItem>
+    </Link>
+
   </div>
 )
 

@@ -45,6 +45,7 @@ const createApiCallAction = (type, request, data = null) => {
   // requried by `isActionType`
   func.isActionType = true
   func.TYPE = API_CALL
+  func.__type = type
   func.toString = () => `${API_CALL} ${type}`
 
   return func

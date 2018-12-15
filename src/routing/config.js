@@ -1,6 +1,7 @@
 import invariant from 'invariant'
 import isNil from 'lodash/isNil'
 import find from 'lodash/find'
+import forEach from 'lodash/forEach'
 
 import Route from './Route'
 import ReacticoonRoutingEnum from './ReacticoonRoutingEnum'
@@ -45,6 +46,16 @@ export const addRoutingEnum = routingEnum => {
 export const registerRoutingEnum = addRoutingEnum
 
 export const getRoutingEnum = () => _routingEnum
+
+export const getRouteNameForRoute = routeToFind => {
+  let res = null
+  forEach(_routingEnum, (route, name) => {
+    if (route.name === routeToFind.definition.name) {
+      res = name
+    }
+  })
+  return res
+}
 
 export const getRoute = routeName => {
   const route = getRoutingEnum()[routeName]

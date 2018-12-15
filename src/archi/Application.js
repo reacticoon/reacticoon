@@ -24,6 +24,7 @@ import {
   generatePluginEntities,
   generatePluginMiddlewares,
 } from '../plugin/config.js'
+import ReacticoonDefaultPlugin from '../reacticoon-default-plugin'
 
 import ApiManager from '../api/ApiManager'
 
@@ -62,6 +63,15 @@ const Application = appOptions => {
   //
   // plugins
   //
+
+  // add default reacticoon plugin
+  appOptions.plugins = [ 
+    { 
+      plugin: ReacticoonDefaultPlugin,
+      config: {},
+    },
+    ...appOptions.plugins
+  ]
 
   registerPlugins(appOptions.plugins, appOptions)
 

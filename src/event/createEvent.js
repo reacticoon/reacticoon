@@ -3,7 +3,7 @@ const createEvent = (eventType, eventDescription) => {
   return {
     type: eventType,
     description: eventDescription,
-    IS_EVENT: true,
+    __IS_EVENT: true,
   }
 }
 

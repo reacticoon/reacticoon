@@ -21,7 +21,7 @@ const getEvent = event => {
 
   // handle event given as the event handler
   if (isFunction(event)) {
-    if (event.IS_EVENT_HANDLER) { // created with createEventHandler
+    if (event.__IS_EVENT_HANDLER) { // created with createEventHandler
       return event.EVENT
     } 
     
@@ -54,6 +54,14 @@ class EventManager {
    * Also contains the plugins events. (see registerEvents)
    */
   Event = { ...ReacticoonEvents }
+
+  getEvents() {
+    return this.Event
+  }
+
+  getListeners() {
+    return this.listeners
+  }
 
   addListener(eventType, fn) {
     if (isFunction(eventType) && !fn) { // given directly an event handler
@@ -108,7 +116,7 @@ class EventManager {
       listeners = {}
       listenersParam.forEach(listener => {
         invariant(isEventHandler(listener), `listener must be created with 'createEventHandler', ${typeof listener} given.`)
-        listeners[listener.EVENT] = listener
+        listeners[listener.EVENT.type] = listener
       })
     }
 

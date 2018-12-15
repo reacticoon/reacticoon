@@ -7,6 +7,7 @@ const generateDefaultPluginConfig = () => {
 
   // return default config
   return {
+    description: '',
     // empty list of modules
     modules: [],
     // no events handler to use
@@ -23,6 +24,8 @@ const generateDefaultPluginConfig = () => {
     getConfig: () => {
       return _config
     },
+
+    __IS_PLUGIN: true,
   }
 }
 

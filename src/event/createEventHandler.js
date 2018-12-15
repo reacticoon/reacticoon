@@ -9,7 +9,7 @@ const createEventHandler = (event, callback) => {
 
   // attach event name
   callback.EVENT = event
-  callback.IS_EVENT_HANDLER = true
+  callback.__IS_EVENT_HANDLER = true
   return callback
 }
 

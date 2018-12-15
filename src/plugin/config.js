@@ -2,9 +2,6 @@ import invariant from 'invariant'
 import find from 'lodash/find'
 import forEach from 'lodash/forEach'
 import isUndefined from 'lodash/isUndefined'
-import isFunction from 'lodash/isFunction'
-import isEmpty from 'lodash/isEmpty'
-import isArray from 'lodash/isArray'
 
 import { __DEV__ } from '../environment'
 
@@ -29,45 +26,31 @@ const forEachPlugin = callback =>
   )
 
 export const registerPlugins = pluginsConfig => {
-  console.group("[Plugin][registered]");
-
   _pluginsConfig = Object.freeze(pluginsConfig)
 
   forEachPlugin(({ plugin, config }) => {
-    invariant(!isUndefined(plugin), `${plugin}: Invalid plugin given: plugin is undefined`)
 
-    invariant(isEmpty(plugin.eventsHandler) || isArray(plugin.eventsHandler), `plugin 'eventsHandler' must be an array`)
-    
-    plugin.eventsHandler.forEach(event => {
-      invariant(
-        event.IS_EVENT_HANDLER, 
-        `plugin 'eventsHandler' event ${event.name} must be created with 'createEventHandler'`
-      )
-    })
+    // configuration checks
+    if (__DEV__) {
+      // TODO: verify plugin names collusion
+      validatePlugin(plugin)
+    }
 
     registerPluginEvents(plugin)
 
     //
     // register config on the plugin
     //
-    invariant(isFunction(plugin.registerConfig), `${plugin.name}: registerConfig is not a function`)
     plugin.registerConfig(config)
-
-    // TODO: in dev only
-    // -- verify plugin names collusion
-
-    // -- verify plugin config
-    validatePlugin(plugin)
-
-    console.info(`${plugin.name}`)
   })
-  console.groupEnd("[Plugin][registered]");
 }
 
 const registerPluginEvents = plugin => {
   EventManager.registerEvents(plugin.events)
   EventManager.addListeners(plugin.eventsHandler)
 }
+
+export const getPluginsConfig = () => _pluginsConfig
 
 export const getPluginConfig = pluginName => {
   const pluginConfig = find(_pluginsConfig, pluginConfig => pluginConfig.plugin.name === pluginName)
@@ -91,7 +74,7 @@ export const generatePluginEntities = () => {
     if (__DEV__) {
       // add additionnal private debug var
       forEach(moduleReducers, (reducer, name) => {
-        reducer._plugin = plugin.name
+        reducer.__plugin = plugin.name
       })
     }
     reducers = { ...reducers, ...moduleReducers }
@@ -108,7 +91,7 @@ export const generatePluginMiddlewares = () => {
     if (__DEV__) {
       // add additionnal private debug var
       forEach(moduleMiddlewares, (middleware) => {
-        middleware._plugin = plugin.name
+        middleware.__plugin = plugin.name
       })
     }
     middlewares = [...middlewares, ...moduleMiddlewares]

@@ -11,9 +11,9 @@ import TableHead from '@material-ui/core/TableHead'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 
-const EventsView = ({ events }) => isEmpty(events) ? (
+const EventsHandlerView = ({ eventsHandler }) => isEmpty(eventsHandler) ? (
   <Typography>
-    No events for this plugin.
+    No eventsHandler for this plugin.
   </Typography>
 ) : (
   <div>
@@ -21,16 +21,16 @@ const EventsView = ({ events }) => isEmpty(events) ? (
       <TableHead>
         <TableRow>
           <TableCell>Name</TableCell>
-          <TableCell>Description</TableCell>
-          <TableCell>Type</TableCell>
+          <TableCell>Event type</TableCell>
+          <TableCell>Event description</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {map(events, ({ type, description }, name) => (
-          <TableRow key={name}>
+        {map(eventsHandler, ({ name, EVENT }, index) => (
+          <TableRow key={index}>
             <TableCell>{name}</TableCell>
-            <TableCell>{description}</TableCell>
-            <TableCell>{type}</TableCell>
+            <TableCell>{EVENT.type}</TableCell>
+            <TableCell>{EVENT.description}</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -38,4 +38,4 @@ const EventsView = ({ events }) => isEmpty(events) ? (
   </div>
 )
 
-export default EventsView
+export default EventsHandlerView

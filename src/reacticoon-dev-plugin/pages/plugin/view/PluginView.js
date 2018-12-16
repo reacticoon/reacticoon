@@ -7,6 +7,7 @@ import Pre from '../../components/Pre'
 import ModulesView from './ModulesView'
 import RoutingView from './RoutingView'
 import EventsView from './EventsView'
+import EventsHandlerView from './EventsHandlerView'
 
 const PluginView = ({ plugin, config }) => (
   <Grid container spacing={16}>
@@ -41,6 +42,12 @@ const PluginView = ({ plugin, config }) => (
     <Section title="Events">
       <EventsView
         events={plugin.events}
+      />
+    </Section>
+
+    <Section title="Events handler">
+      <EventsHandlerView
+        eventsHandler={plugin.eventsHandler}
       />
     </Section>
   </Grid>

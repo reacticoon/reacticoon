@@ -112,9 +112,9 @@ class ApiManager {
   // ------------- Tools
   //
 
-  getApiUrl(defaultUrl = null): string {
+  getApiUrl(defaultUrl, endpoint): string {
     if (!isEmpty(defaultUrl)) {
-      return defaultUrl
+      return `${defaultUrl}${endpoint}`
     }
 
     return this.config.apiUrl
@@ -256,7 +256,7 @@ class ApiManager {
     const { url, endpoint, params, query, headers, success, failure } = options
 
     request
-      .get(`${this.getApiUrl(url)}${formatEndpoint(endpoint, params)}`, null, null)
+      .get(this.getApiUrl(url, formatEndpoint(endpoint, params)), null, null)
       .query(query)
       .set('Accept', 'application/json')
       .set(this.getHeaders(headers))
@@ -285,7 +285,7 @@ class ApiManager {
     const { url, endpoint, params, query, headers, success, failure } = options
 
     request
-      .delete(`${this.getApiUrl(url)}${formatEndpoint(endpoint, params)}`, null)
+      .delete(this.getApiUrl(url, formatEndpoint(endpoint, params)), null)
       .query(query)
       .set('Accept', 'application/json')
       .set(this.getHeaders(headers))
@@ -307,7 +307,7 @@ class ApiManager {
     const { url, endpoint, params, data, body, headers, query, success, failure } = options
 
     request
-      .post(`${this.getApiUrl(url)}${formatEndpoint(endpoint, params)}`, null, null)
+      .post(this.getApiUrl(url, formatEndpoint(endpoint, params)), null, null)
       .type('json')
       .query(query)
       // we handle body and data 
@@ -341,7 +341,7 @@ class ApiManager {
     const { url, endpoint, params, data, files, headers, query, success, failure } = options
 
     const req = request
-      .post(`${this.getApiUrl(url)}${formatEndpoint(endpoint, params)}`, null, null)
+      .post(this.getApiUrl(url, formatEndpoint(endpoint, params)), null, null)
       .query(query)
 
     for (const key in data) {
@@ -390,7 +390,7 @@ class ApiManager {
     const { url, endpoint, params, data, headers, query, success, failure } = options
 
     request
-      .put(`${this.getApiUrl(url)}${formatEndpoint(endpoint, params)}`, null, null)
+      .put(this.getApiUrl(url, formatEndpoint(endpoint, params)), null, null)
       .type('json')
       .send(JSON.stringify(data))
       .query(query)
@@ -423,7 +423,7 @@ class ApiManager {
     const { url, endpoint, params, data, files, headers, query, success, failure } = options
 
     const req = request
-      .put(`${this.getApiUrl(url)}${formatEndpoint(endpoint, params)}`, null, null)
+      .put(this.getApiUrl(url, formatEndpoint(endpoint, params)), null, null)
       .query(query)
 
     for (const key in data) {

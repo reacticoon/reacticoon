@@ -13,6 +13,7 @@ const routingEnum = createRoutingEnum({
   REACTICOON_REPORTS: new Route('REACTICOON::REPORTS', `${ROUTE_PREFIX}/reports`),
   REACTICOON_MY_APP: new Route('REACTICOON::MY_APP', `${ROUTE_PREFIX}/app`),
   REACTICOON_MODULE: new Route('REACTICOON::MODULE', `${ROUTE_PREFIX}/modules/:moduleName`),
+  REACTICOON_REPORT_CHECKUP: new Route('REACTICOON::CHECKUP', `${ROUTE_PREFIX}/reports/checkup`),
 })
 
 const createAsyncPage = loader => createLoadable(loader, () => <div />)
@@ -45,6 +46,10 @@ const routes = [
   {
     definition: routingEnum.REACTICOON_MODULE,
     handler: createAsyncPage(() => import(/*  webpackChunkName: "Reacticoon__ModulePage" */ '../pages/module')),
+  },
+  {
+    definition: routingEnum.REACTICOON_REPORT_CHECKUP,
+    handler: createAsyncPage(() => import(/*  webpackChunkName: "Reacticoon__ReportCheckupPage" */ '../pages/checkup')),
   },
 ]
 

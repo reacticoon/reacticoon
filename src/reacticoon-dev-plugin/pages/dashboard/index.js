@@ -59,6 +59,12 @@ class DashboardPage extends React.Component {
               content={getEnv()}
             />
           </Section>
+
+          <Section title="Process environment">
+            <Pre
+              content={process.env}
+            />
+          </Section>
         </Grid>
       </Page>
     )

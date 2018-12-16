@@ -1,11 +1,11 @@
 import React from 'react'
 
-import Page from '../components/Page'
-
-import Section from '../components/Section'
+import { Link } from 'reacticoon/routing'
 import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
+import Page from '../components/Page'
+import Section from '../components/Section'
 
 class ReportsPage extends React.Component {
 
@@ -20,7 +20,9 @@ class ReportsPage extends React.Component {
 
             <List>
               <ListItem>
-                yarn reacticoon checkup
+                <Link to={Link.getRoute('REACTICOON_REPORT_CHECKUP')}>
+                  Checkup
+                </Link>
               </ListItem>
               <ListItem>
                 yarn reacticoon debug-plugins

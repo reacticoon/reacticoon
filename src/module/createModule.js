@@ -1,3 +1,6 @@
+import find from 'lodash/find'
+import isNil from 'lodash/isNil'
+import invariant from 'invariant'
 
 /**
  * 
@@ -25,9 +28,36 @@
  * ```
  */
 const createModule = (name, content) => {
+  const getAction = actionName => {
+    const action = content.actions[actionName]
+
+    invariant(!isNil(action), `Module ${name}, action not found: ${actionName}`)
+
+    return action
+  }
+
+  const getActionsMap = (...actionsNames) => {
+    const actions = {}
+    actionsNames.forEach(actionName => {
+      actions[actionName] = getAction(actionName)
+    })
+    return actions
+  }
+
+  const getSelector = selectorName => {
+    const selector = content.selectors[selectorName]
+
+    invariant(!isNil(selector), `Module ${name}, selector not found: ${selectorName}`)
+
+    return selector
+  }
+
   return {
     name,
     content,
+    getAction,
+    getSelector,
+    getActionsMap,
   }
 }
 

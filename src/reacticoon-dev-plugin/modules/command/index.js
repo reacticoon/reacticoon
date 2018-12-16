@@ -4,10 +4,10 @@ import * as actions from './actions';
 import * as selectors from './selectors';
 import reducer from './reducer';
 
-const CheckupModule = createModule('ReacticoonDev::CheckupModule', {
+const CommandModule = createModule('ReacticoonDev::CommandModule', {
   actions,
   reducer,
   selectors,
 });
 
-export default CheckupModule;
+export default CommandModule;

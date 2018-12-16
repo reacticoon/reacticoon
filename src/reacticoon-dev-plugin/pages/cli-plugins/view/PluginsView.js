@@ -4,22 +4,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'reacticoon/view'
 import CommandModule from '../../../modules/command'
 
-import CheckupReport from './CheckupReport'
+import PluginsReport from './PluginsReport'
 
-class CheckupView extends Component {
+class PluginsView extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.props.runCommand('CHECKUP')
+    this.props.runCommand('PLUGINS')
   }
 
   render() {
-    const { checkup, isFetching } = this.props
+    const { pluginsReport, isFetching } = this.props
     return (
       <div>
         {isFetching && <div>loading</div>}
-        {checkup && (
-          <CheckupReport checkup={checkup} />
+        {pluginsReport && (
+          <PluginsReport pluginsReport={pluginsReport} />
         )}
       </div>
     );
@@ -28,7 +28,7 @@ class CheckupView extends Component {
 
 const mapStateToProps = (state) => ({
   isFetching: CommandModule.getSelector('isFetchingCommandData')(state),
-  checkup: CommandModule.getSelector('getCommandData')(state),
+  pluginsReport: CommandModule.getSelector('getCommandData')(state),
 });
 
-export default connect(mapStateToProps, CommandModule.getActionsMap('runCommand'))(CheckupView)
+export default connect(mapStateToProps, CommandModule.getActionsMap('runCommand'))(PluginsView)

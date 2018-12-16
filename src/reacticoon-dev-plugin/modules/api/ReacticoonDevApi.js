@@ -2,12 +2,12 @@
 export const URL = "http://localhost:9191"
 
 const ReacticoonDevApi = {
-  checkup: () => ({
+  command: (command) => ({
     url: URL,
     endpoint: '/commands',
     type: 'POST',
     body: {
-      command: 'CHECKUP'
+      command: command, // 'CHECKUP', 'PLUGINS'
     },
   }),
 

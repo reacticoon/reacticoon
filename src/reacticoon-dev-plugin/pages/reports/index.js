@@ -25,7 +25,9 @@ class ReportsPage extends React.Component {
                 </Link>
               </ListItem>
               <ListItem>
-                yarn reacticoon debug-plugins
+                <Link to={Link.getRoute('REACTICOON_REPORT_CLI_PLUGINS')}>
+                  Cli plugins
+                </Link>
               </ListItem>
             </List>
 

@@ -15,6 +15,7 @@ const routingEnum = createRoutingEnum({
   REACTICOON_MODULE: new Route('REACTICOON::MODULE', `${ROUTE_PREFIX}/modules/:moduleName`),
   REACTICOON_REPORT_CHECKUP: new Route('REACTICOON::CHECKUP', `${ROUTE_PREFIX}/reports/checkup`),
   REACTICOON_REPORT_CLI_PLUGINS: new Route('REACTICOON::CLI_PLUGINS', `${ROUTE_PREFIX}/reports/cli-plugins`),
+  REACTICOON_REPORT_ANALYZE_BUILD: new Route('REACTICOON::ANALYZE_BUILD', `${ROUTE_PREFIX}/reports/analyze-build`),
 })
 
 const createAsyncPage = loader => createLoadable(loader, () => <div />)
@@ -55,6 +56,10 @@ const routes = [
   {
     definition: routingEnum.REACTICOON_REPORT_CLI_PLUGINS,
     handler: createAsyncPage(() => import(/*  webpackChunkName: "Reacticoon__ReportPluginsPage" */ '../pages/cli-plugins')),
+  },
+  {
+    definition: routingEnum.REACTICOON_REPORT_ANALYZE_BUILD,
+    handler: createAsyncPage(() => import(/*  webpackChunkName: "Reacticoon__ReportAnalyzeBuildPage" */ '../pages/analyze-build')),
   },
 ]
 

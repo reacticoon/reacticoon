@@ -8,29 +8,25 @@ import Page from '../components/Page'
 import Section from '../components/Section'
 
 class ReportsPage extends React.Component {
-
   render() {
     return (
-      <Page
-        pageTitle={`Reports`}
-      >
+      <Page pageTitle={`Reports`}>
         <Grid container>
           <Section title="Reports">
             You can use the following commands:
-
             <List>
               <ListItem>
-                <Link to={Link.getRoute('REACTICOON_REPORT_CHECKUP')}>
-                  Checkup
-                </Link>
+                <Link to={Link.getRoute('REACTICOON_REPORT_CHECKUP')}>Checkup</Link>
               </ListItem>
+
               <ListItem>
-                <Link to={Link.getRoute('REACTICOON_REPORT_CLI_PLUGINS')}>
-                  Cli plugins
-                </Link>
+                <Link to={Link.getRoute('REACTICOON_REPORT_CLI_PLUGINS')}>Cli plugins</Link>
+              </ListItem>
+
+              <ListItem>
+                <Link to={Link.getRoute('REACTICOON_REPORT_ANALYZE_BUILD')}>Analyze build</Link>
               </ListItem>
             </List>
-
             {/* TODO: link to website documentation */}
           </Section>
         </Grid>

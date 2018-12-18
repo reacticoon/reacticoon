@@ -3,7 +3,6 @@ import identity from 'lodash/identity'
 
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
-import { reducer as uiReducer } from 'redux-ui'
 import { i18nReducer } from '../../i18n/index'
 
 const configureRootReducer = appOptions => {
@@ -18,8 +17,6 @@ const configureRootReducer = appOptions => {
     // function.
     // react-router-redux must have a configured middleware. See `commonMiddlewares.js`
     routing: routerReducer,
-
-    ui: uiReducer,
 
     ux: appOptions.uxReducer,
   }

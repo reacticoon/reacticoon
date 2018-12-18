@@ -9,7 +9,7 @@ const INITIAL_STATE = Immutable.fromJS({
   isLoading: false,
 })
 
-const handleCommandRequest = (state, action) => state.set('isLoading', true)
+const handleCommandRequest = (state, action) => state.merge({ isLoading: true, data: null })
 
 const handleCommandSuccess = (state, action) => state.merge({ isLoading: false, data: action.response })
 

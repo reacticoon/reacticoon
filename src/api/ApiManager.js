@@ -117,7 +117,7 @@ class ApiManager {
       return `${defaultUrl}${endpoint}`
     }
 
-    return this.config.apiUrl
+    return `${this.config.apiUrl}${endpoint}`
   }
 
   /**

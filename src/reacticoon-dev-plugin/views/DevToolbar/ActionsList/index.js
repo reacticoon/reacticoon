@@ -13,18 +13,26 @@ class ActionsList extends React.PureComponent {
     const reactFinderData = map(getModules(), module => ({
       id: module.name,
       label: module.name,
-      children: map(module.content.actions, (action, actionName) => ({
-        id: `${module.name}_${actionName}`,
-        label: actionName,
-      })),
+      children: map(module.content.actions, (action, actionName) =>
+        // only display actions created with Reacticoon
+        !action.isActionType
+          ? null
+          : {
+              id: `${module.name}_${actionName}`,
+              label: actionName,
+            }
+      ).filter(Boolean),
     }))
 
     const actionsMap = {}
     forEach(getModules(), module => {
       forEach(module.content.actions, (action, actionName) => {
-        actionsMap[`${module.name}_${actionName}`] = {
-          actionName,
-          action,
+        // only display actions created with Reacticoon
+        if (action.isActionType) {
+          actionsMap[`${module.name}_${actionName}`] = {
+            actionName,
+            action,
+          }
         }
       })
     })
@@ -33,6 +41,7 @@ class ActionsList extends React.PureComponent {
       reactFinderData,
       actionsMap,
       // selectedActionData: null,
+      // TODO: change after tests
       selectedActionData: actionsMap['App::CircleModule_fetchCircle'],
     }
   }
@@ -51,7 +60,7 @@ class ActionsList extends React.PureComponent {
     const { reactFinderData, selectedActionData } = this.state
     return (
       <div>
-        <ReactFinder className="" data={reactFinderData} onItemSelected={this.handleItemSelected} />
+        <ReactFinder data={reactFinderData} onItemSelected={this.handleItemSelected} />
 
         {selectedActionData && <ActionInfoRunner actionData={selectedActionData} />}
       </div>

@@ -85,7 +85,6 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-
   },
   drawerPaperClose: {
     overflowX: 'hidden',
@@ -102,6 +101,7 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
+    paddingBottom: theme.spacing.unit * 10,
     height: '100vh',
     overflow: 'auto',
   },
@@ -152,7 +152,7 @@ class ReacticoonDevPage extends React.Component {
                   onClick={this.handleDrawerOpen}
                   className={classNames(
                     classes.menuButton,
-                    this.state.open && classes.menuButtonHidden,
+                    this.state.open && classes.menuButtonHidden
                   )}
                 >
                   <MenuIcon />
@@ -166,18 +166,19 @@ class ReacticoonDevPage extends React.Component {
                 >
                   {pageTitle}
                 </Typography>
-                
               </Toolbar>
             </AppBar>
             <Drawer
               variant="permanent"
               classes={{
-                paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+                paper: classNames(
+                  classes.drawerPaper,
+                  !this.state.open && classes.drawerPaperClose
+                ),
               }}
               open={this.state.open}
             >
               <div className={classes.toolbarBrandArea}>
-
                 <div className={classes.toolbarBrand}>
                   <ReacticoonLogo height={30} />
 
@@ -201,7 +202,7 @@ class ReacticoonDevPage extends React.Component {
           </DarkTheme>
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            
+
             {children}
           </main>
         </div>

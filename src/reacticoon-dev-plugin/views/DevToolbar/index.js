@@ -11,7 +11,9 @@ class DevToolbar extends React.Component {
 
     this.state = {
       showBar: true,
-      showDetail: true,
+      // can be null, true or false. null: we do not rendre, false: we only hide,
+      // to avoid resetting the state and allow going on and back.
+      showDetail: true, // null,
     }
   }
 
@@ -35,15 +37,18 @@ class DevToolbar extends React.Component {
 
     return (
       <DevToolsTheme>
-        {this.state.showDetail ? (
+        {this.state.showDetail !== null && (
           <DevToolbarDetail
+            show={this.state.showDetail}
             onToggle={this.toggleDetail}
             route={route}
             routeName={routeName}
             params={params}
             location={location}
           />
-        ) : (
+        )}
+
+        {!this.state.showDetail && (
           <DevToolbarContent
             show={this.state.showBar}
             onToggle={this.toggleBar}

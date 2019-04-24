@@ -19,7 +19,9 @@ const generateDefaultPluginConfig = () => {
       routeEnum: {}, // enumeration of the routes for the plugin
       routes: [], // routes for this plugin
     },
-    // 
+    // array of component views to add on the Reacticoon Layout
+    layoutViews: [],
+    //
     // register the front config for this plugin
     //
     registerConfig: config => {

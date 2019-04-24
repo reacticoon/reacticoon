@@ -1,14 +1,21 @@
 import React from 'react'
 import ScrollToTop from './ScrollToTop'
 
-// TODO: do not import, should be added via config
-import DevToolbar from 'reacticoon/reacticoon-dev-plugin/views/DevToolbar'
+import { getLayoutViews } from 'reacticoon/plugin/config'
 
 const Layout = ({ children, location, params, routes }) => (
   <div className="u-sizeFullHeight u-relative">
     <ScrollToTop location={location}>{children}</ScrollToTop>
 
-    <DevToolbar location={location} params={params} routes={routes} />
+    {/* add layout views. Layout views are plugin-defined views to add here. Plugins can
+    configure using a `layoutViews` array.*/}
+    {getLayoutViews().map(view =>
+      React.createElement(view, {
+        location,
+        params,
+        routes,
+      })
+    )}
   </div>
 )
 

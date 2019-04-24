@@ -32,7 +32,6 @@ export const registerPlugins = pluginsConfig => {
   _pluginsConfig = Object.freeze(pluginsConfig)
 
   forEachPlugin(({ plugin, config }) => {
-
     // configuration checks
     if (__DEV__) {
       // TODO: verify plugin names collusion
@@ -60,7 +59,7 @@ const registerPluginRoutes = plugin => {
     const routing = plugin.routing
     if (__DEV__) {
       // add additionnal private debug var
-      forEach(routing.routingEnum, (definition) => {
+      forEach(routing.routingEnum, definition => {
         definition.__plugin = plugin.name
       })
     }
@@ -75,7 +74,10 @@ export const getPlugins = () => _pluginsConfig
 export const getPlugin = pluginName => {
   const pluginConfig = find(_pluginsConfig, pluginConfig => pluginConfig.plugin.name === pluginName)
 
-  invariant(!isUndefined(pluginConfig), `invalid plugin name '${pluginName}' or plugin not registed`)
+  invariant(
+    !isUndefined(pluginConfig),
+    `invalid plugin name '${pluginName}' or plugin not registed`
+  )
 
   // we call getConfig() instead if `pluginConfig.config` since the `registerConfig` could change
   // the plugin configuration (add defaults, etc) and `pluginConfig.config` is the config set by
@@ -86,7 +88,10 @@ export const getPlugin = pluginName => {
 export const getPluginConfig = pluginName => {
   const pluginConfig = find(_pluginsConfig, pluginConfig => pluginConfig.plugin.name === pluginName)
 
-  invariant(!isUndefined(pluginConfig), `invalid plugin name '${pluginName}' or plugin not registed`)
+  invariant(
+    !isUndefined(pluginConfig),
+    `invalid plugin name '${pluginName}' or plugin not registed`
+  )
 
   // we call getConfig() instead if `pluginConfig.config` since the `registerConfig` could change
   // the plugin configuration (add defaults, etc) and `pluginConfig.config` is the config set by
@@ -121,7 +126,7 @@ export const generatePluginMiddlewares = () => {
     const moduleMiddlewares = generateModuleMiddlewares(plugin.modules || [])
     if (__DEV__) {
       // add additionnal private debug var
-      forEach(moduleMiddlewares, (middleware) => {
+      forEach(moduleMiddlewares, middleware => {
         middleware.__plugin = plugin.name
       })
     }
@@ -129,4 +134,16 @@ export const generatePluginMiddlewares = () => {
   })
 
   return middlewares
+}
+
+// plugins can contain a 'layoutViews' array that will be displayed on the Reacticoon Layout component
+// Example: the Reacticoon dev tools debug bar
+export const getLayoutViews = () => {
+  let layoutViews = []
+
+  getPlugins().forEach(pluginConfig => {
+    layoutViews = layoutViews.concat(pluginConfig.plugin.layoutViews || [])
+  })
+
+  return layoutViews
 }

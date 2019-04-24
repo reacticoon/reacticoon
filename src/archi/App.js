@@ -16,7 +16,10 @@ const App = ({ store, history, appOptions }) => {
   return (
     <ErrorBoundary>
       <Provider store={store}>
-        {/* TODO: provide way to plugins to add container here. E.g PersistGate */}
+        {/* 
+        TODO: provide way to plugins to add container here. E.g PersistGate.
+        cf plugin layoutViews
+         */}
         <appOptions.Content>{router}</appOptions.Content>
       </Provider>
     </ErrorBoundary>

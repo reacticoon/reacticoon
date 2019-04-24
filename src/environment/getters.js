@@ -22,8 +22,17 @@ export const getReacticoonRepositoryUrl = () => process.env.__REACTICOON_REPOSIT
 
 export const isLocalhost = () => window.location.hostname === 'localhost'
 
+// see https://reactjs.org/docs/faq-versioning.html
 export const getReactVersion = () => React.version
 
-export const getReactVersionDocLink = () => 'https://TODO'
+// for 16.4.2 -> 16.4
+export const getReactVersionMinor = () => {
+  // remove patch version
+  const versions = React.version.split('.')
+  versions.splice(-1, 1)
+  return versions.join('.')
+}
+
+export const getReactVersionDocLink = () => `https://reactjs.org/version/${getReactVersionMinor()}`
 
 export const getEnvVar = envVar => getEnv()[envVar]

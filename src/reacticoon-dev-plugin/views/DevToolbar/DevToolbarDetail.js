@@ -1,13 +1,17 @@
 import React from 'react'
 
 import { getReactVersion, getReactVersionDocLink } from 'reacticoon/environment'
+import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'reacticoon/routing'
 import SettingsIcon from '@material-ui/icons/Settings'
+import Grid from '@material-ui/core/Grid'
 import ReacticoonLogo from '../../pages/components/svg/ReacticoonLogo'
+import Tabs from '../../views/Tabs'
 import DevToolbarDetailRequestInfo from './DevToolbarDetailRequestInfo'
 import DevToolbarStoreInfo from './DevToolbarStoreInfo'
 import DevToolbarActions from './DevToolbarActions'
+import SelectorsList from './SelectorsList'
 
 const styles = theme => ({
   root: {
@@ -20,6 +24,13 @@ const styles = theme => ({
     display: 'flex',
     background: 'white',
     zIndex: 9999999,
+    overflowY: 'auto',
+  },
+  rootHide: {
+    display: 'none',
+  },
+  tabs_appBar_root: {
+    marginTop: -12,
   },
   header: {
     background: theme.app.colors.dark,
@@ -42,6 +53,7 @@ const styles = theme => ({
   content: {
     paddingTop: 54,
     paddingBottom: 54,
+    width: '100%',
   },
   bottom: {
     position: 'fixed',
@@ -71,8 +83,12 @@ const styles = theme => ({
   },
 })
 
-const DevToolbarDetail = ({ route, routeName, params, classes, onToggle }) => (
-  <div className={classes.root}>
+const DevToolbarDetail = ({ show, route, routeName, params, classes, onToggle }) => (
+  <div
+    className={classNames(classes.root, {
+      [classes.rootHide]: !show,
+    })}
+  >
     <div className={classes.header}>
       <div className={classes.headerBrand}>
         <ReacticoonLogo height={36} />
@@ -89,18 +105,36 @@ const DevToolbarDetail = ({ route, routeName, params, classes, onToggle }) => (
     </div>
 
     <div className={classes.content}>
-      <div>
-        {/* PARAMS */}
-        <DevToolbarDetailRequestInfo route={route} params={params} />
-      </div>
+      <Tabs
+        appBarClasses={{ root: classes.tabs_appBar_root }}
+        tabs={[
+          {
+            label: 'Infos',
+          },
+          {
+            label: 'Actions & selectors',
+          },
+          {
+            label: 'Store',
+          },
+        ]}
+        content={[
+          // 0
+          <DevToolbarDetailRequestInfo route={route} params={params} />,
+          // 1
+          <Grid container>
+            <Grid item xs={6}>
+              <DevToolbarActions />
+            </Grid>
 
-      <div>
-        <DevToolbarActions />
-      </div>
-
-      <div>
-        <DevToolbarStoreInfo />
-      </div>
+            <Grid item xs={6}>
+              <SelectorsList />
+            </Grid>
+          </Grid>,
+          // 2
+          <DevToolbarStoreInfo />,
+        ]}
+      />
     </div>
 
     {/* BOTTOM */}

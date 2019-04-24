@@ -5,7 +5,6 @@ import map from 'lodash/map'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 class Runner extends React.Component {
@@ -14,7 +13,6 @@ class Runner extends React.Component {
 
     this.state = {
       parametersData: [],
-      apiCallIsSuccess: true,
     }
   }
 
@@ -35,12 +33,6 @@ class Runner extends React.Component {
     getStore().dispatch(action.apply(null, parametersData))
   }
 
-  handledApiCallIsSuccessChange = e => {
-    this.setState({
-      apiCallIsSuccess: !this.state.apiCallIsSuccess,
-    })
-  }
-
   render() {
     const { action } = this.props
     const { parametersData } = this.state
@@ -55,15 +47,6 @@ class Runner extends React.Component {
             value: `API_CALL: ${action.__type}`,
           },
         ]
-        content = (
-          <div>
-            <FormControlLabel
-              onChange={this.handledApiCallIsSuccessChange}
-              control={<Checkbox checked={this.state.apiCallIsSuccess} />}
-              label="Success"
-            />
-          </div>
-        )
 
       default:
     }

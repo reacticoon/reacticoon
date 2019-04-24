@@ -1,10 +1,8 @@
 import React from 'react'
 
-import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
 
-const styles = theme => ({
+const styles = () => ({
   root: {},
 })
 
@@ -12,6 +10,7 @@ const CheckupReport = ({ report, classes }) => (
   <div className={classes.root}>
     {report && report.url && (
       <iframe
+        title="Checkup Report"
         src={report.url}
         frameborder="0"
         style={{ width: '100%', height: window.screen.height / 1.6, }}

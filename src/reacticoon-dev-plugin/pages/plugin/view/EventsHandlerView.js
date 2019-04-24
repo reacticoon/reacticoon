@@ -2,7 +2,6 @@ import React from 'react'
 
 import map from 'lodash/map'
 import isEmpty from 'lodash/isEmpty'
-import { EventManager } from 'reacticoon/event'
 
 import Typography from '@material-ui/core/Typography'
 import Table from '@material-ui/core/Table'

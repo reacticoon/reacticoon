@@ -40,10 +40,10 @@ const Application = appOptions => {
   //
   // Verify we do not have multiple versions of Reacticoon
   //
-  if (window.REACTICOON_KEY_ON_WINDOW) {
+  if (window[REACTICOON_KEY_ON_WINDOW]) {
     throw new Error(`Multiple Reacticoon has been found.`) // TODO: better error
   }
-  window.REACTICOON_KEY_ON_WINDOW = true 
+  window[REACTICOON_KEY_ON_WINDOW] = true
 
   //
   // environment
@@ -62,15 +62,16 @@ const Application = appOptions => {
   // plugins
   //
 
-  // add dev reacticoon plugin
   if (__DEV__) {
+    // add dev reacticoon plugin on __DEV__.
     appOptions.plugins = [
       {
-        plugin: require("reacticoon/reacticoon-dev-plugin/index").default,
+        plugin: require('reacticoon/reacticoon-dev-plugin/index').default,
         config: {},
       },
-      ...appOptions.plugins
+      ...appOptions.plugins,
     ]
+    // TODO: add DevToolbar
   }
 
   registerPlugins(appOptions.plugins, appOptions)

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import isEmpty from 'lodash/isEmpty'
-import { getRoutes, getRouteNameForRoute } from 'reacticoon/routing'
+import { getRouteNameForRoute } from 'reacticoon/routing'
 
 import Typography from '@material-ui/core/Typography'
 import Table from '@material-ui/core/Table'

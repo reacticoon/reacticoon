@@ -44,6 +44,7 @@ import invariant from 'invariant'
 import isNil from 'lodash/isNil'
 import isFunction from 'lodash/isFunction'
 import isUndefined from 'lodash/isUndefined'
+import { getParamNames } from 'reacticoon/utils'
 
 /**
  *
@@ -62,7 +63,7 @@ const createActionBuilder = options => {
       )
 
       const retrievedData = { ...(isFunction(data) ? data.apply(null, params) : data) }
-      
+
       // the retrieved data can contains the payload or the payload and the meta:
       // { // payload content} OR { payload: {}, meta: {}}
 
@@ -98,6 +99,9 @@ const createActionBuilder = options => {
     // requried by `isActionType`
     actionCreator.isActionType = true
     actionCreator.toString = () => type
+
+    // TODO: only in dev
+    actionCreator.__parameters = isFunction(data) ? getParamNames(data) : []
 
     return actionCreator
   }

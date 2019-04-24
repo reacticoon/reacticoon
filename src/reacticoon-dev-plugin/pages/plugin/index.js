@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { getPlugins, getPlugin } from 'reacticoon/plugin'
+import { getPlugin } from 'reacticoon/plugin'
 import Page from '../components/Page'
 import PluginView from './view/PluginView'
 

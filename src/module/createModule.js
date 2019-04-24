@@ -1,4 +1,3 @@
-import find from 'lodash/find'
 import isNil from 'lodash/isNil'
 import invariant from 'invariant'
 

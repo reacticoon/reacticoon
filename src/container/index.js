@@ -1,0 +1,1 @@
+export createSimpleContainer from './createSimpleContainer'

@@ -1,4 +1,4 @@
-import { normalize, schema } from 'normalizr'
+import { normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
 // import Immutable from 'immutable'
 

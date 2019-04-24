@@ -12,13 +12,11 @@ import { getRoutingEnum, getRoute } from './config'
  * Abstract the react-router-dom Route to handle our `Route` definition.
  */
 const Link = props => {
-  const { to, params, children, ...otherProps } = props
-  const finalTo = !isNil(to)
-    ? to.generatePathWithParams(params)
-    : '#'
+  const { to, params, children, newTab, target, ...otherProps } = props
+  const finalTo = !isNil(to) ? to.generatePathWithParams(params) : '#'
 
   return (
-    <ReactRouterLink to={finalTo} {...otherProps}>
+    <ReactRouterLink to={finalTo} target={newTab ? '_blank' : target} {...otherProps}>
       {children}
     </ReactRouterLink>
   )

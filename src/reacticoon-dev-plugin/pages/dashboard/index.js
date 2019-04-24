@@ -1,10 +1,12 @@
 import React from 'react'
 
 import { __VERSION__, __REACTICOON_VERSION__, getEnv } from 'reacticoon/environment'
-import { 
+import {
   getReacticoonWebsiteUrl,
   getReacticoonOrganisationUrl,
   getReacticoonRepositoryUrl,
+  getReactVersion,
+  getReactVersionDocLink,
 } from 'reacticoon/environment'
 import Page from '../components/Page'
 import Grid from '@material-ui/core/Grid'
@@ -14,20 +16,19 @@ import Pre from '../components/Pre'
 import Section from '../components/Section'
 
 class DashboardPage extends React.Component {
-
   render() {
     return (
-      <Page
-        pageTitle={`Dashboard`}
-      >
+      <Page pageTitle={`Dashboard`}>
         <Grid container spacing={16}>
           <Section title="Info" grid={{ xs: 6 }}>
             <List>
+              <ListItem>App version: {__VERSION__}</ListItem>
+              <ListItem>Reacticoon version: {__REACTICOON_VERSION__}</ListItem>
               <ListItem>
-                App version: {__VERSION__}
-              </ListItem>
-              <ListItem>
-                Reacticoon version: {__REACTICOON_VERSION__}
+                React version:{' '}
+                <a href={getReactVersionDocLink()} target="_blank">
+                  {getReactVersion()}
+                </a>
               </ListItem>
             </List>
           </Section>
@@ -41,7 +42,11 @@ class DashboardPage extends React.Component {
               </ListItem>
 
               <ListItem>
-                <a href={`${getReacticoonRepositoryUrl()}/issues`} target="_blank" rel="noopener noreferer">
+                <a
+                  href={`${getReacticoonRepositoryUrl()}/issues`}
+                  target="_blank"
+                  rel="noopener noreferer"
+                >
                   Github - Issues
                 </a>
               </ListItem>
@@ -55,15 +60,11 @@ class DashboardPage extends React.Component {
           </Section>
 
           <Section title="Environment">
-            <Pre
-              content={getEnv()}
-            />
+            <Pre content={getEnv()} />
           </Section>
 
           <Section title="Process environment">
-            <Pre
-              content={process.env}
-            />
+            <Pre content={process.env} />
           </Section>
         </Grid>
       </Page>

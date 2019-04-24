@@ -4,8 +4,6 @@ import Page from '../components/Page'
 
 import Section from '../components/Section'
 import Grid from '@material-ui/core/Grid'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
 import PluginsView from './view/PluginsView'
 
 class CliPluginsPage extends React.Component {

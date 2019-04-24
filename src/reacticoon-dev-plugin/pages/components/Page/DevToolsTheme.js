@@ -14,17 +14,14 @@ const theme = createMuiTheme({
       error: red[300],
       warn: orange[300],
       good: green[300],
+      dark: '#2F2F2F',
     },
   },
   // typography: { useNextVariants: true },
 })
 
 function DevToolsTheme({ children }) {
-  return (
-    <MuiThemeProvider theme={theme}>
-      {children}
-    </MuiThemeProvider>
-  )
+  return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
 }
 
 export default DevToolsTheme

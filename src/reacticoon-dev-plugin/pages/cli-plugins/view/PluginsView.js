@@ -1,34 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
 
-import { connect } from 'reacticoon/view'
-import CommandModule from '../../../modules/command'
-
+import CommandContainer from '../../../modules/command/view/CommandContainer'
 import PluginsReport from './PluginsReport'
 
-class PluginsView extends Component {
-  constructor(props) {
-    super(props);
+const ReportView = () => (
+  <CommandContainer command="PLUGINS">
+    {({ report }) => <PluginsReport pluginsReport={report} />}
+  </CommandContainer>
+)
 
-    this.props.runCommand('PLUGINS')
-  }
-
-  render() {
-    const { pluginsReport, isFetching } = this.props
-    return (
-      <div>
-        {isFetching && <div>loading</div>}
-        {pluginsReport && (
-          <PluginsReport pluginsReport={pluginsReport} />
-        )}
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => ({
-  isFetching: CommandModule.getSelector('isFetchingCommandData')(state),
-  pluginsReport: CommandModule.getSelector('getCommandData')(state),
-});
-
-export default connect(mapStateToProps, CommandModule.getActionsMap('runCommand'))(PluginsView)
+export default ReportView

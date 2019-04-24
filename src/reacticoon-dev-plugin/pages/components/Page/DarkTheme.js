@@ -12,11 +12,7 @@ const theme = createMuiTheme({
 })
 
 function DarkTheme({ children }) {
-  return (
-    <MuiThemeProvider theme={theme}>
-      {children}
-    </MuiThemeProvider>
-  )
+  return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
 }
 
 export default DarkTheme

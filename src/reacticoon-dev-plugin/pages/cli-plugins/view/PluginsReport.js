@@ -1,11 +1,9 @@
 import React from 'react'
 
-import classNames from 'classnames'
 import Pre from '../../components/Pre'
 import { withStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
 
-const styles = theme => ({
+const styles = () => ({
   root: {
 
   },

@@ -13,7 +13,6 @@ class ReportsPage extends React.Component {
       <Page pageTitle={`Reports`}>
         <Grid container>
           <Section title="Reports">
-            You can use the following commands:
             <List>
               <ListItem>
                 <Link to={Link.getRoute('REACTICOON_REPORT_CHECKUP')}>Checkup</Link>
@@ -25,6 +24,10 @@ class ReportsPage extends React.Component {
 
               <ListItem>
                 <Link to={Link.getRoute('REACTICOON_REPORT_ANALYZE_BUILD')}>Analyze build</Link>
+              </ListItem>
+
+              <ListItem>
+                <Link to={Link.getRoute('REACTICOON_REPORT_ANALYZE_BUNDLE_PHOBIA')}>Analyze bundle</Link>
               </ListItem>
             </List>
             {/* TODO: link to website documentation */}

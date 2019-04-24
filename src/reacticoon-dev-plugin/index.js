@@ -1,5 +1,4 @@
 import { createPlugin } from 'reacticoon/plugin'
-import { ReacticoonEvents } from 'reacticoon/event'
 
 import onAppInit from './events/onAppInit'
 import routing from './config/routing'

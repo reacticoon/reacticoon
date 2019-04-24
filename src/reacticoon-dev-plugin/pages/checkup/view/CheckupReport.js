@@ -67,9 +67,9 @@ const Icon = ({ result, classes }) => {
   }
 }
 
-const CheckupReport = ({ checkup, classes }) => (
+const CheckupReport = ({ report, classes }) => (
   <div className={classes.root}>
-    {checkup.checks.map((check, index) => (
+    {report.checks.map((check, index) => (
       <div className={classes.check} key={index}>
         <div className={classes.checkHeader}>
           <Typography variant="h2" className={classes.name}>

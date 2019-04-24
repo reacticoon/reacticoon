@@ -1,6 +1,7 @@
 import isFunction from 'lodash/isFunction'
 
 import createApiEnumAction from '../api/utils/createApiEnumAction'
+import { getParamNames } from 'reacticoon/utils'
 import { API_CALL, TYPES, REQUEST, DATA } from '../api/constants'
 
 const getData = (data, params) => (isFunction(data) ? data.apply(null, params) : data)
@@ -47,6 +48,9 @@ const createApiCallAction = (type, request, data = null) => {
   func.TYPE = API_CALL
   func.__type = type
   func.toString = () => `${API_CALL} ${type}`
+
+  // TODO: only in dev
+  func.__parameters = isFunction(request) ? getParamNames(request) : []
 
   return func
 }

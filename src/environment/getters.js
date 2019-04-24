@@ -1,3 +1,4 @@
+import React from 'react'
 import { getEnv } from './environment'
 
 export const __DEV__ = process.env.__DEV__ || process.env.NODE_ENV !== 'production'
@@ -18,5 +19,11 @@ export const getReacticoonWebsiteUrl = () => process.env.__REACTICOON_DOC_URL__
 export const getReacticoonOrganisationUrl = () => process.env.__REACTICOON_GITHUB_ORGANISATION_URL__
 
 export const getReacticoonRepositoryUrl = () => process.env.__REACTICOON_REPOSITORY_URL__
+
+export const isLocalhost = () => window.location.hostname === 'localhost'
+
+export const getReactVersion = () => React.version
+
+export const getReactVersionDocLink = () => 'https://TODO'
 
 export const getEnvVar = envVar => getEnv()[envVar]

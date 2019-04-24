@@ -3,7 +3,6 @@ import isNil from 'lodash/isNil'
 import find from 'lodash/find'
 import forEach from 'lodash/forEach'
 
-import Route from './Route'
 import ReacticoonRoutingEnum from './ReacticoonRoutingEnum'
 
 let _routes = []

@@ -69,6 +69,10 @@ const Application = appOptions => {
         plugin: require('reacticoon/reacticoon-dev-plugin/index').default,
         config: {},
       },
+      {
+        plugin: require('reacticoon/reacticoon-testing-plugin/index').default,
+        config: {},
+      },
       ...appOptions.plugins,
     ]
     // TODO: add DevToolbar

@@ -1,6 +1,8 @@
 {
   "scripts": {
     "test": "reacticoon test",
+    "test:integration": "jest -c ./integration/jest.config.js",
+    "test:integration:watch": "jest -c ./integration/jest.config.js --watch",
     "build": "reacticoon build-library"
   },
   "devDependencies": {
@@ -9,7 +11,9 @@
     "jest": "^20.0.4",
     "jest-cli": "^20.0.4",
     "lodash": "^4.17.5",
+    "mkdirp": "^0.5.1",
     "moment": "^2.22.2",
+    "puppeteer": "^1.14.0",
     "raven-js": "^3.26.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
@@ -35,9 +39,11 @@
   },
   "dependencies": {
     "create-reacticoon-app": "0.0.2",
+    "expect-puppeteer": "^4.1.1",
     "finderjs": "^1.3.0",
     "hoist-non-react-statics": "^2.5.5",
     "humps": "^2.0.1",
+    "jest-puppeteer": "^4.1.1",
     "node-polyglot": "^2.2.2",
     "normalizr": "^3.2.4",
     "react-hot-loader": "^4.3.3",

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import RoutingDebugger from '../../RoutingDebugger'
 import { getConfigForRoute, getRouteNameForRoute } from 'reacticoon/routing'
 import DevToolsTheme from '../../pages/components/Page/DevToolsTheme'
 import DevToolbarContent from './DevToolbarContent'
@@ -13,8 +14,23 @@ class DevToolbar extends React.Component {
       showBar: true,
       // can be null, true or false. null: we do not rendre, false: we only hide,
       // to avoid resetting the state and allow going on and back.
-      showDetail: true, // null,
+      showDetail: false, // null,
     }
+
+    this.updateRoutingDebugger(props)
+  }
+
+  componentDidUpdate(props) {
+    this.updateRoutingDebugger(props)
+  }
+
+  updateRoutingDebugger(props) {
+    const { routes, location, params } = props
+
+    const route = getConfigForRoute(routes[1]).definition
+    const routeName = getRouteNameForRoute({ definition: route })
+
+    RoutingDebugger.setCurrentRoute(route)
   }
 
   toggleBar = () => {

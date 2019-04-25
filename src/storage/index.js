@@ -6,6 +6,12 @@ import isUndefined from 'lodash/isUndefined'
 import { isLocalhost } from 'reacticoon/environment'
 
 //
+// ------------------------------------------------------------------------------------------------
+//        STORAGE
+// ------------------------------------------------------------------------------------------------
+//
+
+//
 // local storage abstraction functions
 //
 
@@ -101,6 +107,115 @@ export const getIntFromStorage = (key: string, defaultReturn: number = 0): numbe
 export const removeFromStorage = key => {
   localStorage.removeItem(key)
 }
+
+//
+// ------------------------------------------------------------------------------------------------
+//        SESSION
+// ------------------------------------------------------------------------------------------------
+//
+
+//
+// session storage abstraction functions
+//
+
+const getObjectFromSession = (key: string, defaultValue: ?Object = null): ?any => {
+  if (!sessionStorage) {
+    return null
+  }
+  const obj: ?string = sessionStorage.getItem(key)
+
+  let value: ?any = null
+
+  // default value
+  if (isUndefined(obj) || isNull(obj)) {
+    if (!isUndefined(defaultValue) && !isNull(defaultValue)) {
+      value = defaultValue
+    }
+  } else {
+    try {
+      value = JSON.parse(obj)
+    } catch (e) {
+      value = obj
+    }
+  }
+
+  // saved values as null are set as a string 'null', not null
+  if (value === 'null') {
+    return null
+  }
+
+  return value
+}
+
+//
+// setters
+//
+
+export const saveToSession = (key, object) => {
+  const json = JSON.stringify(object)
+  sessionStorage.setItem(key, json)
+}
+
+//
+// getters
+//
+
+export const getFromSession = (key: string, defaultValue: ?any = null) => {
+  const value = getObjectFromSession(key, defaultValue)
+  return value
+}
+
+export const getFloatFromSession = (key: string, defaultReturn: number = 0): number => {
+  let value = getObjectFromStorage(key)
+
+  // default value
+  if (isNil(value) || isNaN(value)) {
+    if (!isUndefined(defaultReturn) && !isNull(defaultReturn)) {
+      value = defaultReturn
+    } else {
+      value = 0
+    }
+  }
+
+  const intValue = parseFloat(value)
+  if (isNaN(intValue)) {
+    return defaultReturn
+  }
+  return intValue
+}
+
+export const getIntFromSession = (key: string, defaultReturn: number = 0): number => {
+  let value = sessionStorage.getItem(key)
+
+  // default value
+  if (isUndefined(value) || isNull(value) || isNaN(value)) {
+    if (!isUndefined(defaultReturn) && !isNull(defaultReturn)) {
+      value = defaultReturn
+    } else {
+      value = 0
+    }
+  }
+
+  const intValue = parseInt(value, 10)
+  if (isNaN(intValue)) {
+    return defaultReturn
+  }
+  return intValue
+}
+
+//
+// remove
+//
+
+export const removeFromSession = key => {
+  sessionStorage.removeItem(key)
+}
+
+//
+// ------------------------------------------------------------------------------------------------
+//        COOKIES
+// ------------------------------------------------------------------------------------------------
+//
 
 /**
  * Set Cookie

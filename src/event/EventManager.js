@@ -1,4 +1,5 @@
 import invariant from 'invariant'
+import map from 'lodash/map'
 import forEach from 'lodash/forEach'
 import isArray from 'lodash/isArray'
 import isString from 'lodash/isString'
@@ -12,7 +13,7 @@ import { isEventHandler, isEvent } from './utils'
  * Retrieve the given event. It can either be:
  * - the event type string
  * - the event object
- * - an event handler (that will contains the event object on the EVENT property) 
+ * - an event handler (that will contains the event object on the EVENT property)
  */
 const getEvent = event => {
   if (isString(event)) {
@@ -21,17 +22,18 @@ const getEvent = event => {
 
   // handle event given as the event handler
   if (isFunction(event)) {
-    if (event.__IS_EVENT_HANDLER) { // created with createEventHandler
+    if (event.__IS_EVENT_HANDLER) {
+      // created with createEventHandler
       return event.EVENT
-    } 
-    
+    }
+
     if (event.EVENT) {
       // not created with createEventHandler but has an `EVENT`, just warn
       console.warn(`Event ${event.EVENT} given has not been created with 'createEventHandler'`)
       return event.EVENT
     }
-  } 
-  
+  }
+
   if (isEvent(event)) {
     return event
   }
@@ -59,21 +61,58 @@ class EventManager {
     return this.Event
   }
 
+  getEventDefinitions() {
+    return map(this.Event, (definition, eventName) => ({
+      eventName,
+      definition,
+    }))
+  }
+
+  getEventDataForType(type) {
+    let eventData
+
+    map(this.getEvents(), (definition, eventName) => {
+      if (definition.type === type) {
+        eventData = {
+          eventName,
+          definition,
+        }
+        return false // quit map loop
+      }
+    })
+
+    if (!eventData) {
+      // happens when an event is dispatched but never registered via regsiterEvents
+      eventData = {
+        eventName: type,
+        definition: {},
+        error: true,
+      }
+    }
+    return eventData
+  }
+
   getListeners() {
     return this.listeners
   }
 
   addListener(eventType, fn) {
-    if (isFunction(eventType) && !fn) { // given directly an event handler
-      // TODO:      
+    if (isFunction(eventType) && !fn) {
+      // given directly an event handler
+      // TODO:
       // - verify event is listed on Reacticoon events or plugins events
       const eventHandler = eventType
       invariant(isEventHandler(eventHandler), `invalid event handler given`)
-      this.listeners[eventHandler.TYPE] = eventHandler
+      this.listeners[eventHandler.EVENT.type] = [
+        ...(this.listeners[eventHandler.EVENT.type] || []),
+        eventHandler,
+      ]
     } else {
       // TODO:
-      // - verify fn is a function
       // - verify event is listed on Reacticoon events or plugins events
+
+      invariant(isFunction(fn), `listener must be a function. Found: ${fn}`)
+
       this.listeners[eventType] = [...(this.listeners[eventType] || []), fn]
     }
   }
@@ -81,15 +120,30 @@ class EventManager {
   dispatch(eventParam, data = {}) {
     const event = getEvent(eventParam)
 
-    const listeners = this.listeners[event.type]
+    const date = new Date()
 
-    // TODO: dev log
+    const listeners = [
+      // add listeners that listen for any event
+      ...(this.listeners[ReacticoonEvents.ALL_EVENTS.type] || []),
+      // add listeners specific for this event
+      ...(this.listeners[event.type] || []),
+    ]
 
     if (listeners !== undefined) {
       listeners.forEach(listener => {
         listener({
           type: event.type,
           data,
+          date,
+          // TODO: only on dev and better format
+          __readableDate:
+            date.getHours() +
+            ':' +
+            date.getMinutes() +
+            ':' +
+            date.getSeconds() +
+            '::' +
+            date.getMilliseconds(),
         })
       })
     }
@@ -101,11 +155,17 @@ class EventManager {
     const eventsAsObject = {}
 
     events.forEach(event => {
-      eventsAsObject[event.TYPE] = event.description
+      if (event.__IS_EVENT_HANDLER) {
+        eventsAsObject[event.EVENT.type] = event.EVENT
+      } else if (event.__IS_EVENT) {
+        eventsAsObject[event.type] = event
+      } else {
+        invariant(false, `Invalid event given to registerEvents: ${event}`)
+      }
     })
 
-    // TODO: in dev, verify that there is no collusion
-    this.Events = { ...this.Events, eventsAsObject }
+    // TODO: in dev, verify that there is no collusion (duplicates)
+    this.Event = { ...this.Event, ...eventsAsObject }
   }
 
   addListeners(listenersParam) {
@@ -115,7 +175,10 @@ class EventManager {
     if (isArray(listenersParam)) {
       listeners = {}
       listenersParam.forEach(listener => {
-        invariant(isEventHandler(listener), `listener must be created with 'createEventHandler', ${typeof listener} given.`)
+        invariant(
+          isEventHandler(listener),
+          `listener must be created with 'createEventHandler', ${typeof listener} given.`
+        )
         listeners[listener.EVENT.type] = listener
       })
     }

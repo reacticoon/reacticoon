@@ -24,8 +24,8 @@ const myPlugin = createPlugin({
     handleMyCustomEvent,
   },
   events: [
-    [MY_CUSTOM_EVENT],
-    [myCustomEventHandler]
+    MY_CUSTOM_EVENT,
+    myCustomEventHandler
   ],
 })
 ```

@@ -11,7 +11,7 @@
  */
 
 import isNil from 'lodash/isNil'
-import { EventManager } from '../../event'
+import { EventManager } from 'reacticoon/event'
 
 const crashReporter = store => next => action => {
   try {

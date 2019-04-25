@@ -7,9 +7,9 @@ import Loadable from 'react-loadable'
 import { __DEV__ } from '../environment'
 
 /**
- * 
- * @param {*} loader 
- * @param {*} loading 
+ *
+ * @param {*} loader
+ * @param {*} loading
  */
 export const createLoadable = (loader, loading) => {
   return Loadable({

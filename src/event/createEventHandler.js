@@ -10,6 +10,9 @@ const createEventHandler = (event, callback) => {
   // attach event name
   callback.EVENT = event
   callback.__IS_EVENT_HANDLER = true
+  // TODO: only in dev
+  callback.__description = `event handler for event ${event.type} (${event.description})`
+
   return callback
 }
 

@@ -7,6 +7,11 @@ import createEvent from './createEvent'
  * Note: Plugins can defines there custom events via the `customEvents` config.
  */
 const ReacticoonEvents = {
+  ALL_EVENTS: createEvent(
+    'REACTICOON::ALL_EVENTS',
+    'Specific event used by listeners to receive all the events dispatched.'
+  ),
+
   //
   // Dispatched once the `Application` is initialized, but before rendering any react component.
   //
@@ -20,10 +25,7 @@ const ReacticoonEvents = {
   // Props:
   // - appConfig
   //
-  ON_APP_INIT: createEvent( 
-    'REACTICOON::ON_APP_INIT', 
-    'Dispatched when the app is initialized',
-  ),
+  ON_APP_INIT: createEvent('REACTICOON::ON_APP_INIT', 'Dispatched when the app is initialized'),
 
   //
   // -- Logger events
@@ -34,10 +36,7 @@ const ReacticoonEvents = {
   // - type
   // - detail
   //
-  LOG_WARN: createEvent(
-    'REACTICOON::LOG::WARN',
-    'For warning log'
-  ),
+  LOG_WARN: createEvent('REACTICOON::LOG::WARN', 'For warning log'),
 
   //
   // props:
@@ -54,20 +53,14 @@ const ReacticoonEvents = {
   // - type
   // - detail
   //
-  LOG_ERROR: createEvent(
-    'REACTICOON::LOG::ERROR',
-    'For errpr log'
-  ),
+  LOG_ERROR: createEvent('REACTICOON::LOG::ERROR', 'For errpr log'),
 
   //
   // props:
   // - ex
   // - context
   //
-  LOG_EXCEPTION: createEvent(
-    'REACTICOON::LOG::EXCEPTION',
-    'For exception error'
-  ),
+  LOG_EXCEPTION: createEvent('REACTICOON::LOG::EXCEPTION', 'For exception error'),
 
   //
   // props:
@@ -113,10 +106,7 @@ const ReacticoonEvents = {
   // We consider it as a reacticoon/event, since form handling should be used on any Reacticoon
   // app.
   //
-  REGISTER_FORM: createEvent(
-    'REACTICOON::REGISTER_FORM',
-    'Global event to register a form'
-  ),
+  REGISTER_FORM: createEvent('REACTICOON::REGISTER_FORM', 'Global event to register a form'),
 }
 
 export default ReacticoonEvents

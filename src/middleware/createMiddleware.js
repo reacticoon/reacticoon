@@ -17,7 +17,10 @@ import isString from 'lodash/isString'
 import isEmpty from 'lodash/isEmpty'
 import isNil from 'lodash/isNil'
 import isNull from 'lodash/isNull'
+import isBoolean from 'lodash/isBoolean'
 import invariant from 'invariant'
+
+import { EventManager } from 'reacticoon/event'
 
 // Any middleware can return this value, to force stop the propagation of the action
 // A 'normal' middleware would just return a nil value, but createMiddleware handle a nil return
@@ -68,6 +71,10 @@ const createMiddleware = (middlewareName, actionsToHandleParam, func) => {
           // actionsToHandle is a function, that will return a boolean telling us if the middleware
           // has to handle the action or not
           toHandle = actionsToHandle(action)
+          invariant(
+            isBoolean(toHandle),
+            `createMiddleware: actions to handle function must return a boolean, returned ${toHandle}`
+          )
         } else if (fromAppMiddleware === true) {
           // if this middleware is called by the `appMiddleware`, and the actionsToHandle is defined
           // (not a function), we are sure that we have to apply this middleware
@@ -91,12 +98,20 @@ const createMiddleware = (middlewareName, actionsToHandleParam, func) => {
         }
 
         if (toHandle) {
-          res = func({
-            getState,
-            dispatch,
-            next,
-            action,
-          })
+          try {
+            res = func({
+              getState,
+              dispatch,
+              next,
+              action,
+            })
+          } catch (e) {
+            EventManager.dispatch(EventManager.Events.LOG_EXCEPTION, {
+              message: `Middleware ${middlewareName} has crashed:`,
+              action,
+              e,
+            })
+          }
 
           // action should stop if the middleware returns `STOP_PROPAGATION`
           if (res !== STOP_PROPAGATION) {

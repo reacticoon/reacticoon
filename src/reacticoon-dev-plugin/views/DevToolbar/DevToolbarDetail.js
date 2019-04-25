@@ -12,6 +12,7 @@ import DevToolbarDetailRequestInfo from './DevToolbarDetailRequestInfo'
 import DevToolbarStoreInfo from './DevToolbarStoreInfo'
 import DevToolbarActions from './DevToolbarActions'
 import SelectorsList from './SelectorsList'
+import ReacticoonEventsView from './ReacticoonEventsView'
 
 const styles = theme => ({
   root: {
@@ -23,7 +24,7 @@ const styles = theme => ({
     padding: theme.spacing.unit,
     display: 'flex',
     background: 'white',
-    zIndex: 9999999,
+    zIndex: 1300,
     overflowY: 'auto',
   },
   rootHide: {
@@ -106,6 +107,7 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, onToggle })
 
     <div className={classes.content}>
       <Tabs
+        defaultTab={3}
         appBarClasses={{ root: classes.tabs_appBar_root }}
         tabs={[
           {
@@ -116,6 +118,9 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, onToggle })
           },
           {
             label: 'Store',
+          },
+          {
+            label: 'Reacticoon events',
           },
         ]}
         content={[
@@ -133,6 +138,7 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, onToggle })
           </Grid>,
           // 2
           <DevToolbarStoreInfo />,
+          <ReacticoonEventsView />,
         ]}
       />
     </div>

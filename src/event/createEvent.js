@@ -1,4 +1,3 @@
-
 const createEvent = (eventType, eventDescription) => {
   return {
     type: eventType,
@@ -6,6 +5,5 @@ const createEvent = (eventType, eventDescription) => {
     __IS_EVENT: true,
   }
 }
-
 
 export default createEvent

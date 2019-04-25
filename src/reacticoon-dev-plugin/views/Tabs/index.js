@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 class ReacticoonTabs extends React.Component {
   render() {
     return (
-      <StateContainer defaultState={{ tab: 0 }}>
+      <StateContainer defaultState={{ tab: this.props.defaultTab || 0 }}>
         {({ state, setState }) => (
           <React.Fragment>
             <AppBar

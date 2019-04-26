@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import { tr } from '../i18n'
 import { EventManager } from '../event'
+import { formatEndpoint } from './utils'
 
 import request from 'superagent'
 
@@ -19,22 +20,6 @@ function ApiError(code, message) {
     code,
     message,
   }
-}
-
-function formatEndpoint(endpoint, params = null): string {
-  if (isNull(params)) {
-    return endpoint
-  }
-
-  let formattedEnpoint = template(endpoint, params)
-
-  function template(template, data) {
-    return template.replace(/:(\w*)/g, (m, key) => {
-      return data.hasOwnProperty(key) ? data[key] : ''
-    })
-  }
-
-  return formattedEnpoint
 }
 
 class ApiManager {
@@ -310,7 +295,7 @@ class ApiManager {
       .post(this.getApiUrl(url, formatEndpoint(endpoint, params)), null, null)
       .type('json')
       .query(query)
-      // we handle body and data 
+      // we handle body and data
       .send(JSON.stringify(body ? body : data))
       .set('Accept', 'application/json')
       .set(this.getHeaders(headers))

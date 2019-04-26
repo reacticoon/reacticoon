@@ -24,7 +24,7 @@ const crashReporter = store => next => action => {
       return next(action) // dispatch
     }
   } catch (err) {
-    EventManager.dispatch(EventManager.Events.LOG_EXCEPTION, {
+    EventManager.dispatch(EventManager.Event.LOG_EXCEPTION, {
       err,
       action,
       state: store.getState(),

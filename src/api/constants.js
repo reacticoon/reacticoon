@@ -1,4 +1,3 @@
-
 // Action key that carries API call info interpreted by this Redux middleware.
 // The data have to be formatted like:
 // {
@@ -40,3 +39,5 @@ export const REQUEST = 'API::API_CALL::REQUEST'
  * It allows a 'instant ui modification' look alike for out app.
  */
 export const DATA = 'API::API_CALL::DATA'
+
+export const isApiCallAction = action => action[API_CALL] !== undefined

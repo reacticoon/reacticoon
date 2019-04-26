@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
@@ -11,46 +11,32 @@ import EventsHandlerView from './EventsHandlerView'
 
 const PluginView = ({ plugin, config }) => (
   <Grid container spacing={16}>
-
     <Section title="Info">
-      <Typography variant="h3">{plugin.name}</Typography> 
+      <Typography variant="h3">{plugin.name}</Typography>
 
-      <Typography>
-        {plugin.description}
-      </Typography>
+      <Typography>{plugin.description}</Typography>
     </Section>
 
     <Section title="Config">
-      <Pre
-        content={config}
-      />
+      <Pre content={config} />
     </Section>
 
     <Section title="Modules">
-      <ModulesView
-        routing={plugin.modules}
-      />
+      <ModulesView modules={plugin.modules} />
     </Section>
 
-    
     <Section title="Routing">
-      <RoutingView 
-        routing={plugin.routing}
-      />
+      <RoutingView routing={plugin.routing} />
     </Section>
 
     <Section title="Events">
-      <EventsView
-        events={plugin.events}
-      />
+      <EventsView events={plugin.events} />
     </Section>
 
     <Section title="Events handler">
-      <EventsHandlerView
-        eventsHandler={plugin.eventsHandler}
-      />
+      <EventsHandlerView eventsHandler={plugin.eventsHandler} />
     </Section>
   </Grid>
 )
 
-export default PluginView;
+export default PluginView

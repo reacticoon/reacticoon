@@ -5,7 +5,7 @@ import CheckupReport from './CheckupReport'
 
 const ReportView = () => (
   <CommandContainer command="CHECKUP">
-    {({ report }) => <CheckupReport report={report} />}
+    {({ data: report }) => <CheckupReport report={report} />}
   </CommandContainer>
 )
 

@@ -4,7 +4,8 @@ import createApiEnumAction from '../api/utils/createApiEnumAction'
 import { getParamNames } from 'reacticoon/utils'
 import { API_CALL, TYPES, REQUEST, DATA } from '../api/constants'
 
-const getData = (data, params) => (isFunction(data) ? data.apply(null, params) : data)
+const getData = (dataOrCallback, params) =>
+  isFunction(dataOrCallback) ? dataOrCallback.apply(null, params) : dataOrCallback
 
 /**
  *

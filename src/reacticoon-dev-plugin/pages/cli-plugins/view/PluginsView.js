@@ -5,7 +5,7 @@ import PluginsReport from './PluginsReport'
 
 const ReportView = () => (
   <CommandContainer command="PLUGINS">
-    {({ report }) => <PluginsReport pluginsReport={report} />}
+    {({ data: report }) => <PluginsReport pluginsReport={report} />}
   </CommandContainer>
 )
 

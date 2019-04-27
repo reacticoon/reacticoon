@@ -5,7 +5,7 @@ import BundlePhobiaReport from './BundlePhobiaReport'
 
 const ReportView = () => (
   <CommandContainer command="BUNDLE_PHOBIA">
-    {({ report }) => <BundlePhobiaReport report={report} />}
+    {({ data: report }) => <BundlePhobiaReport report={report} />}
   </CommandContainer>
 )
 

@@ -99,6 +99,7 @@ export default store => next => action => {
         actionWith({
           type: successType,
           response,
+          data: data,
         })
       )
     )

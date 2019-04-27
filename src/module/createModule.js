@@ -121,7 +121,7 @@ const createModule = (name, content) => {
    * )(MyContainer)
    * </pre>
    */
-  const connectModule = (container, mapStateToProps, actionsParam, options) => {
+  const connectModule = (container, mapStateToProps, actionsParam, options = {}) => {
     const actions = isArray(actionsParam) ? actionsParam : [actionsParam]
 
     const connected = connect(

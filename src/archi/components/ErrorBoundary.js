@@ -15,7 +15,6 @@ import { EventManager } from '../../event'
  *
  */
 class ErrorBoundary extends React.Component {
-
   state = {
     hasError: false,
     error: null,
@@ -31,7 +30,7 @@ class ErrorBoundary extends React.Component {
     })
 
     // You can also log the error to an error reporting service
-    EventManager.dispatch(EventManager.LOG_COMPONENT_DID_CATCH, { error, info })
+    EventManager.dispatch(EventManager.Event.LOG_COMPONENT_DID_CATCH, { error, info })
   }
 
   render() {

@@ -1,8 +1,9 @@
 import React from 'react'
 
 import { StateContainer } from 'reacticoon/view'
-import EventsDebugger from '../../../EventsDebugger'
+// import EventsDebugger from '../../../EventsDebugger'
 
+import EventsContainer from '../../../modules/events/container'
 import Grid from '@material-ui/core/Grid'
 import ReacticoonEventRunner from './ReacticoonEventRunner'
 import Event from './Event'
@@ -16,17 +17,22 @@ const ReacticoonEventsView = () => (
           <ReacticoonEventRunner />
         </Grid>
         <Grid item xs={6}>
-          {EventsDebugger.getEvents().map((event, index) => (
-            <Event
-              key={index}
-              event={event}
-              onClick={() =>
-                setState({
-                  selectedEvent: event,
-                })
-              }
-            />
-          ))}
+          <EventsContainer>
+            {({ events }) =>
+              events.map((event, index) => (
+                <Event
+                  key={index}
+                  event={event}
+                  onClick={() =>
+                    setState({
+                      selectedEvent: event,
+                    })
+                  }
+                />
+              ))
+            }
+          </EventsContainer>
+          {/* {EventsDebugger.getEvents()} */}
         </Grid>
         <Grid item xs={6}>
           {state.selectedEvent && <EventDetail event={state.selectedEvent} />}

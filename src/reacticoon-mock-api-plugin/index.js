@@ -4,6 +4,7 @@ import routing from './config/routing'
 import onAppInit from './events/onAppInit'
 
 import ReacticoonDevExtension from './config/ReacticoonDevExtension'
+import MockedCallsModule from './modules/mockedCalls'
 
 //
 // Dev plugin for reacticoon. Provides pages and debug utils
@@ -14,7 +15,7 @@ const ReacticoonMockApiPlugin = createPlugin({
   description: 'Reacticoon plugin used to mock api calls for testing.',
   // list of the modules that the plugin register.
   // optionnal.
-  modules: [],
+  modules: [MockedCallsModule],
   // Describe listeners for a particular event.
   // optionnal.
   eventsHandler: [onAppInit],

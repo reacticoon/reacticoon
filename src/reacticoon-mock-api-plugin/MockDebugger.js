@@ -1,20 +1,16 @@
-import { formatMockedCalls } from './format'
+import { getStore } from 'reacticoon/store'
+import { saveMockedCall } from './modules/mockedCalls/actions'
+import { getMockedCalls } from './modules/mockedCalls/selectors'
 
 class MockDebugger {
-  constructor() {
-    this.mockedCalls = []
-  }
+  constructor() {}
 
   addMockedCall = (request, data) => {
-    this.mockedCalls.push({ request, data })
+    getStore().dispatch(saveMockedCall({ request, data }))
   }
 
   getMockedCalls() {
-    return this.mockedCalls
-  }
-
-  getFormattedMockedCalls() {
-    return formatMockedCalls(this.mockedCalls)
+    return getMockedCalls(getStore().getState())
   }
 }
 

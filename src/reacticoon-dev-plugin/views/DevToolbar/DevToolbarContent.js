@@ -2,7 +2,7 @@ import React from 'react'
 
 import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'reacticoon/routing'
-import SettingsIcon from '@material-ui/icons/Settings'
+import DashboardIcon from '@material-ui/icons/Dashboard'
 import ReacticoonLogo from '../../components/svg/ReacticoonLogo'
 
 const styles = theme => ({
@@ -56,7 +56,7 @@ const DevToolbarContent = ({ route, routeName, show, classes, onToggle, onToggle
     <div className={classes.root}>
       <div className={classes.leftPart}>
         <Link to={Link.getRoute('REACTICOON_DASHBOARD')} newTab>
-          <SettingsIcon />
+          <DashboardIcon />
         </Link>
         <div />
       </div>

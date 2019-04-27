@@ -1,5 +1,7 @@
 import { EventManager, ReacticoonEvents, createEventHandler } from 'reacticoon/event'
-
+import { getStore } from 'reacticoon/store'
+import { saveEvent } from './modules/events/actions'
+import { getEvents } from './modules/events/selectors'
 /**
  * Listen for all the Reacticoon events.
  */
@@ -14,11 +16,13 @@ const createEventsListener = callback =>
 class EventsDebugger {
   constructor() {
     this.eventsListener = createEventsListener(this.onEventReceived)
-    this.events = []
+    // this.events = []
   }
 
   onEventReceived = event => {
-    this.events.push({ ...event, ...EventManager.getEventDataForType(event.type) })
+    const data = { ...event, ...EventManager.getEventDataForType(event.type) }
+    // this.events.push(data)
+    getStore().dispatch(saveEvent(data))
   }
 
   getListener() {
@@ -26,7 +30,8 @@ class EventsDebugger {
   }
 
   getEvents() {
-    return this.events
+    // return this.events
+    return getEvents(getStore().getState())
   }
 }
 

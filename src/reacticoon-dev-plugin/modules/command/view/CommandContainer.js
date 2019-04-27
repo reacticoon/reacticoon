@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 
-import { connect } from 'reacticoon/view'
 import CommandModule from '../../../modules/command'
 
 class CommandContainer extends Component {
@@ -29,14 +28,12 @@ class CommandContainer extends Component {
   }
 }
 
-const makeMapStateToProps = () => (state, props) => ({
-  isFetching: CommandModule.getSelector('makeIsFetchingCommandData')()(state, props),
-  data: CommandModule.getSelector('makeGetCommandData')()(state, props),
-})
-
-const ConnectedCommandContainer = connect(
-  makeMapStateToProps,
-  CommandModule.getActionsMap('runCommand')
+const ConnectedCommandContainer = CommandModule.connect(
+  {
+    isFetching: 'makeIsFetchingCommandData',
+    data: 'makeGetCommandData',
+  },
+  'runCommand'
 )(CommandContainer)
 
 // default props here so mapStateToProps has default props too

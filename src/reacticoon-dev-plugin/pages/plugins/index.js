@@ -3,7 +3,6 @@ import React from 'react'
 import { getPlugins } from 'reacticoon/plugin'
 import { Link } from 'reacticoon/routing'
 
-import Grid from '@material-ui/core/Grid'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -15,7 +14,7 @@ class PluginsPage extends React.Component {
   render() {
     return (
       <Page pageTitle="Plugins">
-        <Grid container>
+        <Section.Container>
           <Section title="Active plugins">
             <Table>
               <TableBody>
@@ -37,7 +36,7 @@ class PluginsPage extends React.Component {
               </TableBody>
             </Table>
           </Section>
-        </Grid>
+        </Section.Container>
       </Page>
     )
   }

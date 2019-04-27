@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { Link } from 'reacticoon/routing'
-import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Page from '../../components/Page'
@@ -11,7 +10,7 @@ class ReportsPage extends React.Component {
   render() {
     return (
       <Page pageTitle={`Reports`}>
-        <Grid container>
+        <Section.Container>
           <Section title="Reports">
             <List>
               <ListItem>
@@ -34,7 +33,7 @@ class ReportsPage extends React.Component {
             </List>
             {/* TODO: link to website documentation */}
           </Section>
-        </Grid>
+        </Section.Container>
       </Page>
     )
   }

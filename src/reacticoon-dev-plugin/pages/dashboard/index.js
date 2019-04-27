@@ -8,7 +8,6 @@ import {
   getReactVersion,
   getReactVersionDocLink,
 } from 'reacticoon/environment'
-import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Page from '../../components/Page'
@@ -19,7 +18,7 @@ class DashboardPage extends React.Component {
   render() {
     return (
       <Page pageTitle={`Dashboard`}>
-        <Grid container spacing={16}>
+        <Section.Container>
           <Section title="Info" grid={{ xs: 6 }}>
             <List>
               <ListItem>App version: {__VERSION__}</ListItem>
@@ -66,7 +65,7 @@ class DashboardPage extends React.Component {
           <Section title="Process environment">
             <Pre content={process.env} />
           </Section>
-        </Grid>
+        </Section.Container>
       </Page>
     )
   }

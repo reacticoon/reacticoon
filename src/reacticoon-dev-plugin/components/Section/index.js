@@ -20,17 +20,12 @@ const styles = theme => ({
   },
   content: {
     paddingTop: theme.spacing.unit * 2,
-  }
+  },
 })
 
-const Section = ({ title, grid = {xs: 12}, classes, children }) => (
-  <Grid 
-    item
-    {...grid}
-  >
-    <Card 
-      className={classes.root}
-    >
+const Section = ({ title, grid = { xs: 12 }, classes, children }) => (
+  <Grid item {...grid}>
+    <Card className={classes.root}>
       <div className={classes.header}>{title}</div>
 
       <div className={classes.content}>{children}</div>
@@ -38,4 +33,12 @@ const Section = ({ title, grid = {xs: 12}, classes, children }) => (
   </Grid>
 )
 
-export default withStyles(styles)(Section)
+const SectionWithStyles = withStyles(styles)(Section)
+
+SectionWithStyles.Container = ({ children, ...otherProps }) => (
+  <Grid container spacing={16} {...otherProps}>
+    {children}
+  </Grid>
+)
+
+export default SectionWithStyles

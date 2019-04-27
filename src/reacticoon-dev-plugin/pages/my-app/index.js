@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { Link } from 'reacticoon/routing'
-import Grid from '@material-ui/core/Grid'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableHead from '@material-ui/core/TableHead'
@@ -16,7 +15,7 @@ class MyAppPage extends React.Component {
   render() {
     return (
       <Page pageTitle={`Dashboard`}>
-        <Grid container spacing={16}>
+        <Section.Container>
           <Section title="Info" grid={{ xs: 6 }} />
 
           <Section title="Modules">
@@ -46,7 +45,7 @@ class MyAppPage extends React.Component {
           <Section title="Entities" />
 
           <Section title="Middlewares" />
-        </Grid>
+        </Section.Container>
       </Page>
     )
   }

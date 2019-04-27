@@ -2,7 +2,6 @@ import React from 'react'
 
 import { getRoutes, Link, getRouteNameForRoute } from 'reacticoon/routing'
 
-import Grid from '@material-ui/core/Grid'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableHead from '@material-ui/core/TableHead'
@@ -15,7 +14,7 @@ class PluginsPage extends React.Component {
   render() {
     return (
       <Page pageTitle="Routes">
-        <Grid container>
+        <Section.Container>
           <Section title="Routes">
             <Table>
               <TableHead>
@@ -49,7 +48,7 @@ class PluginsPage extends React.Component {
               </TableBody>
             </Table>
           </Section>
-        </Grid>
+        </Section.Container>
       </Page>
     )
   }

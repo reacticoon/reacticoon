@@ -5,7 +5,6 @@ import { getModule } from 'reacticoon/module'
 import Page from '../../components/Page'
 import Section from '../../components/Section'
 import { API_CALL } from 'reacticoon/api'
-import Grid from '@material-ui/core/Grid'
 
 class ModulePage extends React.Component {
   render() {
@@ -16,7 +15,7 @@ class ModulePage extends React.Component {
 
     return (
       <Page pageTitle={`Module - Detail`}>
-        <Grid container spacing={16}>
+        <Section.Container>
           <h1>{module.name}</h1>
 
           <Section title="Actions">
@@ -57,7 +56,7 @@ class ModulePage extends React.Component {
               </div>
             </Section>
           )}
-        </Grid>
+        </Section.Container>
       </Page>
     )
   }

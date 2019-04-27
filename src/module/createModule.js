@@ -109,21 +109,31 @@ const createModule = (name, content) => {
    *
    * <pre>
    * MyModule.connect(
+   *    MyContainer,
    *   {
    *     isFetching: 'makeIsFetching',
    *     data: 'makeGetData',
    *   },
-   *   'fetchData'
+   *   'fetchData',
+   *   {
+   *     defaultProps: {}
+   *   }
    * )(MyContainer)
    * </pre>
    */
-  const connectModule = (mapStateToProps, actionsParam) => {
+  const connectModule = (container, mapStateToProps, actionsParam, options) => {
     const actions = isArray(actionsParam) ? actionsParam : [actionsParam]
 
-    return connect(
+    const connected = connect(
       getMapStateToProps(mapStateToProps),
       getActionsMap.apply(null, actions)
-    )
+    )(container)
+
+    if (options.defaultProps) {
+      connected.defaultProps = options.defaultProps
+    }
+
+    return connected
   }
 
   return {

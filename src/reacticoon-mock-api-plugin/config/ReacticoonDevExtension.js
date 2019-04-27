@@ -3,7 +3,7 @@ import SwapHorizontalIcon from '@material-ui/icons/SwapHoriz'
 
 export default {
   plugin: 'ReacticoonDev',
-  description: 'Adding Api mock tab to toolbar',
+  description: 'Adding Api mock to Reacticoon dev tools',
   config: {
     devToolbar: {
       tabs: [

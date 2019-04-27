@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { Route, createRoutingEnum } from 'reacticoon/routing'
-import { createLoadable } from 'reacticoon/view'
+import createAsyncPage from 'reacticoon/reacticoon-dev-plugin/views/createAsyncPage'
 
 const ROUTE_PREFIX = '/_rc'
 
@@ -27,8 +25,6 @@ const routingEnum = createRoutingEnum({
     `${ROUTE_PREFIX}/reports/analyze-bundle-phobia`
   ),
 })
-
-const createAsyncPage = loader => createLoadable(loader, () => <div />)
 
 const routes = [
   {
@@ -94,7 +90,9 @@ const routes = [
   {
     definition: routingEnum.REACTICOON_REPORT_ANALYZE_BUNDLE_PHOBIA,
     handler: createAsyncPage(() =>
-      import(/*  webpackChunkName: "Reacticoon__ReportAnalyzeBundlePhobiaPage" */ '../pages/analyze-bundle-phobia')
+      import(
+        /*  webpackChunkName: "Reacticoon__ReportAnalyzeBundlePhobiaPage" */ '../pages/analyze-bundle-phobia'
+      )
     ),
   },
 ]

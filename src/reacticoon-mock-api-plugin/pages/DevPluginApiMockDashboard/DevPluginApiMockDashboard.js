@@ -8,9 +8,11 @@ class DevPluginApiMockDashboard extends React.Component {
   render() {
     return (
       <Page title="Api mock dashboard">
-        <Section title="Mocked files">
-          <FileTreeView command="MOCKAPI::LIST_FILES" />
-        </Section>
+        <Section.Container>
+          <Section title="Mocked files">
+            <FileTreeView command="MOCKAPI::LIST_FILES" />
+          </Section>
+        </Section.Container>
       </Page>
     )
   }

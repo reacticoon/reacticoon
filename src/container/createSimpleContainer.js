@@ -15,63 +15,70 @@ import isArray from 'lodash/isArray'
  *  - mapChildrenProps: function(childrenProps)
  */
 function createSimpleContainer(containerName, options) {
-  class SimpleContainer extends React.Component {
-    constructor(props) {
-      super(props)
+  try {
+    const Module = options.module
 
-      this.loadData()
-    }
+    class SimpleContainer extends React.Component {
+      constructor(props) {
+        super(props)
 
-    loadData() {
-      const { apiCallAction, apiCallParameters } = this.props
-      // TODO: find better way
-      if (isArray(apiCallParameters)) {
-        apiCallAction.apply(null, apiCallParameters)
-      } else {
-        apiCallAction(apiCallParameters)
+        this.loadData()
+      }
+
+      loadData() {
+        const { apiCallAction, apiCallParameters } = this.props
+        // TODO: find better way
+        if (isArray(apiCallParameters)) {
+          apiCallAction.apply(null, apiCallParameters)
+        } else {
+          apiCallAction(apiCallParameters)
+        }
+      }
+
+      render() {
+        const { children, mapChildrenProps, isFetching, data, error } = this.props
+
+        let childrenProps = {
+          isFetching: isFetching,
+          data: data,
+          error: error,
+        }
+
+        if (isFunction(mapChildrenProps)) {
+          childrenProps = mapChildrenProps(childrenProps)
+        }
+
+        return children(childrenProps)
       }
     }
 
-    render() {
-      const { children, mapChildrenProps, isFetching, data, error } = this.props
+    SimpleContainer.displayName = containerName
 
-      let childrenProps = {
-        isFetching: isFetching,
-        data: data,
-        error: error,
-      }
-
-      if (isFunction(mapChildrenProps)) {
-        childrenProps = mapChildrenProps(childrenProps)
-      }
-
-      return children(childrenProps)
+    SimpleContainer.propTypes = {
+      apiCallParameters: PropTypes.object.isRequired,
     }
-  }
 
-  SimpleContainer.displayName = containerName
-
-  SimpleContainer.propTypes = {
-    apiCallParameters: PropTypes.object.isRequired,
-  }
-
-  const mapStateToProps = (state, ownProps) => {
-    const getSelector = options.module.getSelector
-    return {
-      isFetching: getSelector('fetchBookSelectors').isFetching(state, ownProps),
-      data: getSelector('fetchBookSelectors').getData(state, ownProps),
-      error: getSelector('fetchBookSelectors').getError(state, ownProps),
+    const mapStateToProps = (state, ownProps) => {
+      const getSelector = Module.getSelector
+      return {
+        isFetching: getSelector('fetchBookSelectors').isFetching(state, ownProps),
+        data: getSelector('fetchBookSelectors').getData(state, ownProps),
+        error: getSelector('fetchBookSelectors').getError(state, ownProps),
+      }
     }
-  }
 
-  const mapActions = {
-    apiCallAction: options.module.getAction(options.apiCallAction),
-  }
+    const mapActions = {
+      apiCallAction: Module.getAction(options.apiCallAction),
+    }
 
-  return connect(
-    mapStateToProps,
-    mapActions
-  )(SimpleContainer)
+    return connect(
+      mapStateToProps,
+      mapActions
+    )(SimpleContainer)
+  } catch (e) {
+    console.error(e)
+    debugger
+  }
 }
 
 export default createSimpleContainer

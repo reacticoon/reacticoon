@@ -1,6 +1,5 @@
 import React from 'react'
 
-import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Section from '../../../components/Section'
 import Pre from '../../../components/Pre'
@@ -10,7 +9,7 @@ import EventsView from './EventsView'
 import EventsHandlerView from './EventsHandlerView'
 
 const PluginView = ({ plugin, config }) => (
-  <Grid container spacing={16}>
+  <Section.Container>
     <Section title="Info">
       <Typography variant="h3">{plugin.name}</Typography>
 
@@ -36,7 +35,7 @@ const PluginView = ({ plugin, config }) => (
     <Section title="Events handler">
       <EventsHandlerView eventsHandler={plugin.eventsHandler} />
     </Section>
-  </Grid>
+  </Section.Container>
 )
 
 export default PluginView

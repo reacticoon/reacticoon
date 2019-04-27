@@ -28,20 +28,20 @@ class CommandContainer extends Component {
   }
 }
 
-const ConnectedCommandContainer = CommandModule.connect(
+export default CommandModule.connect(
+  CommandContainer,
   {
     isFetching: 'makeIsFetchingCommandData',
     data: 'makeGetCommandData',
   },
-  'runCommand'
-)(CommandContainer)
-
-// default props here so mapStateToProps has default props too
-ConnectedCommandContainer.defaultProps = {
-  // allow to define an id to run multiple time the same command
-  id: 'NO_ID',
-  payload: null,
-  queryPrams: {},
-}
-
-export default ConnectedCommandContainer
+  'runCommand',
+  {
+    // default props here so mapStateToProps has default props too
+    defaultProps: {
+      // allow to define an id to run multiple time the same command for different data.
+      id: '_',
+      payload: null,
+      queryPrams: {},
+    },
+  }
+)

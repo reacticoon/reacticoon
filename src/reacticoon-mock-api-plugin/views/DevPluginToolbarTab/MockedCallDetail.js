@@ -1,12 +1,13 @@
 import React from 'react'
 
+import JsonView from 'reacticoon/reacticoon-dev-plugin/components/JsonView'
+
 const MockedCallDetail = ({ mockedCall }) => (
   <div>
     <div>
       [{mockedCall.request.type}] {mockedCall.request.formattedEndpoint}
     </div>
-    {/* TODO: use json view */}
-    <pre>{JSON.stringify(mockedCall.data, null, 2)}</pre>
+    <JsonView json={mockedCall} />
   </div>
 )
 

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import JsonView from 'reacticoon/reacticoon-dev-plugin/components/JsonView'
 import { getStore } from 'reacticoon/store'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -71,7 +72,7 @@ class SelectorRunner extends React.Component {
 
         <Button onClick={this.run}>Run</Button>
 
-        <pre>{JSON.stringify(data, null, 2)}</pre>
+        {data && <JsonView json={data} />}
       </div>
     )
   }

@@ -1,9 +1,12 @@
 import React from 'react'
+import startsWith from 'lodash/startsWith'
 
 import { StateContainer } from 'reacticoon/view'
 import Grid from '@material-ui/core/Grid'
 import Finderjs from 'reacticoon/reacticoon-dev-plugin/views/Finderjs'
 import CommandContainer from 'reacticoon/reacticoon-dev-plugin/modules/command/view/CommandContainer'
+import JsonView from '../../components/JsonView'
+// import JsonView from 'reacticoon/reacticoon-dev-plugin/components/JsonView'
 
 const getFinderData = data => {
   const transform = path => {
@@ -17,6 +20,17 @@ const getFinderData = data => {
   }
 
   return data.tree.map(transform)
+}
+
+const renderData = ({ data }) => {
+  // try to display file content as json
+  if (startsWith(data.trim(), '{')) {
+    try {
+      const json = JSON.parse(data)
+      return <JsonView json={json} />
+    } catch (e) {}
+  }
+  return <pre>{data}</pre>
 }
 
 const FileTreeView = ({ command, children }) => (
@@ -47,7 +61,7 @@ const FileTreeView = ({ command, children }) => (
                       id={state.selectedItem.filepath}
                       payload={{ filepath: state.selectedItem.filepath }}
                     >
-                      {({ data }) => <pre>{data}</pre>}
+                      {renderData}
                     </CommandContainer>
                   </React.Fragment>
                 )}

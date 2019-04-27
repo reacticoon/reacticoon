@@ -1,5 +1,6 @@
 import React from 'react'
 
+import JsonView from 'reacticoon/reacticoon-dev-plugin/components/JsonView'
 import { withStyles } from '@material-ui/core/styles'
 import { EventManager } from 'reacticoon/event'
 
@@ -25,8 +26,8 @@ const EventDetail = ({ event, classes }) => (
         Run again
       </Button>
     </div>
-    {/* TODO: use json view */}
-    <pre>{JSON.stringify(event.data, null, 2)}</pre>
+
+    <JsonView json={event.data} />
   </div>
 )
 

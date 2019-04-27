@@ -10,6 +10,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 
 import configureRootReducer from './utils/configureRootReducer'
 
+import { beginMark, endMark } from 'reacticoon/performance'
 import { setCurrentEnv, __DEV__ } from '../environment'
 import { registerModules, getModules } from '../module'
 import generateModuleEntities from '../module/generateModuleEntities'
@@ -37,6 +38,8 @@ const REACTICOON_KEY_ON_WINDOW = '__REACTICOON__'
 // - add appOptions callback post Application configuration (pre render)
 //
 const Application = appOptions => {
+  beginMark('Reacticoon Application')
+
   //
   // Verify we do not have multiple versions of Reacticoon
   //
@@ -148,9 +151,14 @@ const Application = appOptions => {
   // Event: ON_APP_INIT
   //
 
+  const markOnAppInit = 'Reacticoon ON_APP_INIT'
+  beginMark('Dispatch ON_APP_INIT')
   EventManager.dispatch(EventManager.Event.ON_APP_INIT, {
     appOptions,
   })
+  endMark('ON_APP_INIT dispatched', 'Dispatch ON_APP_INIT')
+
+  endMark('Reacticoon Application started', 'Reacticoon Application')
 
   //
   // RENDER

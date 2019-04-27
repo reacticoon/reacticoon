@@ -1,5 +1,6 @@
 import thunk from 'redux-thunk'
 
+import { __DEV__ } from 'reacticoon/environment'
 import { routerMiddleware } from 'react-router-redux'
 import { browserHistory } from 'react-router'
 // TODO: dynamically import with 'require'
@@ -16,13 +17,11 @@ const reduxLogger = createLogger({
 
 const generateMiddlewares = (isDev, appMiddlewares) =>
   [
-    // Redux middleware that spits an error when we try to mutate the state either inside 
+    // Redux middleware that spits an error when we try to mutate the state either inside
     // a dispatch or between dispatches.
     // For development use only
     // https://github.com/leoasis/redux-immutable-state-invariant
-    process.env.__DEV__
-      ? require('redux-immutable-state-invariant').default()
-      : null,
+    __DEV__ ? require('redux-immutable-state-invariant').default() : null,
     thunk,
     apiMiddleware,
     crashReporter, // must be before reduxLogger and after thunk and api

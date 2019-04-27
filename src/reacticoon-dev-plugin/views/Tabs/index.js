@@ -33,7 +33,9 @@ class ReacticoonTabs extends React.Component {
             <Typography component="div" style={{ padding: 8 * 3 }}>
               {this.props.content.map((tabContent, index) => (
                 // only hide not current tab, since we do not want to reset the tab state when switching tabs
-                <div style={{ display: index !== state.tab ? 'none' : 'block' }}>{tabContent}</div>
+                <div key={index} style={{ display: index !== state.tab ? 'none' : 'block' }}>
+                  {tabContent}
+                </div>
               ))}
             </Typography>
           </React.Fragment>

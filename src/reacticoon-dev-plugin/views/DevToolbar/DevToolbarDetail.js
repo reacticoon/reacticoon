@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'reacticoon/routing'
 import SettingsIcon from '@material-ui/icons/Settings'
 import Grid from '@material-ui/core/Grid'
-import ReacticoonLogo from '../../pages/components/svg/ReacticoonLogo'
+import ReacticoonLogo from '../../components/svg/ReacticoonLogo'
 import Tabs from '../../views/Tabs'
 import DevToolbarDetailRequestInfo from './DevToolbarDetailRequestInfo'
 import DevToolbarStoreInfo from './DevToolbarStoreInfo'
@@ -84,7 +84,7 @@ const styles = theme => ({
   },
 })
 
-const DevToolbarDetail = ({ show, route, routeName, params, classes, onToggle }) => (
+const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTabs, onToggle }) => (
   <div
     className={classNames(classes.root, {
       [classes.rootHide]: !show,
@@ -122,7 +122,7 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, onToggle })
           {
             label: 'Reacticoon events',
           },
-        ]}
+        ].concat(extendedTabs.map(tab => ({ label: tab.label })))}
         content={[
           // 0
           <DevToolbarDetailRequestInfo route={route} params={params} />,
@@ -139,7 +139,7 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, onToggle })
           // 2
           <DevToolbarStoreInfo />,
           <ReacticoonEventsView />,
-        ]}
+        ].concat(extendedTabs.map(tab => React.createElement(tab.view)))}
       />
     </div>
 

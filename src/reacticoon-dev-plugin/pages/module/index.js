@@ -2,8 +2,8 @@ import React from 'react'
 
 import map from 'lodash/map'
 import { getModule } from 'reacticoon/module'
-import Page from '../components/Page'
-import Section from '../components/Section'
+import Page from '../../components/Page'
+import Section from '../../components/Section'
 import { API_CALL } from 'reacticoon/api'
 import Grid from '@material-ui/core/Grid'
 

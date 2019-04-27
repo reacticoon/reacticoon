@@ -1,12 +1,10 @@
 import React from 'react'
 
-import Pre from '../../components/Pre'
+import Pre from '../../../components/Pre'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = () => ({
-  root: {
-
-  },
+  root: {},
 })
 
 const PluginsReport = ({ pluginsReport, classes }) => (

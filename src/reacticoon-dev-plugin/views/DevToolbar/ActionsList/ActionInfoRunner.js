@@ -56,8 +56,8 @@ class Runner extends React.Component {
     return (
       <div>
         <div>
-          {map(info, infoData => (
-            <div>
+          {map(info, (infoData, index) => (
+            <div key={index}>
               {infoData.label} {infoData.value}
             </div>
           ))}
@@ -68,7 +68,7 @@ class Runner extends React.Component {
         <div>
           <Typography>Parameters</Typography>
           {parameters.map((parameter, index) => (
-            <div>
+            <div key={index}>
               <TextField
                 id={`param_${index}`}
                 label={parameter}

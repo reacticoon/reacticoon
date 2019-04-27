@@ -6,7 +6,22 @@ import commandModule from './modules/command'
 import DevToolbar from './views/DevToolbar'
 
 //
-// Dev plugin for reacticoon. Provides pages and debug utils
+// Dev plugin for reacticoon. Provides pages and debug utils.
+//
+// Can be override (using the plugin config 'extendPlugins')
+// {
+//   plugin: 'ReacticoonDev',
+//   config: {
+//     devToolbar: { // extend dev toolbar
+//       tabs: [ // add a new tab to the dev toolbar
+//         {
+//           name: 'Api mock', // tab name
+//           view: DevPluginToolbarTab // tab view content
+//         }
+//       ]
+//     }
+//   },
+// }
 //
 const ReacticoonDevPlugin = createPlugin({
   // The plugin name. Must be unique. All Reacticoon plugins have the 'Reacticoon' prefix.

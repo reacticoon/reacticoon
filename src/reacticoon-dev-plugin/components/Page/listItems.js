@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'reacticoon/routing'
+import { getExtendedDashboardSections } from '../../utils'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -46,7 +47,7 @@ export const mainListItems = (
         <ListItemText primary="Plugins" />
       </ListItem>
     </Link>
-    
+
     <Link to={Link.getRoute('REACTICOON_REPORTS')}>
       <ListItem button>
         <ListItemIcon>
@@ -55,11 +56,18 @@ export const mainListItems = (
         <ListItemText primary="Reports" />
       </ListItem>
     </Link>
-
   </div>
 )
 
 export const secondaryListItems = (
   <div>
+    {getExtendedDashboardSections().map((section, index) => (
+      <Link key={index} to={Link.getRoute(section.route)}>
+        <ListItem button>
+          {section.icon && <ListItemIcon>{React.createElement(section.icon)}</ListItemIcon>}
+          <ListItemText primary={section.label} />
+        </ListItem>
+      </Link>
+    ))}
   </div>
 )

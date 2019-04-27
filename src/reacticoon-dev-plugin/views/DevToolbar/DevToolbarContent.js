@@ -3,7 +3,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'reacticoon/routing'
 import SettingsIcon from '@material-ui/icons/Settings'
-import ReacticoonLogo from '../../pages/components/svg/ReacticoonLogo'
+import ReacticoonLogo from '../../components/svg/ReacticoonLogo'
 
 const styles = theme => ({
   root: {

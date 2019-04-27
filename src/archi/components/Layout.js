@@ -9,8 +9,9 @@ const Layout = ({ children, location, params, routes }) => (
 
     {/* add layout views. Layout views are plugin-defined views to add here. Plugins can
     configure using a `layoutViews` array.*/}
-    {getLayoutViews().map(view =>
+    {getLayoutViews().map((view, index) =>
       React.createElement(view, {
+        key: index,
         location,
         params,
         routes,

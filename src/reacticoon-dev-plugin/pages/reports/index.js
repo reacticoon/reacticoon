@@ -4,8 +4,8 @@ import { Link } from 'reacticoon/routing'
 import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import Page from '../components/Page'
-import Section from '../components/Section'
+import Page from '../../components/Page'
+import Section from '../../components/Section'
 
 class ReportsPage extends React.Component {
   render() {
@@ -27,7 +27,9 @@ class ReportsPage extends React.Component {
               </ListItem>
 
               <ListItem>
-                <Link to={Link.getRoute('REACTICOON_REPORT_ANALYZE_BUNDLE_PHOBIA')}>Analyze bundle</Link>
+                <Link to={Link.getRoute('REACTICOON_REPORT_ANALYZE_BUNDLE_PHOBIA')}>
+                  Analyze bundle
+                </Link>
               </ListItem>
             </List>
             {/* TODO: link to website documentation */}

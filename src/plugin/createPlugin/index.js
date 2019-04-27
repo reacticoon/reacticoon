@@ -21,6 +21,10 @@ const generateDefaultPluginConfig = () => {
     },
     // array of component views to add on the Reacticoon Layout
     layoutViews: [],
+    // allows plugins to extend other plugins.
+    // contains object:
+    // { plugin: 'ReacticoonDev', config: {} }
+    extendPlugins: [],
     //
     // register the front config for this plugin
     //

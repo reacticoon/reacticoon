@@ -30,7 +30,6 @@ const generateRoute = route => {
 }
 
 const configureRoutes = ({ routes }) => {
-
   // do not keep disabled routes
   const routesToGenerate = routes.filter(route => !route.disabled)
 

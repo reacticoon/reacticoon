@@ -29,7 +29,7 @@ const forEachPlugin = callback =>
   )
 
 export const registerPlugins = pluginsConfig => {
-  _pluginsConfig = Object.freeze(pluginsConfig)
+  _pluginsConfig = Object.freeze(pluginsConfig.filter(Boolean))
 
   forEachPlugin(({ plugin, config }) => {
     // configuration checks
@@ -141,9 +141,52 @@ export const generatePluginMiddlewares = () => {
 export const getLayoutViews = () => {
   let layoutViews = []
 
-  getPlugins().forEach(pluginConfig => {
-    layoutViews = layoutViews.concat(pluginConfig.plugin.layoutViews || [])
+  forEachPlugin(({ plugin }) => {
+    layoutViews = layoutViews.concat(plugin.layoutViews || [])
   })
 
   return layoutViews
+}
+
+/**
+ * Returns the configurations set by extensions for the given plugin.
+ * 
+ * A plugin can extend another plugin by using the `extendPlugins` array.
+ * 
+ * Example:
+ * 
+ * ```
+ * extendPlugins: [
+    {
+      plugin: 'ReacticoonDev',
+      config: {
+        devToolbar: {
+          tabs: [
+            {
+              label: 'Api mock',
+              view: DevPluginToolbarTab,
+            },
+          ],
+        },
+      },
+    },
+  ],
+ * ```
+ */
+export const getPluginExtensions = pluginName => {
+  const extensions = []
+
+  forEachPlugin(({ plugin, config }) => {
+    if (plugin.extendPlugins) {
+      const extensionForPlugin = find(
+        plugin.extendPlugins,
+        extendPlugin => extendPlugin.plugin === pluginName
+      )
+      if (extensionForPlugin) {
+        extensions.push({ ...extensionForPlugin, source: plugin.name })
+      }
+    }
+  })
+
+  return extensions
 }

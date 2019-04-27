@@ -8,12 +8,12 @@ import {
   getReactVersion,
   getReactVersionDocLink,
 } from 'reacticoon/environment'
-import Page from '../components/Page'
 import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import Pre from '../components/Pre'
-import Section from '../components/Section'
+import Page from '../../components/Page'
+import Pre from '../../components/Pre'
+import Section from '../../components/Section'
 
 class DashboardPage extends React.Component {
   render() {

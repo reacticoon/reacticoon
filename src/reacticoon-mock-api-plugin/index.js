@@ -1,6 +1,9 @@
 import { createPlugin } from 'reacticoon/plugin'
 
+import routing from './config/routing'
 import onAppInit from './events/onAppInit'
+
+import ReacticoonDevExtension from './config/ReacticoonDevExtension'
 
 //
 // Dev plugin for reacticoon. Provides pages and debug utils
@@ -15,6 +18,8 @@ const ReacticoonMockApiPlugin = createPlugin({
   // Describe listeners for a particular event.
   // optionnal.
   eventsHandler: [onAppInit],
+  routing,
+  extendPlugins: [ReacticoonDevExtension],
 })
 
 export default ReacticoonMockApiPlugin

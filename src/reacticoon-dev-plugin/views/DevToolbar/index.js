@@ -1,8 +1,10 @@
 import React from 'react'
 
 import RoutingDebugger from '../../RoutingDebugger'
+import { getPluginExtensions } from 'reacticoon/plugin'
 import { getConfigForRoute, getRouteNameForRoute } from 'reacticoon/routing'
-import DevToolsTheme from '../../pages/components/Page/DevToolsTheme'
+import { getExtendedTabs } from '../../utils'
+import DevToolsTheme from '../../components/Page/DevToolsTheme'
 import DevToolbarContent from './DevToolbarContent'
 import DevToolbarDetail from './DevToolbarDetail'
 
@@ -18,6 +20,8 @@ class DevToolbar extends React.Component {
     }
 
     this.updateRoutingDebugger(props)
+
+    this.extendedTabs = getExtendedTabs()
   }
 
   componentDidUpdate(props) {
@@ -61,6 +65,7 @@ class DevToolbar extends React.Component {
             routeName={routeName}
             params={params}
             location={location}
+            extendedTabs={this.extendedTabs}
           />
         )}
 

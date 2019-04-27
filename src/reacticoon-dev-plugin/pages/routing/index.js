@@ -1,22 +1,20 @@
 import React from 'react'
 
 import { getRoutes, Link, getRouteNameForRoute } from 'reacticoon/routing'
-import Page from '../components/Page'
-import Section from '../components/Section'
+
 import Grid from '@material-ui/core/Grid'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableHead from '@material-ui/core/TableHead'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
+import Page from '../../components/Page'
+import Section from '../../components/Section'
 
 class PluginsPage extends React.Component {
-  
   render() {
     return (
-      <Page
-        pageTitle="Routes"
-      >
+      <Page pageTitle="Routes">
         <Grid container>
           <Section title="Routes">
             <Table>
@@ -36,13 +34,16 @@ class PluginsPage extends React.Component {
                     <TableCell>{route.definition.path}</TableCell>
                     <TableCell>
                       {route.definition.__plugin && (
-                        <Link to={Link.getRoute('REACTICOON_PLUGIN')} params={{pluginName: route.definition.__plugin}}>
+                        <Link
+                          to={Link.getRoute('REACTICOON_PLUGIN')}
+                          params={{ pluginName: route.definition.__plugin }}
+                        >
                           {route.definition.__plugin}
                         </Link>
                       )}
                     </TableCell>
-                    <TableCell>{route.definition.authRequired ? "yes" : "no"}</TableCell>
-                    <TableCell>{route.definition.disabled ? "active" : "disabled"}</TableCell>
+                    <TableCell>{route.definition.authRequired ? 'yes' : 'no'}</TableCell>
+                    <TableCell>{route.definition.disabled ? 'active' : 'disabled'}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

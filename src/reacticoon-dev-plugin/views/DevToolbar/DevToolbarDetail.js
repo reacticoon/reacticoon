@@ -13,6 +13,7 @@ import DevToolbarStoreInfo from './DevToolbarStoreInfo'
 import DevToolbarActions from './DevToolbarActions'
 import SelectorsList from './SelectorsList'
 import ReacticoonEventsView from './ReacticoonEventsView'
+import LogsView from './Logs'
 import Performance from './Performance'
 import Toolbar from './Toolbar'
 
@@ -101,6 +102,9 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTab
           {
             label: 'Reacticoon events',
           },
+          {
+            label: 'Logs',
+          },
         ].concat(extendedTabs.map(tab => ({ label: tab.label })))}
         content={[
           // 0
@@ -119,6 +123,7 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTab
           // 2
           <DevToolbarStoreInfo />,
           <ReacticoonEventsView />,
+          <LogsView />,
         ].concat(extendedTabs.map(tab => React.createElement(tab.view)))}
       />
     </div>

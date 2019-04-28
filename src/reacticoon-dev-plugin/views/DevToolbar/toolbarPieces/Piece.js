@@ -84,7 +84,6 @@ const Piece = ({ onClick, name, classes, children, headerStyle = {} }) => {
         }
 
         const enterButton = event => {
-          console.log(anchorEl)
           setState({ mouseOverButton: true })
         }
 
@@ -109,7 +108,7 @@ const Piece = ({ onClick, name, classes, children, headerStyle = {} }) => {
         }
 
         // Calculate open state based on mouse location
-        const open = state.mouseOverButton || state.mouseOverMenu
+        const open = state.mouseOverButton || state.mouseOverMenu || false
 
         return (
           <div className={classes.root}>
@@ -134,7 +133,7 @@ const Piece = ({ onClick, name, classes, children, headerStyle = {} }) => {
                 anchorEl={anchorEl.current}
                 open={open}
                 onClose={handleClose}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                //anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                 transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                 classes={{ paper: classes.menu_Paper }}
                 MenuListProps={{

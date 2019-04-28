@@ -4,7 +4,9 @@ import Piece from './Piece'
 
 const RoutePiece = ({ route, routeName }) => (
   <Piece name="route">
-    <Piece.Header>{routeName}</Piece.Header>
+    <Piece.Header>
+      <span style={{ fontSize: 12 }}>{routeName}</span>
+    </Piece.Header>
     <Piece.Content>
       {() => [{ label: 'path', value: route.path }, { label: 'route', value: routeName }]}
     </Piece.Content>

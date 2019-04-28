@@ -17,7 +17,7 @@ const theme = createMuiTheme({
       dark: '#2F2F2F',
     },
     toolbar: {
-      height: 50,
+      height: 36,
       colors: {
         background: '#222',
         hover: '#444444',

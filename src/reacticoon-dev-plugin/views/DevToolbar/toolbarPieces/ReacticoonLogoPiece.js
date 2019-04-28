@@ -11,7 +11,7 @@ const ReacticoonLogoPiece = ({ onClick }) => (
   >
     <Piece.Header>
       <div>
-        <ReacticoonLogo height={36} />
+        <ReacticoonLogo height={30} />
       </div>
     </Piece.Header>
   </Piece>

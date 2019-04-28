@@ -67,7 +67,7 @@ const Piece = ({ onClick, name, classes, children, headerStyle = {} }) => {
         const timeoutLength = 300
 
         const header = isArray(children) ? children[0] : children
-        const content = isArray(children) ? children[1].props.children : null
+        const content = isArray(children) && children[1] ? children[1].props.children : null
 
         const handleClick = event => {
           onClick && onClick(event)

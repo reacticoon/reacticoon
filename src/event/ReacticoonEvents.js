@@ -53,6 +53,13 @@ const ReacticoonEvents = {
   // - type
   // - detail
   //
+  LOG_DEPRECATION: createEvent('REACTICOON::LOG::DEPRECATION', 'For deprecation warning'),
+
+  //
+  // props:
+  // - type
+  // - detail
+  //
   LOG_ERROR: createEvent('REACTICOON::LOG::ERROR', 'For errpr log'),
 
   //

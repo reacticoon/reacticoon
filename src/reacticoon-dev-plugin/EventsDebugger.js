@@ -2,6 +2,9 @@ import { EventManager, ReacticoonEvents, createEventHandler } from 'reacticoon/e
 import { getStore } from 'reacticoon/store'
 import { saveEvent } from './modules/events/actions'
 import { getEvents } from './modules/events/selectors'
+
+import { setUserContext, clearUserContext } from './modules/userContext/actions'
+
 /**
  * Listen for all the Reacticoon events.
  */
@@ -23,6 +26,16 @@ class EventsDebugger {
     const data = { ...event, ...EventManager.getEventDataForType(event.type) }
     // this.events.push(data)
     getStore().dispatch(saveEvent(data))
+
+    switch (event.type) {
+      case ReacticoonEvents.SET_USER_CONTEXT.type:
+        getStore().dispatch(setUserContext(event.data))
+        break
+
+      case ReacticoonEvents.CLEAR_USER_CONTEXT.type:
+        getStore().dispatch(clearUserContext())
+        break
+    }
   }
 
   getListener() {

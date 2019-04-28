@@ -7,6 +7,7 @@ import GitPiece from './toolbarPieces/GitPiece'
 import DashboardPiece from './toolbarPieces/DashboardPiece'
 import RoutePiece from './toolbarPieces/RoutePiece'
 import ReacticoonLogoPiece from './toolbarPieces/ReacticoonLogoPiece'
+import UserContextPiece from './toolbarPieces/UserContextPiece'
 
 const styles = theme => ({
   root: {
@@ -66,6 +67,8 @@ const Toolbar = ({ route, routeName, show, classes, onToggle, onToggleDetail }) 
       </div>
       <div className={classes.centerPart} onClick={onToggleDetail} />
       <div className={classes.rightPart}>
+        <UserContextPiece />
+
         <GitPiece />
 
         <ReacticoonLogoPiece onClick={onToggle} />

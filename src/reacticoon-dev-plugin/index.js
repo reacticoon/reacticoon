@@ -4,6 +4,7 @@ import { __DEV__ } from 'reacticoon/environment'
 import onAppInit from './events/onAppInit'
 import routing from './config/routing'
 import commandModule from './modules/command'
+import userContextModule from './modules/userContext'
 import DevToolbar from './views/DevToolbar'
 
 //
@@ -30,7 +31,7 @@ const ReacticoonDevPlugin = createPlugin({
   description: 'Reacticoon plugin displayed on development.',
   // list of the modules that the plugin register.
   // optionnal.
-  modules: [commandModule, __DEV__ && require('./modules/events').default],
+  modules: [commandModule, __DEV__ && require('./modules/events').default, userContextModule],
   // Describe listeners for a particular event.
   // optionnal.
   eventsHandler: [onAppInit],

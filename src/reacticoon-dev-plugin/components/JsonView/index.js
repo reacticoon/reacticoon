@@ -4,7 +4,9 @@ import isString from 'lodash/isString'
 // https://github.com/mac-s-g/react-json-view
 import ReactJson from 'react-json-view'
 
-const JsonView = ({ json }) => <pre>{JSON.stringify(isString(json) ? JSON.parse(json) : json)}</pre>
+const JsonView = ({ json }) => (
+  <pre>{JSON.stringify(isString(json) ? JSON.parse(json) : json, null, 4)}</pre>
+)
 // Note: disabled since really bad perfs :(
 {
   /* <ReactJson

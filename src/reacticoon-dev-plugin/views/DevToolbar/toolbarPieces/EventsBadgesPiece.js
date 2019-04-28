@@ -29,7 +29,11 @@ const styles = theme => ({
 const EventsBadgesPiece = ({ classes }) => (
   <EventsContainer>
     {({ events }) => {
-      const warnings = events.filter(event => isSameEvent(event, ReacticoonEvents.LOG_WARN))
+      const warnings = events.filter(
+        event =>
+          isSameEvent(event, ReacticoonEvents.LOG_WARN) ||
+          isSameEvent(event, ReacticoonEvents.LOG_DEPRECATION)
+      )
       const errors = events.filter(
         event =>
           isSameEvent(event, ReacticoonEvents.LOG_ERROR) ||

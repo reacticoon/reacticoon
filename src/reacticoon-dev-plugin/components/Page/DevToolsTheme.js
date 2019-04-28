@@ -16,6 +16,16 @@ const theme = createMuiTheme({
       good: green[300],
       dark: '#2F2F2F',
     },
+    toolbar: {
+      height: 50,
+      colors: {
+        background: '#222',
+        hover: '#444444',
+        warn: orange[300],
+        error: red[300],
+        good: green[300],
+      },
+    },
   },
   // typography: { useNextVariants: true },
 })

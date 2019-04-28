@@ -13,6 +13,8 @@ import DevToolbarStoreInfo from './DevToolbarStoreInfo'
 import DevToolbarActions from './DevToolbarActions'
 import SelectorsList from './SelectorsList'
 import ReacticoonEventsView from './ReacticoonEventsView'
+import Performance from './Performance'
+import Toolbar from './Toolbar'
 
 const styles = theme => ({
   root: {
@@ -69,19 +71,6 @@ const styles = theme => ({
     color: 'white',
     alignItems: 'center',
   },
-  leftPart: {
-    display: 'flex',
-  },
-  centerArea: {
-    cursor: 'pointer',
-    width: 200,
-    textAlign: 'center',
-  },
-  rightPart: {},
-  logoArea: {
-    float: 'right',
-    cursor: 'pointer',
-  },
 })
 
 const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTabs, onToggle }) => (
@@ -114,6 +103,9 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTab
             label: 'Infos',
           },
           {
+            label: 'Performances',
+          },
+          {
             label: 'Actions & selectors',
           },
           {
@@ -126,6 +118,7 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTab
         content={[
           // 0
           <DevToolbarDetailRequestInfo route={route} params={params} />,
+          <Performance />,
           // 1
           <Grid container>
             <Grid item xs={6}>
@@ -145,20 +138,7 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTab
 
     {/* BOTTOM */}
     <div className={classes.bottom}>
-      <div className={classes.leftPart}>
-        <Link to={Link.getRoute('REACTICOON_DASHBOARD')} newTab>
-          <SettingsIcon />
-        </Link>
-        <div />
-      </div>
-      <div className={classes.centerArea} onClick={onToggle}>
-        {routeName}
-      </div>
-      <div className={classes.rightPart}>
-        <div className={classes.logoArea} onClick={onToggle}>
-          <ReacticoonLogo height={36} />
-        </div>
-      </div>
+      <Toolbar />
     </div>
   </div>
 )

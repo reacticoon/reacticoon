@@ -1,4 +1,5 @@
 // inspired by https://github.com/facebook/react/blob/9c6ff136c78e934a19d0da950139e4d912ae54c2/packages/react-reconciler/src/ReactDebugFiberPerf.js
+import startsWith from 'lodash/startsWith'
 
 import { enableUserTimingAPI } from 'reacticoon/environment/featureFlags'
 export const performance = global.performance || {}
@@ -51,6 +52,12 @@ export const endMark = (label, markName, warning = null) => {
     // TODO: uncomment
     // performance.clearMarks(formattedMarkName)
     // performance.clearMeasures(formattedLabel)
+  }
+}
+
+export const getEntries = () => {
+  if (supportsUserTiming && enableUserTimingAPI) {
+    return performance.getEntries().filter(entry => startsWith(entry.name, reactEmoji))
   }
 }
 

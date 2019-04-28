@@ -4,8 +4,8 @@ import RoutingDebugger from '../../RoutingDebugger'
 import { getConfigForRoute, getRouteNameForRoute } from 'reacticoon/routing'
 import { getExtendedTabs } from '../../utils'
 import DevToolsTheme from '../../components/Page/DevToolsTheme'
-import DevToolbarContent from './DevToolbarContent'
 import DevToolbarDetail from './DevToolbarDetail'
+import Toolbar from './Toolbar'
 
 class DevToolbar extends React.Component {
   constructor(props) {
@@ -69,7 +69,7 @@ class DevToolbar extends React.Component {
         )}
 
         {!this.state.showDetail && (
-          <DevToolbarContent
+          <Toolbar
             show={this.state.showBar}
             onToggle={this.toggleBar}
             onToggleDetail={this.toggleDetail}

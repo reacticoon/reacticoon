@@ -1,6 +1,7 @@
 import invariant from 'invariant'
 import map from 'lodash/map'
 import forEach from 'lodash/forEach'
+import isEmpty from 'lodash/isEmpty'
 import isArray from 'lodash/isArray'
 import isString from 'lodash/isString'
 import isFunction from 'lodash/isFunction'
@@ -129,24 +130,22 @@ class EventManager {
       ...(this.listeners[event.type] || []),
     ]
 
-    if (listeners !== undefined) {
-      listeners.forEach(listener => {
-        listener({
-          type: event.type,
-          data,
-          date,
-          // TODO: only on dev and better format
-          __readableDate:
-            date.getHours() +
-            ':' +
-            date.getMinutes() +
-            ':' +
-            date.getSeconds() +
-            '::' +
-            date.getMilliseconds(),
-        })
+    listeners.forEach(listener => {
+      listener({
+        type: event.type,
+        data,
+        date,
+        // TODO: only on dev and better format
+        __readableDate:
+          date.getHours() +
+          ':' +
+          date.getMinutes() +
+          ':' +
+          date.getSeconds() +
+          '::' +
+          date.getMilliseconds(),
       })
-    }
+    })
   }
 
   registerEvents(events = []) {

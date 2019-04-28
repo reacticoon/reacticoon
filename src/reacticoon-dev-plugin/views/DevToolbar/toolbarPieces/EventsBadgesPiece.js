@@ -2,14 +2,21 @@ import React from 'react'
 
 import { ReacticoonEvents, isSameEvent } from 'reacticoon/event'
 import EventsContainer from '../../../modules/events/container'
+import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 import Badge from '@material-ui/core/Badge'
 import Piece from './Piece'
 
 const styles = theme => ({
   badge: {
-    paddingLeft: theme.spacing.unit,
-    width: 50,
+    width: '28px',
+    height: '28px',
+    marginLeft: '8px',
+    borderRadius: '90%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
   },
   warning: {
     backgroundColor: theme.app.colors.warn,
@@ -34,20 +41,8 @@ const EventsBadgesPiece = ({ classes }) => (
       return (
         <Piece name="EventsBadges" headerStyle={{ textAlign: 'center' }}>
           <Piece.Header>
-            <div className={classes.badge}>
-              <Badge
-                badgeContent={warnings.length}
-                color="secondary"
-                classes={{ badge: classes.warning }}
-              />
-            </div>
-            <div className={classes.badge}>
-              <Badge
-                badgeContent={errors.length}
-                color="primary"
-                classes={{ badge: classes.error }}
-              />
-            </div>
+            <div className={classNames(classes.badge, classes.warning)}>{warnings.length}</div>
+            <div className={classNames(classes.badge, classes.error)}>{errors.length}</div>
           </Piece.Header>
         </Piece>
       )

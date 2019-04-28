@@ -19,7 +19,7 @@ import Toolbar from './Toolbar'
 const styles = theme => ({
   root: {
     position: 'fixed',
-    bottom: 50,
+    bottom: theme.app.toolbar.height,
     left: 0,
     right: 0,
     top: 0,
@@ -57,19 +57,6 @@ const styles = theme => ({
     paddingTop: 54,
     paddingBottom: 54,
     width: '100%',
-  },
-  bottom: {
-    position: 'fixed',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 50,
-    padding: theme.spacing.unit,
-    display: 'flex',
-    justifyContent: 'space-between',
-    background: theme.app.colors.dark,
-    color: 'white',
-    alignItems: 'center',
   },
 })
 
@@ -137,9 +124,13 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTab
     </div>
 
     {/* BOTTOM */}
-    <div className={classes.bottom}>
-      <Toolbar />
-    </div>
+    <Toolbar
+      show
+      route={route}
+      routeName={routeName}
+      onToggle={onToggle}
+      onToggleDetail={onToggle}
+    />
   </div>
 )
 

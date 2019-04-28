@@ -86,6 +86,12 @@ const ReacticoonEvents = {
   ),
 
   //
+  //
+  //
+
+  ON_HISTORY_CHANGE: createEvent('REACTICOON::HISTORY::CHANGE', 'When location on history change'),
+
+  //
   // -- User context events
   // User context is usefull for logging (console / error tracking (ex: sentry))
   //

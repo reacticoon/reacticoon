@@ -4,6 +4,8 @@ import identity from 'lodash/identity'
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import { i18nReducer } from '../../i18n/index'
+import { getHistory } from 'reacticoon/routing'
+import { connectRouter } from 'connected-react-router'
 
 const configureRootReducer = appOptions => {
   let reducers = {
@@ -19,6 +21,8 @@ const configureRootReducer = appOptions => {
     routing: routerReducer,
 
     ux: appOptions.uxReducer,
+
+    router: connectRouter(getHistory()),
   }
 
   // remove null reducers

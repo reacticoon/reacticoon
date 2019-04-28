@@ -5,13 +5,20 @@ import { hot } from 'react-hot-loader'
 
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
-
-import { getRoutes } from '../routing/config'
+import { ConnectedRouter } from 'connected-react-router'
+import { getRoutes, getHistory } from '../routing/config'
 import configureRoutes from './utils/configureRoutes'
 import ErrorBoundary from './components/ErrorBoundary'
 
 const App = ({ store, history, appOptions }) => {
-  const router = <Router history={history} routes={configureRoutes({ routes: getRoutes() })} />
+  const router = (
+    <ConnectedRouter history={getHistory()}>
+      {configureRoutes({
+        routes: getRoutes(),
+      })}
+    </ConnectedRouter>
+  )
+  // const router = <Router history={history} routes={configureRoutes({ routes: getRoutes() })} />
 
   return (
     <ErrorBoundary>

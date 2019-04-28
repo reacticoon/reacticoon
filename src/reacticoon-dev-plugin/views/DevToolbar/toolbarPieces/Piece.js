@@ -34,6 +34,9 @@ const styles = theme => ({
   headerGood: {
     backgroundColor: theme.app.toolbar.colors.good,
   },
+  menu_Paper: {
+    borderRadius: 0,
+  },
   content: {
     padding: theme.spacing.unit,
     backgroundColor: theme.app.toolbar.colors.hover,
@@ -56,94 +59,104 @@ const styles = theme => ({
   },
 })
 
-const Piece = ({ onClick, name, classes, children, headerStyle = {} }) => (
-  <StateContainer>
-    {({ state, setState }) => {
-      const timeoutLength = 300
+const Piece = ({ onClick, name, classes, children, headerStyle = {} }) => {
+  const anchorEl = React.useRef(null)
+  return (
+    <StateContainer>
+      {({ state, setState }) => {
+        const timeoutLength = 300
 
-      const header = isArray(children) ? children[0] : children
-      const content = isArray(children) ? children[1].props.children : null
+        const header = isArray(children) ? children[0] : children
+        const content = isArray(children) ? children[1].props.children : null
 
-      const handleClick = event => {
-        onClick && onClick(event)
-        setState({
-          open: true,
-          anchorEl: event.currentTarget,
-        })
-      }
+        const handleClick = event => {
+          onClick && onClick(event)
+          setState({
+            open: true,
+          })
+        }
 
-      const handleClose = () => {
-        setState({
-          mouseOverButton: false,
-          mouseOverMenu: false,
-        })
-      }
+        const handleClose = () => {
+          setState({
+            mouseOverButton: false,
+            mouseOverMenu: false,
+          })
+        }
 
-      const enterButton = () => {
-        setState({ mouseOverButton: true })
-      }
+        const enterButton = event => {
+          console.log(anchorEl)
+          setState({ mouseOverButton: true })
+        }
 
-      const leaveButton = () => {
-        // Set a timeout so that the menu doesn't close before the user has time to
-        // move their mouse over it
-        setTimeout(() => {
-          setState({ mouseOverButton: false })
-        }, timeoutLength)
-      }
+        const leaveButton = () => {
+          // Set a timeout so that the menu doesn't close before the user has time to
+          // move their mouse over it
+          setTimeout(() => {
+            {
+              setState({ mouseOverButton: false })
+            }
+          }, timeoutLength)
+        }
 
-      const enterMenu = () => {
-        setState({ mouseOverMenu: true })
-      }
+        const enterMenu = () => {
+          setState({ mouseOverMenu: true })
+        }
 
-      const leaveMenu = () => {
-        setTimeout(() => {
-          setState({ mouseOverMenu: false })
-        }, timeoutLength)
-      }
+        const leaveMenu = () => {
+          setTimeout(() => {
+            setState({ mouseOverMenu: false })
+          }, timeoutLength)
+        }
 
-      // Calculate open state based on mouse location
-      const open = state.mouseOverButton || state.mouseOverMenu
+        // Calculate open state based on mouse location
+        const open = state.mouseOverButton || state.mouseOverMenu
 
-      return (
-        <div className={classes.root}>
-          <div
-            aria-owns={state.open ? name : null}
-            aria-haspopup="true"
-            onClick={handleClick}
-            onMouseEnter={enterButton}
-            onMouseLeave={leaveButton}
-            className={classNames(classes.header, {
-              [classes.headerSelected]: open,
-            })}
-            style={headerStyle}
-          >
-            {header}
-          </div>
-
-          {content && (
-            <Menu
-              id={name}
-              anchorEl={state.anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                onMouseEnter: enterMenu,
-                onMouseLeave: leaveMenu,
-                classes: { root: classes.content },
-              }}
+        return (
+          <div className={classes.root}>
+            <div
+              aria-owns={state.open ? name : null}
+              aria-haspopup="true"
+              onClick={handleClick}
+              ref={anchorEl}
+              onMouseEnter={enterButton}
+              onMouseLeave={leaveButton}
+              className={classNames(classes.header, {
+                [classes.headerSelected]: open,
+              })}
+              style={headerStyle}
             >
-              {content().map((content, index) => (
-                <MenuItem key={index} className={classes.item}>
-                  <b>{content.label}</b> <span className={classes.itemValue}>{content.value}</span>
-                </MenuItem>
-              ))}
-            </Menu>
-          )}
-        </div>
-      )
-    }}
-  </StateContainer>
-)
+              {header}
+            </div>
+
+            {content && (
+              <Menu
+                id={name}
+                anchorEl={anchorEl.current}
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                classes={{ paper: classes.menu_Paper }}
+                MenuListProps={{
+                  onMouseEnter: enterMenu,
+                  onMouseLeave: leaveMenu,
+                  classes: { root: classes.content },
+                }}
+              >
+                {content().map((content, index) => (
+                  <MenuItem key={index} className={classes.item}>
+                    <b>{content.label}</b>{' '}
+                    <span className={classes.itemValue}>{content.value}</span>
+                  </MenuItem>
+                ))}
+              </Menu>
+            )}
+          </div>
+        )
+      }}
+    </StateContainer>
+  )
+}
 
 Piece.Header = ({ children }) => children
 Piece.Content = ({ children }) => children

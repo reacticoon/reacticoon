@@ -28,10 +28,7 @@ class DevToolbar extends React.Component {
   }
 
   updateRoutingDebugger(props) {
-    const { routes, location, params } = props
-
-    const route = getConfigForRoute(routes[1]).definition
-    const routeName = getRouteNameForRoute({ definition: route })
+    const { route, location, params } = props
 
     RoutingDebugger.setCurrentRoute(route)
   }
@@ -49,9 +46,8 @@ class DevToolbar extends React.Component {
   }
 
   render() {
-    const { routes, location, params } = this.props
+    const { route, location, params } = this.props
 
-    const route = getConfigForRoute(routes[1]).definition
     const routeName = getRouteNameForRoute({ definition: route })
 
     return (

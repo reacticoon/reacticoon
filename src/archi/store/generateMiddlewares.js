@@ -2,18 +2,12 @@ import thunk from 'redux-thunk'
 
 import { __DEV__ } from 'reacticoon/environment'
 import { routerMiddleware } from 'react-router-redux'
-import { browserHistory } from 'react-router'
-// TODO: dynamically import with 'require'
-import { createLogger } from 'redux-logger'
+import { getHistory } from 'reacticoon/routing'
 
 import crashReporter from '../middleware/crashReporter'
 
 import apiMiddleware from '../../api/apiMiddleware'
 import createAppMiddleware from '../../middleware/appMiddleware/createAppMiddleware'
-
-const reduxLogger = createLogger({
-  collapsed: true,
-})
 
 const generateMiddlewares = (isDev, appMiddlewares) =>
   [
@@ -25,7 +19,11 @@ const generateMiddlewares = (isDev, appMiddlewares) =>
     thunk,
     apiMiddleware,
     crashReporter, // must be before reduxLogger and after thunk and api
-    isDev ? reduxLogger : null, // only on dev, but requires to be at this specific place
+    __DEV__
+      ? require('redux-logger').createLogger({
+          collapsed: true,
+        })
+      : null, // only on dev, but requires to be at this specific place
 
     createAppMiddleware(appMiddlewares),
 
@@ -48,7 +46,7 @@ const generateMiddlewares = (isDev, appMiddlewares) =>
     // Both push and replace take in a location descriptor, which can be an object describing the URL
     // or a plain string URL.
     //
-    routerMiddleware(browserHistory),
+    routerMiddleware(getHistory()),
   ].filter(elem => elem !== null) // remove null elements
 
 export default generateMiddlewares

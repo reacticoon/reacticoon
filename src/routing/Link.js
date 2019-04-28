@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import isNil from 'lodash/isNil'
 
-import { Link as ReactRouterLink } from 'react-router'
+import { Link as ReactRouterLink } from 'react-router-dom'
 
 import Route from './Route'
 import { getRoutingEnum, getRoute } from './config'

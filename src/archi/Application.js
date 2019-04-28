@@ -5,7 +5,7 @@ import isNil from 'lodash/isNil'
 
 import { render } from 'react-dom'
 // hot loader inserted by create-reacticoon-app
-import { browserHistory } from 'react-router'
+import { createBrowserHistory } from 'history'
 import { syncHistoryWithStore } from 'react-router-redux'
 
 import configureRootReducer from './utils/configureRootReducer'
@@ -104,6 +104,20 @@ const Application = appOptions => {
   ]
 
   //
+  // History
+  //
+
+  const history = createBrowserHistory()
+
+  registerHistory(history)
+
+  history.listen(location =>
+    EventManager.dispatch(EventManager.Event.ON_HISTORY_CHANGE, {
+      location,
+    })
+  )
+
+  //
   // root reducer
   //
 
@@ -126,17 +140,6 @@ const Application = appOptions => {
   // routes
   //
   registerRoutesConfig(appOptions)
-
-  //
-  // History
-  //
-
-  // We must have react-router-redux v4.0.* (currently 4.0.8)
-  // see:
-  // https://github.com/reactjs/react-router-redux/issues/348
-  const history = syncHistoryWithStore(browserHistory, store)
-
-  registerHistory(history)
 
   //
   // Api manager

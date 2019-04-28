@@ -4,8 +4,10 @@ import isString from 'lodash/isString'
 // https://github.com/mac-s-g/react-json-view
 import ReactJson from 'react-json-view'
 
-const JsonView = ({ json }) => (
-  <ReactJson
+const JsonView = ({ json }) => <pre>{JSON.stringify(isString(json) ? JSON.parse(json) : json)}</pre>
+// Note: disabled since really bad perfs :(
+{
+  /* <ReactJson
     theme="railscasts"
     iconStyle="square"
     displayDataTypes={false}
@@ -16,7 +18,7 @@ const JsonView = ({ json }) => (
       padding: 8,
     }}
     src={isString(json) ? JSON.parse(json) : json}
-  />
-)
+  /> */
+}
 
 export default JsonView

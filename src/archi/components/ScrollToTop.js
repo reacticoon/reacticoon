@@ -4,9 +4,10 @@ import { Component } from 'react'
 class ScrollToTop extends Component {
   componentDidUpdate(prevProps) {
     // Note: we can't compare the location object, since it changes when the anchor change
-    if (this.props.location.pathname !== prevProps.location.pathname) {
-      window.scrollTo(0, 0)
-    }
+    // TODO: uncomment
+    // if (this.props.location.pathname !== prevProps.location.pathname) {
+    //   window.scrollTo(0, 0)
+    // }
   }
 
   render() {

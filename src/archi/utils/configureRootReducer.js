@@ -1,9 +1,11 @@
 import pickBy from 'lodash/pickBy'
 import identity from 'lodash/identity'
+import forEach from 'lodash/forEach'
 
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import { i18nReducer } from '../../i18n/index'
+import ReducerRegistry from '../registry/ReducerRegistry'
 import { getHistory } from 'reacticoon/routing'
 import { connectRouter } from 'connected-react-router'
 
@@ -11,7 +13,7 @@ const configureRootReducer = appOptions => {
   let reducers = {
     // entities are defined by the project.
     // It is an object, so we have to use combineReducers.
-    entities: combineReducers(appOptions.entities),
+    ...appOptions.reducers,
 
     i18n: i18nReducer,
 
@@ -28,8 +30,9 @@ const configureRootReducer = appOptions => {
   // remove null reducers
   reducers = pickBy(reducers, identity)
 
-  const rootReducer = combineReducers(reducers)
+  forEach(reducers, (reducer, reducerName) => ReducerRegistry.register(reducerName, reducer))
 
+  const rootReducer = combineReducers(reducers)
   return rootReducer
 }
 

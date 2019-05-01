@@ -28,6 +28,13 @@ const ReacticoonEvents = {
   ON_APP_INIT: createEvent('REACTICOON::ON_APP_INIT', 'Dispatched when the app is initialized'),
 
   //
+  // Dispatched when we init the app, to register our modules and when a module is registered via
+  // code splitting.
+  //
+  //
+  REGISTER_MODULES: createEvent('REACTICOON::REGISTER_MODULES', 'Registerind multiple modules'),
+
+  //
   // -- Logger events
   //
 

@@ -19,12 +19,10 @@ const createEventsListener = callback =>
 class EventsDebugger {
   constructor() {
     this.eventsListener = createEventsListener(this.onEventReceived)
-    // this.events = []
   }
 
   onEventReceived = event => {
     const data = { ...event, ...EventManager.getEventDataForType(event.type) }
-    // this.events.push(data)
     getStore().dispatch(saveEvent(data))
 
     switch (event.type) {

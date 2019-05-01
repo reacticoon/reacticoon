@@ -6,14 +6,14 @@ import isNil from 'lodash/isNil'
 import { render } from 'react-dom'
 // hot loader inserted by create-reacticoon-app
 import { createBrowserHistory } from 'history'
-import { syncHistoryWithStore } from 'react-router-redux'
 
 import configureRootReducer from './utils/configureRootReducer'
 
 import { beginMark, endMark } from 'reacticoon/performance'
 import { setCurrentEnv, __DEV__ } from '../environment'
 import { registerModules, getModules } from '../module'
-import generateModuleEntities from '../module/generateModuleEntities'
+import OnModuleRegistered from './events/OnModuleRegistered'
+// import generateModuleEntities from '../module/generateModuleEntities'
 import generateModuleMiddlewares from '../module/generateModuleMiddlewares'
 import { registerHistory, registerRoutesConfig } from '../routing/config'
 import { registerStore } from '../store'
@@ -40,6 +40,8 @@ const REACTICOON_KEY_ON_WINDOW = '__REACTICOON__'
 const Application = appOptions => {
   beginMark('Reacticoon Application')
 
+  EventManager.addListener(OnModuleRegistered)
+
   //
   // Verify we do not have multiple versions of Reacticoon
   //
@@ -54,12 +56,6 @@ const Application = appOptions => {
   //
   const environment = appOptions.environment
   setCurrentEnv(environment)
-
-  //
-  // modules
-  //
-
-  registerModules(appOptions.modules)
 
   //
   // plugins
@@ -84,24 +80,11 @@ const Application = appOptions => {
   registerPlugins(appOptions.plugins, appOptions)
 
   //
-  // generate entities
-  //
-  appOptions.entities = {
-    // allow user to give reducer directly via `appOptions`, which is not registered as a module
-    ...(appOptions.entities || {}),
-    ...generateModuleEntities(getModules()),
-    ...generatePluginEntities(),
-  }
-
-  //
   // generate middlewates
   //
   // allow user to give middleware directly via `appOptions`, which is not registered as a module
-  appOptions.middlewares = [
-    ...(appOptions.middlewares || []),
-    ...generateModuleMiddlewares(getModules()),
-    ...generatePluginMiddlewares(),
-  ]
+  // TODO: drop middlewares support, only support module
+  appOptions.middlewares = [...(appOptions.middlewares || []), ...generatePluginMiddlewares()]
 
   //
   // History
@@ -121,6 +104,15 @@ const Application = appOptions => {
   // root reducer
   //
 
+  // generate entities
+  // TODO: rename reducers
+  // TODO: drop entities support, only support module
+  appOptions.reducers = {
+    // allow user to give reducer directly via `appOptions`, which is not registered as a module
+    ...(appOptions.entities || {}),
+    ...generatePluginEntities(),
+  }
+
   appOptions.rootReducer = configureRootReducer(appOptions)
 
   //
@@ -131,10 +123,17 @@ const Application = appOptions => {
   registerStore(store)
 
   //
+  // modules
+  //
+
+  registerModules(appOptions.modules)
+
+  //
   // I18n
   //
 
-  configureI18n(appOptions.i18n)
+  // TODO: uncomment
+  // configureI18n(appOptions.i18n)
 
   //
   // routes
@@ -154,7 +153,6 @@ const Application = appOptions => {
   // Event: ON_APP_INIT
   //
 
-  const markOnAppInit = 'Reacticoon ON_APP_INIT'
   beginMark('Dispatch ON_APP_INIT')
   EventManager.dispatch(EventManager.Event.ON_APP_INIT, {
     appOptions,

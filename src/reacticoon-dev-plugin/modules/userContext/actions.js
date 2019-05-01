@@ -7,4 +7,7 @@ export const setUserContext = createAction(
   })
 )
 
-export const clearUserContext = createAction('ReacticoonDev::EventsModule::clearUserContext', {})
+export const clearUserContext = createAction(
+  'ReacticoonDev::UserContextModule::clearUserContext',
+  {}
+)

@@ -8,7 +8,9 @@ const DEFAULT = Immutable.fromJS({
 })
 
 const onSaveEvent = (state, action) =>
-  state.updateIn(['events'], events => [...cloneDeep(events), action.payload.event])
+  state.updateIn(['events'], events =>
+    Immutable.fromJS([...cloneDeep(events), action.payload.event])
+  )
 
 const reducer = createReducer(DEFAULT, {
   [saveEvent]: onSaveEvent,

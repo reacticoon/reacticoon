@@ -58,7 +58,7 @@ const generateModuleMiddlewares = modules => {
   return middlewares
 }
 
-const addDevDataToMiddleware = (middleware, module) => {
+export const addDevDataToMiddleware = (middleware, module) => {
   if (__DEV__) {
     middleware._moduleName = module.name
     middleware.toString = () => `[middleware] ${module.name}::${middleware.middlewareName}`

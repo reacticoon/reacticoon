@@ -25,9 +25,7 @@ const DEFAULT = Immutable.fromJS({
 export const i18nReducer = (state = DEFAULT, action) => {
   switch (action.type) {
     case I18nFetchingLocale.REQUEST:
-      return state.merge({
-        isFetching: true,
-      })
+      return state.set('isFetching', true)
 
     case I18nFetchingLocale.SUCCESS:
       const { locale, phrases } = action

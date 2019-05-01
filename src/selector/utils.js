@@ -9,7 +9,7 @@ export const getStateForModule = moduleName => {
   const entityName = moduleName
 
   const getModuleState = state => {
-    const moduleState = state.entities[entityName]
+    const moduleState = state[entityName]
 
     invariant(
       !isUndefined(moduleState),

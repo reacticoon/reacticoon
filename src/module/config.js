@@ -1,3 +1,4 @@
+import { EventManager } from 'reacticoon/event'
 import isArray from 'lodash/isArray'
 import isNull from 'lodash/isNull'
 import memoize from 'lodash/memoize'
@@ -15,12 +16,23 @@ export const isConfigured = () => _configured
 
 export const registerModule = (key, module) => {
   _modules[key] = module
+
+  EventManager.dispatch(EventManager.Event.REGISTER_MODULES, {
+    newModules: [module],
+    modules: { ..._modules },
+  })
 }
 
 export const registerModules = modules => {
   modules.forEach(module => {
     _modules[module.name] = module
   })
+
+  EventManager.dispatch(EventManager.Event.REGISTER_MODULES, {
+    newModules: modules,
+    modules: { ..._modules },
+  })
+
   _configured = true
 }
 
@@ -65,7 +77,9 @@ export const getModulesMap = memoize(moduleNames => {
 export const getModulesMapForView = memoize(moduleNamesParam => {
   const moduleNames = isNull(moduleNamesParam)
     ? []
-    : isArray(moduleNamesParam) ? moduleNamesParam : [moduleNamesParam]
+    : isArray(moduleNamesParam)
+    ? moduleNamesParam
+    : [moduleNamesParam]
 
   const modules = getModulesForNames(moduleNames)
   const modulesMapForView = {}

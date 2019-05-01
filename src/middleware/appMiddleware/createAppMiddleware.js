@@ -2,7 +2,7 @@ import isNil from 'lodash/isNil'
 import invariant from 'invariant'
 
 import { OTHER_MIDDLEWARES } from './constants'
-import generateMiddlewareMap from './generateMiddlewareMap'
+import MiddlewareRegistry from 'reacticoon/archi/registry/MiddlewareRegistry'
 
 //
 // appMiddlewares correspond to the config/middlewares.
@@ -11,8 +11,8 @@ import generateMiddlewareMap from './generateMiddlewareMap'
 // a single optimized middleware here.
 //
 
-const createAppMiddleware = appMiddlewares => {
-  const middlewareMap = generateMiddlewareMap(appMiddlewares)
+const createAppMiddleware = defaultAppMiddlewares => {
+  MiddlewareRegistry.register(defaultAppMiddlewares)
 
   //
   // The app middleware.
@@ -30,6 +30,8 @@ const createAppMiddleware = appMiddlewares => {
   //
   //
   const appMiddleware = ({ getState, dispatch }) => next => action => {
+    const middlewareMap = MiddlewareRegistry.getMiddlewares()
+
     const middlewaresForAction = middlewareMap[action.type] || []
 
     // TODO: on dev only + better display

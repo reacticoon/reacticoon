@@ -19,7 +19,7 @@ const DevToolbarStoreInfo = () => (
     </Grid>
 
     <Grid item xs={6}>
-      <StateContainer defaultState={{ input: `entities["App::CircleModule"]`, followed: [] }}>
+      <StateContainer defaultState={{ input: `App::CircleModule`, followed: [] }}>
         {({ state, setState }) => (
           <div>
             <TextField value={state.input} onChange={e => setState({ input: e.target.value })} />

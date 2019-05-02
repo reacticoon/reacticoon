@@ -10,3 +10,12 @@ export function getParamNames(func) {
   if (result === null) result = []
   return result
 }
+
+export function sortObjectKeys(obj) {
+  return Object.keys(obj)
+    .sort()
+    .reduce((acc, key) => {
+      acc[key] = obj[key]
+      return acc
+    }, {})
+}

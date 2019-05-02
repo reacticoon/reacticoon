@@ -1,6 +1,7 @@
 import isNil from 'lodash/isNil'
 import invariant from 'invariant'
 
+import { EventManager } from 'reacticoon/event'
 import { OTHER_MIDDLEWARES } from './constants'
 import MiddlewareRegistry from 'reacticoon/archi/registry/MiddlewareRegistry'
 
@@ -86,7 +87,13 @@ const createAppMiddleware = defaultAppMiddlewares => {
     // we need to pass our custom next function to the middleware
     const customNext = createCustomNextAction(nextAction)
 
-    const res = middleware(middlewareAPI)(customNext)(nextAction)
+    let res
+    try {
+      res = middleware(middlewareAPI)(customNext)(nextAction)
+    } catch (ex) {
+      EventManager.dispatch(EventManager.Event.LOG_EXCEPTION, { ex })
+      return null
+    }
 
     // the middleware returns undefined, we stop the propagation of the action
     if (!res) {

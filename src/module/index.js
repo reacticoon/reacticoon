@@ -10,3 +10,4 @@
 
 export * from './config'
 export createModule from './createModule'
+export { default as useModule } from './useModule'

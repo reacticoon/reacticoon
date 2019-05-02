@@ -144,6 +144,7 @@ const createModule = (name, content) => {
     getActionsMap,
     getMapStateToProps,
     connect: connectModule,
+    __IS_MODULE: true,
   }
 }
 

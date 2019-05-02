@@ -8,6 +8,7 @@ import { render } from 'react-dom'
 import { createBrowserHistory } from 'history'
 
 import configureRootReducer from './utils/configureRootReducer'
+import generateEnvironment from './generateEnvironment'
 
 import { beginMark, endMark } from 'reacticoon/performance'
 import { setCurrentEnv, __DEV__ } from '../environment'
@@ -39,6 +40,16 @@ const REACTICOON_KEY_ON_WINDOW = '__REACTICOON__'
 //
 const Application = appOptions => {
   beginMark('Reacticoon Application')
+
+  //
+  // Environment
+  //
+
+  appOptions.environment = generateEnvironment()
+
+  //
+  // Add listeners
+  //
 
   EventManager.addListener(OnModuleRegistered)
 
@@ -147,7 +158,7 @@ const Application = appOptions => {
   // TODO: remove
   appOptions.ApiManagerOptions.store = store
 
-  ApiManager.configure(appOptions.ApiManagerOptions)
+  ApiManager.configure(appOptions.ApiManagerOptions())
 
   //
   // Event: ON_APP_INIT

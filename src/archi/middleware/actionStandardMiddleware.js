@@ -11,7 +11,7 @@ const actionStandardMiddleware = store => next => action => {
   if (!isFSA(action)) {
     // TODO: link to reacticoon doc
     EventManager.dispatch(EventManager.Event.LOG_WARN, {
-      type: `The action ${type} does not follow the flux-standard-action.`,
+      type: `The action ${action.type} does not follow the flux-standard-action.`,
       detail: `
         Look at ${generateDocUrl(
           'action'

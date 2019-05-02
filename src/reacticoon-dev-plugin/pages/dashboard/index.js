@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { __VERSION__, __REACTICOON_VERSION__, getEnv } from 'reacticoon/environment'
+import { __ENV__, __VERSION__, __REACTICOON_VERSION__, getEnv } from 'reacticoon/environment'
+import { sortObjectKeys } from 'reacticoon/utils'
 import {
   getReacticoonWebsiteUrl,
   getReacticoonOrganisationUrl,
@@ -58,12 +59,16 @@ class DashboardPage extends React.Component {
             </List>
           </Section>
 
-          <Section title="Environment">
+          <Section title={`Environment - ${__ENV__}`}>
             <Pre content={getEnv()} />
           </Section>
 
           <Section title="Process environment">
-            <Pre content={process.env} />
+            <p>
+              You can add process environment variables using the command line or a .env file. You
+              must prefix your environment variables with <code>REACTICOON_APP__</code>.
+            </p>
+            <Pre content={sortObjectKeys(process.env)} />
           </Section>
         </Section.Container>
       </Page>

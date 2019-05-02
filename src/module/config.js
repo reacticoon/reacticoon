@@ -14,22 +14,29 @@ let _configured = false
 
 export const isConfigured = () => _configured
 
-export const registerModule = (key, module) => {
-  _modules[key] = module
+export const registerModule = module => {
+  const key = module.name
+  if (!_modules[key]) {
+    _modules[key] = module
 
-  EventManager.dispatch(EventManager.Event.REGISTER_MODULES, {
-    newModules: [module],
-    modules: { ..._modules },
-  })
+    EventManager.dispatch(EventManager.Event.REGISTER_MODULES, {
+      newModules: [module],
+      modules: { ..._modules },
+    })
+  }
 }
 
 export const registerModules = modules => {
+  const newModules = []
   modules.forEach(module => {
-    _modules[module.name] = module
+    if (!_modules[module.name]) {
+      _modules[module.name] = module
+      newModules.push(module)
+    }
   })
 
   EventManager.dispatch(EventManager.Event.REGISTER_MODULES, {
-    newModules: modules,
+    newModules,
     modules: { ..._modules },
   })
 

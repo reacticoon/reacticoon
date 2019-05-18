@@ -5,7 +5,6 @@ import EventsContainer from '../../../modules/events/container'
 import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 import WarningIcon from '@material-ui/icons/Warning'
-import Badge from '@material-ui/core/Badge'
 import Piece from './Piece'
 
 const styles = theme => ({

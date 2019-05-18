@@ -29,9 +29,9 @@ const generateMiddlewareMap = appMiddlewares => {
   //
   appMiddlewares.forEach(middleware => {
     if (isFunction(middleware)) {
-      // TODO: warn in dev
+      // TODO: warn deprecated in dev
       // this middleware has not been created by createMiddleware (legacy)
-      // we add it as a
+      // we add it as an other middleware
       middlewareMap[OTHER_MIDDLEWARES].push(middleware)
     } else {
       const { actions, handler } = middleware

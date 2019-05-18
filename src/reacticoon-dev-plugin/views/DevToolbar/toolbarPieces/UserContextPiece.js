@@ -18,7 +18,7 @@ const UserContextPiece = ({ classes }) => (
       <Piece name="userContext">
         <Piece.Header>
           {userContext && userContext.avatar ? (
-            <img src={userContext.avatar} className={classes.userAvatar} />
+            <img src={userContext.avatar} className={classes.userAvatar} alt="user avatar" />
           ) : (
             <UserIcon />
           )}

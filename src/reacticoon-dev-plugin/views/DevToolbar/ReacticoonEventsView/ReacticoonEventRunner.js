@@ -41,8 +41,6 @@ class ReacticoonEventRunner extends React.Component {
     }
     switch (selectedEvent.definition.type) {
       case EventManager.Event.LOG_WARN.type:
-      // return 'LOL'
-
       default:
         return (
           <TextField

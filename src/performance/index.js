@@ -49,7 +49,6 @@ export const endMark = (label, markName, warning = null) => {
       // Don't pile on with more errors.
     }
     // Clear marks immediately to avoid growing buffer.
-    // TODO: uncomment
     // performance.clearMarks(formattedMarkName)
     // performance.clearMeasures(formattedLabel)
   }

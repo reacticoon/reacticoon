@@ -1,5 +1,4 @@
 import Immutable from 'immutable'
-import cloneDeep from 'lodash/cloneDeep'
 import { createReducer } from 'reacticoon/reducer'
 import { setUserContext, clearUserContext } from './actions'
 

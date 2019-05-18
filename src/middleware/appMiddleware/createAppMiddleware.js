@@ -2,6 +2,7 @@ import isNil from 'lodash/isNil'
 import invariant from 'invariant'
 
 import { EventManager } from 'reacticoon/event'
+import { __DEV__ } from 'reacticoon/environment'
 import { OTHER_MIDDLEWARES } from './constants'
 import MiddlewareRegistry from 'reacticoon/archi/registry/MiddlewareRegistry'
 
@@ -35,13 +36,15 @@ const createAppMiddleware = defaultAppMiddlewares => {
 
     const middlewaresForAction = middlewareMap[action.type] || []
 
-    // TODO: on dev only + better display
-    if (middlewaresForAction.length !== 0) {
-      console.info(
-        `[${action.type}]: middlewares: ${middlewaresForAction
-          .map(middleware => middleware.middlewareName || 'Unknwon middleware name')
-          .join(', ')}`
-      )
+    if (__DEV__) {
+      if (middlewaresForAction.length !== 0) {
+        // TODO: better display
+        console.info(
+          `[${action.type}]: middlewares: ${middlewaresForAction
+            .map(middleware => middleware.middlewareName || 'Unknwon middleware name')
+            .join(', ')}`
+        )
+      }
     }
 
     // first call actions that correspond to the key
@@ -97,12 +100,12 @@ const createAppMiddleware = defaultAppMiddlewares => {
 
     // the middleware returns undefined, we stop the propagation of the action
     if (!res) {
-      // TODO: add middleware name
       // quit forEach loop since the middleware returned undefined.
       // The middleware asked to stop
-      // TODO: dev only
-      // TODO: add middleware name
-      console.debug('no next action for ' + nextAction.type)
+      if (__DEV__) {
+        // TODO: add middleware name
+        console.debug('no next action for ' + nextAction.type)
+      }
       // quit loop
       return false
     }

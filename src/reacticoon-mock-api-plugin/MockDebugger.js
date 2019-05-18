@@ -3,8 +3,6 @@ import { saveMockedCall } from './modules/mockedCalls/actions'
 import { getMockedCalls } from './modules/mockedCalls/selectors'
 
 class MockDebugger {
-  constructor() {}
-
   addMockedCall = (request, data) => {
     getStore().dispatch(saveMockedCall({ request, data }))
   }

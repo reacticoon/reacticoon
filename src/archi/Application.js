@@ -12,10 +12,8 @@ import generateEnvironment from './generateEnvironment'
 
 import { beginMark, endMark } from 'reacticoon/performance'
 import { setCurrentEnv, __DEV__ } from '../environment'
-import { registerModules, getModules } from '../module'
+import { registerModules } from '../module'
 import OnModuleRegistered from './events/OnModuleRegistered'
-// import generateModuleEntities from '../module/generateModuleEntities'
-import generateModuleMiddlewares from '../module/generateModuleMiddlewares'
 import { registerHistory, registerRoutesConfig } from '../routing/config'
 import { registerStore } from '../store'
 import { configureI18n } from '../i18n/index'
@@ -34,10 +32,10 @@ import App from './App'
 
 const REACTICOON_KEY_ON_WINDOW = '__REACTICOON__'
 
-//
-// TODO:
-// - add appOptions callback post Application configuration (pre render)
-//
+/**
+ * Entry point of a Reacticoon application. It receives the user configuration (appOptions) and
+ * initiate the different Reacticoon modules.
+ */
 const Application = appOptions => {
   beginMark('Reacticoon Application')
 
@@ -85,7 +83,6 @@ const Application = appOptions => {
       },
       ...appOptions.plugins,
     ]
-    // TODO: add DevToolbar
   }
 
   registerPlugins(appOptions.plugins, appOptions)

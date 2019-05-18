@@ -91,9 +91,7 @@ const Piece = ({ onClick, name, classes, children, headerStyle = {} }) => {
           // Set a timeout so that the menu doesn't close before the user has time to
           // move their mouse over it
           setTimeout(() => {
-            {
-              setState({ mouseOverButton: false })
-            }
+            setState({ mouseOverButton: false })
           }, timeoutLength)
         }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import RoutingDebugger from '../../RoutingDebugger'
-import { getConfigForRoute, getRouteNameForRoute } from 'reacticoon/routing'
+import { getRouteNameForRoute } from 'reacticoon/routing'
 import { getExtendedTabs } from '../../utils'
 import DevToolsTheme from '../../components/Page/DevToolsTheme'
 import DevToolbarDetail from './DevToolbarDetail'

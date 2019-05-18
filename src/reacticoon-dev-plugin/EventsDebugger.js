@@ -33,6 +33,9 @@ class EventsDebugger {
       case ReacticoonEvents.CLEAR_USER_CONTEXT.type:
         getStore().dispatch(clearUserContext())
         break
+
+      default:
+      // no specific behaviour for this event
     }
   }
 

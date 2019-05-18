@@ -1,4 +1,4 @@
-const reacticoonDocUrl = process.env.__REACTICOON_DOC_URL__
+import __REACTICOON_DOC_URL__ from 'reacticoon/environment'
 
 /**
  * Generates a Reacticoon doc url.
@@ -6,6 +6,5 @@ const reacticoonDocUrl = process.env.__REACTICOON_DOC_URL__
  * @param {string} filename
  */
 const generateDocUrl = filename => {
-// TODO: generate __REACTICOON_DOC_URL__ on create-reacticoon-app
-  return `${reacticoonDocUrl}/${filename}`
+  return `${__REACTICOON_DOC_URL__}/${filename}`
 }

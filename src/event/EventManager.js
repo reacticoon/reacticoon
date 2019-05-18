@@ -1,7 +1,6 @@
 import invariant from 'invariant'
 import map from 'lodash/map'
 import forEach from 'lodash/forEach'
-import isEmpty from 'lodash/isEmpty'
 import isArray from 'lodash/isArray'
 import isString from 'lodash/isString'
 import isFunction from 'lodash/isFunction'

@@ -20,7 +20,7 @@ class ReacticoonTabs extends React.Component {
             <AppBar
               position="static"
               color="default"
-              position="sticky"
+              //position="sticky"
               classes={this.props.appBarClasses}
             >
               <Tabs

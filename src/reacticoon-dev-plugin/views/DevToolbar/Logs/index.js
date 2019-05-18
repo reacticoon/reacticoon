@@ -33,14 +33,14 @@ const LogsView = () => (
                   isSameEvent(event, ReacticoonEvents.LOG_NOT_IMPLEMENTED)
               )
 
-              const nbErrors = errors.length
-              const nbWarnings = warnings.length
-              const nbDeprecations = deprecations.length
+              //const nbErrors = errors.length
+              //const nbWarnings = warnings.length
+              //const nbDeprecations = deprecations.length
 
-              const nbTotal = nbErrors + nbWarnings + nbDeprecations
+              //const nbTotal = nbErrors + nbWarnings + nbDeprecations
 
-              const hasError = nbErrors > 0
-              const hasWarning = nbWarnings > 0 || nbDeprecations > 0
+              //const hasError = nbErrors > 0
+              //const hasWarning = nbWarnings > 0 || nbDeprecations > 0
 
               return (
                 <Grid container>

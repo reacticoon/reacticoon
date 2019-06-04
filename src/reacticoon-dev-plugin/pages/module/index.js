@@ -11,6 +11,10 @@ class ModulePage extends React.Component {
     const props = this.props
     const module = getModule(props.params.moduleName)
 
+    // TODO: how to open this page from dev toolbar when module is registered via
+    // useModule, so only available if lazy-loaded ?
+    // It only works if we open dev tools on the same page
+
     const reducer = module.content.reducer
 
     return (

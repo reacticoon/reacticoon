@@ -19,6 +19,10 @@ class MyAppPage extends React.Component {
           <Section title="Info" grid={{ xs: 6 }} />
 
           <Section title="Modules">
+            <p>
+              This only list modules defined on your `config/modules`. Lazy-loaded modules and
+              plugins modules are not defined here.
+            </p>
             <Table>
               <TableHead>
                 <TableRow>

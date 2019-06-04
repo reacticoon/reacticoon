@@ -11,6 +11,7 @@ import DevToolbarStoreInfo from './DevToolbarStoreInfo'
 import DevToolbarActions from './DevToolbarActions'
 import SelectorsList from './SelectorsList'
 import ReacticoonEventsView from './ReacticoonEventsView'
+import ModulesList from './ModulesList'
 import LogsView from './Logs'
 import Performance from './Performance'
 import Toolbar from './Toolbar'
@@ -22,7 +23,7 @@ const styles = theme => ({
     left: 0,
     right: 0,
     top: 0,
-    padding: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
     display: 'flex',
     background: 'white',
     zIndex: 1300,
@@ -31,13 +32,10 @@ const styles = theme => ({
   rootHide: {
     display: 'none',
   },
-  tabs_appBar_root: {
-    marginTop: -12,
-  },
   header: {
     background: theme.app.colors.dark,
     height: 50,
-    position: 'absolute',
+    position: 'fixed',
     top: 0,
     left: 0,
     right: 0,
@@ -53,10 +51,21 @@ const styles = theme => ({
     alignItems: 'center',
   },
   content: {
-    paddingTop: 54,
-    paddingBottom: 54,
     width: '100%',
+    display: 'flex',
+    paddingTop: theme.app.toolbar.header.height + 10,
+    paddingLeft: 240 + theme.spacing.unit * 2,
+    paddingBottom: 54,
   },
+  tabsView_root: {
+    width: 240,
+    position: 'fixed',
+    top: theme.app.toolbar.header.height,
+    bottom: 0,
+    left: 0,
+    paddingTop: theme.spacing.unit * 2,
+  },
+  tabsView_content: {},
 })
 
 const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTabs, onToggle }) => (
@@ -82,11 +91,15 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTab
 
     <div className={classes.content}>
       <Tabs
+        vertical
         defaultTab={3}
-        appBarClasses={{ root: classes.tabs_appBar_root }}
+        tabsViewClasses={{ root: classes.tabsView_root, content: classes.tabsView_content }}
         tabs={[
           {
             label: 'Infos',
+          },
+          {
+            label: 'Modules',
           },
           {
             label: 'Performances',
@@ -107,8 +120,9 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTab
         content={[
           // 0
           <DevToolbarDetailRequestInfo route={route} params={params} />,
+          <ModulesList />,
           <Performance />,
-          // 1
+          //
           <Grid container>
             <Grid item xs={6}>
               <DevToolbarActions />
@@ -118,7 +132,7 @@ const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTab
               <SelectorsList />
             </Grid>
           </Grid>,
-          // 2
+          //
           <DevToolbarStoreInfo />,
           <ReacticoonEventsView />,
           <LogsView />,

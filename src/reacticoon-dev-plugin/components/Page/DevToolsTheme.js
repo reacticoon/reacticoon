@@ -25,6 +25,9 @@ const theme = createMuiTheme({
         error: red[300],
         good: green[300],
       },
+      header: {
+        height: 50,
+      },
     },
   },
   // typography: { useNextVariants: true },

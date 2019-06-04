@@ -1,13 +1,42 @@
 import React from 'react'
 
 import { StateContainer } from 'reacticoon/view'
-import AppBar from '@material-ui/core/AppBar'
+import { withStyles } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 
+// https://codesandbox.io/s/n9ww0pq7p4
+const VerticalTabs = withStyles(theme => ({
+  root: {
+    background: theme.app.colors.dark,
+  },
+  flexContainer: {
+    flexDirection: 'column',
+  },
+  indicator: {
+    display: 'none',
+  },
+}))(Tabs)
+
+const VerticalTab = withStyles(theme => ({
+  root: {
+    color: 'white',
+    textAlign: 'left',
+  },
+  selected: {
+    color: 'tomato',
+    borderRight: '2px solid tomato',
+  },
+}))(Tab)
+
 class ReacticoonTabs extends React.Component {
   render() {
+    const { vertical } = this.props
+
+    const TabsView = vertical ? VerticalTabs : Tabs
+    const TabView = vertical ? VerticalTab : Tab
+
     return (
       <StateContainer
         defaultState={{
@@ -17,23 +46,17 @@ class ReacticoonTabs extends React.Component {
       >
         {({ state, setState }) => (
           <React.Fragment>
-            <AppBar
-              position="static"
-              color="default"
-              //position="sticky"
-              classes={this.props.appBarClasses}
+            <TabsView
+              value={state.tab}
+              onChange={(e, value) => {
+                setState({ tab: value, renderedTabs: { ...state.renderedTabs, [value]: true } })
+              }}
+              classes={this.props.tabsViewClasses}
             >
-              <Tabs
-                value={state.tab}
-                onChange={(e, value) => {
-                  setState({ tab: value, renderedTabs: { ...state.renderedTabs, [value]: true } })
-                }}
-              >
-                {this.props.tabs.map((tabInfo, index) => (
-                  <Tab key={index} label={tabInfo.label} />
-                ))}
-              </Tabs>
-            </AppBar>
+              {this.props.tabs.map((tabInfo, index) => (
+                <TabView key={index} label={tabInfo.label} />
+              ))}
+            </TabsView>
 
             <Typography component="div" style={{ padding: 8 * 3 }}>
               {this.props.content.map((tabContent, index) =>

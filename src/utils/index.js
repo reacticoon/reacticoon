@@ -19,3 +19,26 @@ export function sortObjectKeys(obj) {
       return acc
     }, {})
 }
+
+/**
+ *
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cyclic_object_value
+ */
+export function getCircularCulprit(data) {
+  const culprit = []
+  const getCircularReplacer = () => {
+    const seen = new WeakSet()
+    return (key, value) => {
+      if (typeof value === 'object' && value !== null) {
+        if (seen.has(value)) {
+          culprit.push({ key, value })
+          return
+        }
+        seen.add(value)
+      }
+      return value
+    }
+  }
+  JSON.stringify(data, getCircularReplacer())
+  return culprit
+}

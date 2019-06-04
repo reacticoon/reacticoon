@@ -118,7 +118,7 @@ class EventManager {
   }
 
   dispatch(eventParam, data = {}) {
-    const event = getEvent(eventParam)
+    const eventDefinition = getEvent(eventParam)
 
     const date = new Date()
 
@@ -126,24 +126,36 @@ class EventManager {
       // add listeners that listen for any event
       ...(this.listeners[ReacticoonEvents.ALL_EVENTS.type] || []),
       // add listeners specific for this event
-      ...(this.listeners[event.type] || []),
+      ...(this.listeners[eventDefinition.type] || []),
     ]
 
+    // create the event, since we create it here, the listener could alter it by reference.
+    // but making a copy of the data for each listener / just here is performance-costing.
+    // TODO: specify on listener / event doc to not modify the event by reference.
+    const event = {
+      type: eventDefinition.type,
+      data,
+      date,
+      // TODO: only on dev and better format
+      __readableDate:
+        date.getHours() +
+        ':' +
+        date.getMinutes() +
+        ':' +
+        date.getSeconds() +
+        '::' +
+        date.getMilliseconds(),
+    }
+
     listeners.forEach(listener => {
-      listener({
-        type: event.type,
-        data,
-        date,
-        // TODO: only on dev and better format
-        __readableDate:
-          date.getHours() +
-          ':' +
-          date.getMinutes() +
-          ':' +
-          date.getSeconds() +
-          '::' +
-          date.getMilliseconds(),
-      })
+      try {
+        listener(event)
+      } catch (ex) {
+        console.group('event dispatch error')
+        console.log(`An error occured while dispatching the event on the listener`)
+        console.log({ event, listener })
+        console.groupEnd('event dispatch error')
+      }
     })
   }
 

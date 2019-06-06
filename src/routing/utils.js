@@ -1,20 +1,19 @@
 import isNil from 'lodash/isNil'
 import isArray from 'lodash/isArray'
 
-const asArray = (param) => (
-  isArray(param)
-    ? param
-    : [ param ]
-)
+const asArray = param => (isArray(param) ? param : [param])
 
 /**
  * Parse the given `uri` and returns its query params as an object.
  * @param  {string} uri
  */
-export const getQueryFromUri = (uri) => {
+export const getQueryFromUri = uri => {
+  if (!uri) {
+    return {}
+  }
   uri = uri.replace(/%3D/gi, '=').replace(/%3F/i, '?')
 
-  if (uri.indexOf('?') === -1)  {
+  if (uri.indexOf('?') === -1) {
     return {}
   }
 
@@ -25,7 +24,7 @@ export const getQueryFromUri = (uri) => {
   }
 
   return uriBase.split('&').reduce((prev, curr, i, arr) => {
-    var p = curr.split("=")
+    var p = curr.split('=')
     prev[decodeURIComponent(p[0])] = decodeURIComponent(p[1])
     return prev
   }, {})
@@ -62,7 +61,8 @@ export const formatQueryParams = (uri, parameters: Object): string => {
     qs = encodeURI(qs)
     qs = qs.substring(0, qs.length - 1) // chop off last '&'
 
-    if (uri.indexOf('?') === -1) { // does not have a query param yet
+    if (uri.indexOf('?') === -1) {
+      // does not have a query param yet
       return `${uri}?${qs}`
     }
 
@@ -72,16 +72,15 @@ export const formatQueryParams = (uri, parameters: Object): string => {
   return uri
 }
 
-
 /**
-* see https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
-*/
+ * see https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+ */
 export const getQueryParam = (name, url) => {
   if (!url) url = window.location.href
   name = name.replace(/[[\]]/g, '\\$&')
 
-  const regex = new RegExp("[?&]" + name + '(=([^&#]*)|&|#|$)'),
-  results = regex.exec(url);
+  const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+    results = regex.exec(url)
   if (!results) {
     return null
   }
@@ -103,7 +102,7 @@ export const getQueryParam = (name, url) => {
   return component
 }
 
-export const getHash = (url) => {
+export const getHash = url => {
   if (!url) {
     return window.location.hash
   }
@@ -118,9 +117,7 @@ export const getHash = (url) => {
   return null
 }
 
-export const getCallbackUri = (callbackUri, event) => (
-  `${callbackUri}?event=${event}`
-)
+export const getCallbackUri = (callbackUri, event) => `${callbackUri}?event=${event}`
 
 export const removeUrlParameter = (url, queryToRemoveParam) => {
   const queryToRemove = asArray(queryToRemoveParam)
@@ -129,9 +126,7 @@ export const removeUrlParameter = (url, queryToRemoveParam) => {
 
   let queries = getQueryFromUri(url)
 
-  const baseUrl = url
-  .replace(/%3F/i, '?')
-  .split('?')[0]
+  const baseUrl = url.replace(/%3F/i, '?').split('?')[0]
 
   queryToRemove.forEach(query => {
     // finalUrl = removeQueryParamFromUrl(finalUrl, query)

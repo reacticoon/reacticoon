@@ -7,7 +7,6 @@ import isEmpty from 'lodash/isEmpty'
  * Define a route.
  */
 export default class Route {
-
   // The name (identifier) of the route.
   name: string
 
@@ -26,10 +25,9 @@ export default class Route {
    * @param handler Define if the route is restrict to loggedIn user
    * @param disable
    */
-  constructor(name: string, path: string, authRequired: boolean = true,
-    disabled: boolean = false) {
-    invariant((path.indexOf(' ') === -1), `invalid path ${path} for route ${name}`)
-    invariant((name.indexOf(' ') === -1), `invalid name ${name}`)
+  constructor(name: string, path: string, authRequired: boolean = true, disabled: boolean = false) {
+    invariant(path.indexOf(' ') === -1, `invalid path ${path} for route ${name}`)
+    invariant(name.indexOf(' ') === -1, `invalid name ${name}`)
 
     this.name = name
     this.path = path
@@ -40,27 +38,29 @@ export default class Route {
   formatQueryParams(parameters: Object): string {
     let qs = ''
     for (let key in parameters) {
-      let value = parameters[key];
-      qs += encodeURIComponent(key) + '=' + encodeURIComponent(value) + '&';
+      let value = parameters[key]
+      qs += encodeURIComponent(key) + '=' + encodeURIComponent(value) + '&'
     }
     if (qs.length > 0) {
-      qs = qs.substring(0, qs.length - 1); // chop off last '&'
+      qs = qs.substring(0, qs.length - 1) // chop off last '&'
       return `?${qs}`
     }
 
     return ''
   }
 
-
   parseQueryToObject(query) {
-    query = (query).replace(/\+/g, '%20')
+    if (!query) {
+      return {}
+    }
+    query = query.replace(/\+/g, '%20')
 
     let arr = {}
     let a = query.split(/&(?!amp)/g)
 
     for (let i = 0; i < a.length; i++) {
-        const pair = a[i].split('=')
-        arr[pair[0]] = decodeURIComponent(a[i].substr(a[i].indexOf('=') + 1))
+      const pair = a[i].split('=')
+      arr[pair[0]] = decodeURIComponent(a[i].substr(a[i].indexOf('=') + 1))
     }
 
     return arr
@@ -76,7 +76,7 @@ export default class Route {
       query = { ...query, ...this.parseQueryToObject(document.location.search.substring(1)) }
     }
 
-    let path = this.path;
+    let path = this.path
     forIn(params, (param, key) => {
       path = path.replace(`:${key}`, param)
     })

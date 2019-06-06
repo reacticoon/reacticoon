@@ -2,7 +2,6 @@ import Immutable from 'immutable'
 import cloneDeep from 'lodash/cloneDeep'
 import { createReducer } from 'reacticoon/reducer'
 import { saveEvent } from './actions'
-import { EventManager, isSameEvent } from 'reacticoon/event'
 
 const DEFAULT = Immutable.fromJS({
   events: [],
@@ -28,21 +27,11 @@ const stringifyWithoutCircularReferences = data => {
 }
 
 const onSaveEvent = (state, action) => {
-  let event = action.payload.event
+  let event = { ...action.payload.event }
 
   try {
-    if (isSameEvent(event, EventManager.Event.LOG_EXCEPTION)) {
-      // we cannot save an exception on our store
-      // we modify our event by reference here.
-      // delete event.data.ex
-      // since the data can contain reference circular loop, we stringify it
-      // event.data = stringifyWithoutCircularReferences(event.data)
-      event = {
-        ...event,
-        data: stringifyWithoutCircularReferences(event.data),
-      }
-      return state.updateIn(['events'], events => Immutable.fromJS([...cloneDeep(events), event]))
-    }
+    // since the data can contain reference circular loop, we stringify it
+    event.data = stringifyWithoutCircularReferences(event.data)
 
     return state.updateIn(['events'], events => Immutable.fromJS([...cloneDeep(events), event]))
   } catch (ex) {

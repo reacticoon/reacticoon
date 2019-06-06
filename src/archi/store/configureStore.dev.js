@@ -8,6 +8,8 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import generateMiddlewares from './generateMiddlewares'
 
 const composeEnhancers = composeWithDevTools({
+  trace: true,
+  traceLimit: 25,
   serialize: {
     immutable: Immutable,
   },

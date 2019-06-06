@@ -9,8 +9,10 @@ const INITIAL_STATE = Immutable.fromJS({})
 const handleCommandRequest = (state, action) => {
   // uncomment to test circular reference error handling
   // action.request.request = action.request
-  // action.next = action
-  // const a = Immutable.fromJS(action)
+  action.next = action
+  const a = Immutable.fromJS(action)
+
+  // throw new Error('Example of exception for reducer handler function')
 
   return state.mergeIn(
     [action.data.command, action.data.id],

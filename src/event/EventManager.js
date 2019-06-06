@@ -7,7 +7,7 @@ import isFunction from 'lodash/isFunction'
 
 import ReacticoonEvents from './ReacticoonEvents'
 
-import { isEventHandler, isEvent } from './utils'
+import { isEventHandler, isEvent, isSameEvent } from './utils'
 
 /**
  * Retrieve the given event. It can either be:
@@ -128,6 +128,23 @@ class EventManager {
       // add listeners specific for this event
       ...(this.listeners[eventDefinition.type] || []),
     ]
+
+    // we do some work for exceptions events.
+    if (isSameEvent(eventDefinition, ReacticoonEvents.LOG_EXCEPTION)) {
+      // we cannot save an exception on our store
+      // we modify our event by reference here.
+
+      // since 'ex' could be forgotten and used exception / e instead, we handle theme here.
+      const exception = data.ex || data.exception || data.e
+      if (exception && exception.stack) {
+        data.exceptionMessage = exception.message
+        data.exceptionStack = exception.stack.toString()
+        // cannot dispatch exception object
+        delete data.ex
+        delete data.exception
+        delete data.exe
+      }
+    }
 
     // create the event, since we create it here, the listener could alter it by reference.
     // but making a copy of the data for each listener / just here is performance-costing.

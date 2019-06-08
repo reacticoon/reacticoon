@@ -1,9 +1,14 @@
 {
   "scripts": {
     "test": "reacticoon test",
-    "build": "reacticoon build-library"
+    "build-old": "reacticoon build-library",
+    "build": "rollup --config"
   },
   "//": "we define dependancies on project for now, in devDependancies",
+  "dependencies": {
+    "lodash": "~4.17.11",
+    "react": "^16.8.6"
+  },
   "BACKUPdependencies": {
     "classnames": "2.2.6",
     "connected-react-router": "^6.4.0",
@@ -32,5 +37,11 @@
     "reselect": "4.0.0",
     "superagent": "^3.8.3",
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-export-default-from": "^7.2.0",
+    "rollup": "^1.14.2",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-terser": "^5.0.0"
   }
 }

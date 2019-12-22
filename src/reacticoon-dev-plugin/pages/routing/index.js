@@ -1,5 +1,6 @@
 import React from 'react'
 
+import startsWith from 'lodash/startsWith'
 import { getRoutes, Link, getRouteNameForRoute } from 'reacticoon/routing'
 
 import Table from '@material-ui/core/Table'
@@ -27,24 +28,27 @@ class PluginsPage extends React.Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {getRoutes().map((route, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{getRouteNameForRoute(route)}</TableCell>
-                    <TableCell>{route.definition.path}</TableCell>
-                    <TableCell>
-                      {route.definition.__plugin && (
-                        <Link
-                          to={Link.getRoute('REACTICOON_PLUGIN')}
-                          params={{ pluginName: route.definition.__plugin }}
-                        >
-                          {route.definition.__plugin}
-                        </Link>
-                      )}
-                    </TableCell>
-                    <TableCell>{route.definition.authRequired ? 'yes' : 'no'}</TableCell>
-                    <TableCell>{route.definition.disabled ? 'active' : 'disabled'}</TableCell>
-                  </TableRow>
-                ))}
+                {getRoutes()
+                // do not display our plugin pages, prefixed with /_rc/
+                  .filter(route => !startsWith(route.definition.path, '/_rc'))
+                  .map((route, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{getRouteNameForRoute(route)}</TableCell>
+                      <TableCell>{route.definition.path}</TableCell>
+                      <TableCell>
+                        {route.definition.__plugin && (
+                          <Link
+                            to={Link.getRoute('REACTICOON_PLUGIN')}
+                            params={{ pluginName: route.definition.__plugin }}
+                          >
+                            {route.definition.__plugin}
+                          </Link>
+                        )}
+                      </TableCell>
+                      <TableCell>{route.definition.authRequired ? 'yes' : 'no'}</TableCell>
+                      <TableCell>{route.definition.disabled ? 'active' : 'disabled'}</TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </Section>

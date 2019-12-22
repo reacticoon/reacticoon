@@ -17,6 +17,7 @@ import { mainListItems, secondaryListItems } from './listItems'
 import ReacticoonLogo from '../svg/ReacticoonLogo'
 import DevToolsTheme from './DevToolsTheme'
 import DarkTheme from './DarkTheme'
+import FlashMessagesSnackbarView from './FlashMessagesSnackbarView'
 
 const drawerWidth = 240
 
@@ -204,6 +205,8 @@ class ReacticoonDevPage extends React.Component {
             <div className={classes.appBarSpacer} />
 
             {children}
+
+            <FlashMessagesSnackbarView />
           </main>
         </div>
       </DevToolsTheme>

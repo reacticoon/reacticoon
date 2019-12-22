@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 
 import CommandModule from '../../../modules/command'
+import LoadingContainer from 'reacticoon/view/LoadingContainer'
+import ErrorBlock from 'reacticoon/view/ErrorBlock'
 
 class CommandContainer extends Component {
   constructor(props) {
@@ -13,26 +15,22 @@ class CommandContainer extends Component {
   }
 
   render() {
-    const { data, isFetching, children } = this.props
+    const { data, isFetching, error, children } = this.props
 
-    return (
-      <React.Fragment>
-        {isFetching && <div>loading</div>}
-        {data &&
-          children({
-            data,
-            isFetching,
-          })}
-      </React.Fragment>
-    )
+    return children({
+      data,
+      isFetching,
+      error,
+    })
   }
 }
 
-export default CommandModule.connect(
+const Container = CommandModule.connect(
   CommandContainer,
   {
     isFetching: 'makeIsFetchingCommandData',
     data: 'makeGetCommandData',
+    error: 'makeGetCommandError',
   },
   'runCommand',
   {
@@ -44,4 +42,26 @@ export default CommandModule.connect(
       queryPrams: {},
     },
   }
+)
+
+export default ({ children, ...props }) => (
+  <LoadingContainer
+    container={<Container {...props} />}
+    show={({ data, isFetching, error }) => isFetching || (!data && !error)}
+  >
+    {({ data, error }) => (
+      <React.Fragment>
+        {error ? (
+          error.code === 'NO_INTERNET' ? (
+            <div>The development server is not running. Learn more. TODO: link to doc</div>
+          ) :
+          <ErrorBlock error={error} />
+        ) : ( 
+          children({
+            data,
+          })
+        )}
+      </React.Fragment>
+    )}
+  </LoadingContainer>
 )

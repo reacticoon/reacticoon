@@ -29,9 +29,20 @@ const handleCommandSuccess = (state, action) =>
     })
   )
 
+const handleCommandFailure = (state, action) =>
+  state.mergeIn(
+    [action.data.command, action.data.id],
+    Immutable.fromJS({
+      isLoading: false,
+      data: null,
+      error: action.apiError,
+    })
+  )
+
 const CommandModuleReducer = createReducer(INITIAL_STATE, {
   [runCommand.REQUEST]: handleCommandRequest,
   [runCommand.SUCCESS]: handleCommandSuccess,
+  [runCommand.FAILURE]: handleCommandFailure,
 })
 
 export default CommandModuleReducer

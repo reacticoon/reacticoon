@@ -1,6 +1,7 @@
 import React from 'react'
 
 import map from 'lodash/map'
+import CommandContainer from 'reacticoon/reacticoon-dev-plugin/modules/command/view/CommandContainer'
 import { getModule } from 'reacticoon/module'
 import Page from '../../components/Page'
 import Section from '../../components/Section'
@@ -21,6 +22,20 @@ class ModulePage extends React.Component {
       <Page pageTitle={`Module - Detail`}>
         <Section.Container>
           <h1>{module.name}</h1>
+
+          <Section title="">
+            <div>Open on code editor</div>
+            {/* TODO: complete test */}
+            <CommandContainer
+              command="DEV_TOOLS::LAUNCH_EDITOR"
+              payload={{
+                fileName: '/home/loic/dev/bm/bm-website-v2/src/reacticoon/src/event/utils.js',
+                lineNumber: 10,
+              }}
+            >
+              {({ data }) => <pre>DEV_TOOLS::LAUNCH_EDITOR: {JSON.stringify(data, null, 2)}</pre>}
+            </CommandContainer>
+          </Section>
 
           <Section title="Actions">
             {map(module.content.actions, (action, actionName) => (

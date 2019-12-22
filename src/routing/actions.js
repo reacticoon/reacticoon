@@ -53,14 +53,14 @@ import { getConfigForRoute, getHistory } from './config'
 export const generatePathWithParams = (route, params, query, options = {}) => {
   const config = getConfigForRoute(route)
 
-  invariant(!isNil(config), `Config for route ${route.name} not found`);
+  invariant(!isNil(config), `Config for route ${route.name} not found`)
 
   // keep query from url
-  let finalQueries = {...query}
+  let finalQueries = { ...query }
   const queryParamsToKeep = !isNil(config.props) ? config.props.query || [] : []
   const currentUrlQueries = getQueryFromUri(window.location.href)
 
-  queryParamsToKeep.forEach((queryParam) => {
+  queryParamsToKeep.forEach(queryParam => {
     const currentValueOnUrl = currentUrlQueries[queryParam]
     const alreadySet = !isNil(finalQueries[queryParam])
     if (currentValueOnUrl && !alreadySet) {
@@ -84,9 +84,8 @@ export const redirectTo = (route, params, query, options = {}) => {
   return push(path)
 }
 
-export const createRedirectToAction = (route, params, query) => dispatch => (
+export const createRedirectToAction = (route, params, query) => dispatch =>
   dispatch(redirectTo(route, params, query))
-)
 
 export const replaceWith = (route, params, query, options = {}) => {
   if (isString(route)) {
@@ -96,9 +95,16 @@ export const replaceWith = (route, params, query, options = {}) => {
   return replace(path)
 }
 
-export const createReplaceWithAction = (route, params, query) => dispatch => (
+export const openOnNewTab = (route, params, query, options = {}) => {
+  if (isString(route)) {
+    return push(route)
+  }
+  const path = generatePathWithParams(route, params, query, options)
+  return openExternalLink(path)
+}
+
+export const createReplaceWithAction = (route, params, query) => dispatch =>
   dispatch(replaceWith(route, params, query))
-)
 
 export const reloadTo = (route, params, query, options = {}) => {
   if (isString(route)) {
@@ -112,7 +118,7 @@ export const reloadToPath = path => {
   window.location = path
 }
 
-export const openExternalLink = (uri) => {
+export const openExternalLink = uri => {
   window.open(uri, '_blank')
 }
 
@@ -129,7 +135,7 @@ export const updatePageQueries = (query = {}) => {
     query: {
       ...currentQuery,
       ...query,
-    }
+    },
   })
 }
 

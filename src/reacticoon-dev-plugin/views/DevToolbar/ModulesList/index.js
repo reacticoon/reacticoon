@@ -25,7 +25,11 @@ const ModulesList = () => (
         {map(getModules(), (module, moduleName) => (
           <TableRow module={module} key={moduleName}>
             <TableCell>
-              <Link to={Link.getRoute('REACTICOON_MODULE')} params={{ moduleName: module.name }}>
+              <Link
+                to={Link.getRoute('REACTICOON_MODULE')}
+                params={{ moduleName: module.name }}
+                newTab
+              >
                 {module.name}
               </Link>
             </TableCell>

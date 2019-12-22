@@ -141,7 +141,7 @@ const Piece = ({ onClick, name, classes, children, headerStyle = {} }) => {
                 }}
               >
                 {content().map((content, index) => (
-                  <MenuItem key={index} className={classes.item}>
+                  <MenuItem key={index} className={classes.item} onClick={content.onClick}>
                     <b>{content.label}</b>{' '}
                     <span className={classes.itemValue}>{content.value}</span>
                   </MenuItem>

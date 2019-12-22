@@ -1,5 +1,8 @@
 import React from 'react'
 
+import { findIndexOnArray } from 'reacticoon/utils/array'
+
+import { DevToolbarRoute } from '../../modules/devToolBar'
 import { getReactVersion, getReactVersionDocLink } from 'reacticoon/environment'
 import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
@@ -48,7 +51,7 @@ const styles = theme => ({
   },
   headerBrand: {
     display: 'flex',
-    alignItems: 'center',
+    alignitems: 'center',
   },
   content: {
     width: '100%',
@@ -68,87 +71,115 @@ const styles = theme => ({
   tabsView_content: {},
 })
 
-const DevToolbarDetail = ({ show, route, routeName, params, classes, extendedTabs, onToggle }) => (
-  <div
-    className={classNames(classes.root, {
-      [classes.rootHide]: !show,
-    })}
-  >
-    <div className={classes.header}>
-      <div className={classes.headerBrand}>
-        <ReacticoonLogo height={36} />
-        &nbsp;&nbsp;
-        <h2>Reacticoon Dev Tools Debugger</h2>
+const DevToolbarDetail = ({
+  show,
+  route,
+  routeName,
+  params,
+  devToolbarRoute,
+  classes,
+  extendedTabs,
+  onToggle,
+}) => {
+  const tabs = [
+    {
+      id: DevToolbarRoute.infos,
+      label: 'Infos',
+    },
+    {
+      id: DevToolbarRoute.modules,
+      label: 'Modules',
+    },
+    {
+      id: DevToolbarRoute.performances,
+      label: 'Performances',
+    },
+    {
+      id: DevToolbarRoute.actions,
+      label: 'Actions & selectors',
+    },
+    {
+      id: DevToolbarRoute.store,
+      label: 'Store',
+    },
+    {
+      id: DevToolbarRoute.events,
+      label: 'Reacticoon events',
+    },
+    {
+      id: DevToolbarRoute.logs,
+      label: 'Logs',
+    },
+  ].concat(extendedTabs.map(tab => ({ label: tab.label })))
+
+  let defaultTab = findIndexOnArray(tabs, tab => tab.id === devToolbarRoute)
+
+  if (defaultTab === -1) {
+    defaultTab = 0
+  }
+
+  return (
+    <div
+      className={classNames(classes.root, {
+        [classes.rootHide]: !show,
+      })}
+    >
+      <div className={classes.header}>
+        <div className={classes.headerBrand}>
+          <ReacticoonLogo height={36} />
+          &nbsp;&nbsp;
+          <h2>Reacticoon Dev Tools Debugger</h2>
+        </div>
+
+        {/* TODO: link to reacticoon doc / react  */}
+        <div>
+          <a href={getReactVersionDocLink()} target="_blank">
+            {getReactVersion()}
+          </a>
+        </div>
       </div>
 
-      {/* TODO: link to reacticoon doc / react  */}
-      <div>
-        <a href={getReactVersionDocLink()} target="_blank">
-          {getReactVersion()}
-        </a>
+      <div className={classes.content}>
+        <Tabs
+          vertical
+          defaultTab={defaultTab}
+          tabsViewClasses={{ root: classes.tabsView_root, content: classes.tabsView_content }}
+          tabs={tabs.map(tab => ({
+            label: tab.label,
+          }))}
+          content={[
+            // 0
+            <DevToolbarDetailRequestInfo route={route} params={params} />,
+            <ModulesList />,
+            <Performance />,
+            //
+            <Grid container>
+              <Grid item xs={6}>
+                <DevToolbarActions />
+              </Grid>
+
+              <Grid item xs={6}>
+                <SelectorsList />
+              </Grid>
+            </Grid>,
+            //
+            <DevToolbarStoreInfo />,
+            <ReacticoonEventsView />,
+            <LogsView />,
+          ].concat(extendedTabs.map(tab => React.createElement(tab.view)))}
+        />
       </div>
-    </div>
 
-    <div className={classes.content}>
-      <Tabs
-        vertical
-        defaultTab={3}
-        tabsViewClasses={{ root: classes.tabsView_root, content: classes.tabsView_content }}
-        tabs={[
-          {
-            label: 'Infos',
-          },
-          {
-            label: 'Modules',
-          },
-          {
-            label: 'Performances',
-          },
-          {
-            label: 'Actions & selectors',
-          },
-          {
-            label: 'Store',
-          },
-          {
-            label: 'Reacticoon events',
-          },
-          {
-            label: 'Logs',
-          },
-        ].concat(extendedTabs.map(tab => ({ label: tab.label })))}
-        content={[
-          // 0
-          <DevToolbarDetailRequestInfo route={route} params={params} />,
-          <ModulesList />,
-          <Performance />,
-          //
-          <Grid container>
-            <Grid item xs={6}>
-              <DevToolbarActions />
-            </Grid>
-
-            <Grid item xs={6}>
-              <SelectorsList />
-            </Grid>
-          </Grid>,
-          //
-          <DevToolbarStoreInfo />,
-          <ReacticoonEventsView />,
-          <LogsView />,
-        ].concat(extendedTabs.map(tab => React.createElement(tab.view)))}
+      {/* BOTTOM */}
+      <Toolbar
+        show
+        route={route}
+        routeName={routeName}
+        onToggle={onToggle}
+        onToggleDetail={onToggle}
       />
     </div>
-
-    {/* BOTTOM */}
-    <Toolbar
-      show
-      route={route}
-      routeName={routeName}
-      onToggle={onToggle}
-      onToggleDetail={onToggle}
-    />
-  </div>
-)
+  )
+}
 
 export default withStyles(styles)(DevToolbarDetail)

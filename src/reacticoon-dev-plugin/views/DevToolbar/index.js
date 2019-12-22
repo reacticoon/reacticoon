@@ -1,5 +1,6 @@
 import React from 'react'
 
+import DevToolbarContainer from '../../modules/devToolBar/container'
 import RoutingDebugger from '../../RoutingDebugger'
 import { getRouteNameForRoute } from 'reacticoon/routing'
 import { getExtendedTabs } from '../../utils'
@@ -13,9 +14,6 @@ class DevToolbar extends React.Component {
 
     this.state = {
       showBar: true,
-      // can be null, true or false. null: we do not rendre, false: we only hide,
-      // to avoid resetting the state and allow going on and back.
-      showDetail: false, // null,
     }
 
     this.updateRoutingDebugger(props)
@@ -33,15 +31,9 @@ class DevToolbar extends React.Component {
     RoutingDebugger.setCurrentRoute(route)
   }
 
-  toggleBar = () => {
+  toggleBar = route => {
     this.setState({
       showBar: !this.state.showBar,
-    })
-  }
-
-  toggleDetail = () => {
-    this.setState({
-      showDetail: !this.state.showDetail,
     })
   }
 
@@ -51,31 +43,48 @@ class DevToolbar extends React.Component {
     const routeName = getRouteNameForRoute({ definition: route })
 
     return (
-      <DevToolsTheme>
-        {this.state.showDetail !== null && (
-          <DevToolbarDetail
-            show={this.state.showDetail}
-            onToggle={this.toggleDetail}
-            route={route}
-            routeName={routeName}
-            params={params}
-            location={location}
-            extendedTabs={this.extendedTabs}
-          />
-        )}
+      <DevToolbarContainer>
+        {({ route: devToolbarRoute, displayDevToolbarRoute, DevToolbarRoute }) => {
+          return (
+            <DevToolsTheme>
+              {devToolbarRoute !== null && (
+                <DevToolbarDetail
+                  show={devToolbarRoute !== null}
+                  devToolbarRoute={devToolbarRoute}
+                  onToggle={devToolbarRoute => {
+                    if (devToolbarRoute) {
+                      displayDevToolbarRoute(null)
+                    } else {
+                      displayDevToolbarRoute(devToolbarRoute)
+                    }
+                  }}
+                  route={route}
+                  routeName={routeName}
+                  params={params}
+                  location={location}
+                  extendedTabs={this.extendedTabs}
+                />
+              )}
 
-        {!this.state.showDetail && (
-          <Toolbar
-            show={this.state.showBar}
-            onToggle={this.toggleBar}
-            onToggleDetail={this.toggleDetail}
-            route={route}
-            routeName={routeName}
-            params={params}
-            location={location}
-          />
-        )}
-      </DevToolsTheme>
+              <Toolbar
+                show={this.state.showBar}
+                onToggle={this.toggleBar}
+                onToggleDetail={() => {
+                  if (devToolbarRoute) {
+                    displayDevToolbarRoute(null)
+                  } else {
+                    displayDevToolbarRoute(DevToolbarRoute.events)
+                  }
+                }}
+                route={route}
+                routeName={routeName}
+                params={params}
+                location={location}
+              />
+            </DevToolsTheme>
+          )
+        }}
+      </DevToolbarContainer>
     )
   }
 }

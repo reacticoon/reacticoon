@@ -23,10 +23,11 @@ class ModulePage extends React.Component {
         <Section.Container>
           <h1>{module.name}</h1>
 
+          {/* TODO: */}
           <Section title="">
             <div>Open on code editor</div>
             {/* TODO: complete test */}
-            <CommandContainer
+            {/* <CommandContainer
               command="DEV_TOOLS::LAUNCH_EDITOR"
               payload={{
                 fileName: '/home/loic/dev/bm/bm-website-v2/src/reacticoon/src/event/utils.js',
@@ -34,7 +35,7 @@ class ModulePage extends React.Component {
               }}
             >
               {({ data }) => <pre>DEV_TOOLS::LAUNCH_EDITOR: {JSON.stringify(data, null, 2)}</pre>}
-            </CommandContainer>
+            </CommandContainer> */}
           </Section>
 
           <Section title="Actions">

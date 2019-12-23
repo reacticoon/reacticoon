@@ -36,7 +36,7 @@ const Section = ({ title, grid = { xs: 12 }, classes, children }) => (
 const SectionWithStyles = withStyles(styles)(Section)
 
 SectionWithStyles.Container = ({ children, ...otherProps }) => (
-  <Grid container spacing={16} {...otherProps}>
+  <Grid container spacing={2} {...otherProps}>
     {children}
   </Grid>
 )

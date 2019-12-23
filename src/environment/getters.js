@@ -53,3 +53,5 @@ export const isEnvQA = () => __ENV__ === 'qa'
 export const isEnvCI = () => __ENV__ === 'ci'
 export const isEnvProduction = () => __ENV__ === 'prod' || __ENV__ === 'production'
 export const isEnvTesting = () => __ENV__ === 'testing'
+
+export const getProjectSrcPath = () => process.env.PROJECT_SRC

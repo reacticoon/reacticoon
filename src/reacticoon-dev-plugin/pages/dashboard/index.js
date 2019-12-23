@@ -10,10 +10,12 @@ import {
   getReactVersionDocLink,
 } from 'reacticoon/environment'
 import List from '@material-ui/core/List'
+import Grid from '@material-ui/core/Grid'
 import ListItem from '@material-ui/core/ListItem'
 import Page from '../../components/Page'
 import Pre from '../../components/Pre'
 import Section from '../../components/Section'
+import ReacticoonLogo from '../../components/svg/ReacticoonLogo'
 
 class DashboardPage extends React.Component {
   render() {
@@ -34,29 +36,49 @@ class DashboardPage extends React.Component {
           </Section>
 
           <Section title="Help" grid={{ xs: 6 }}>
-            <List>
-              <ListItem>
-                <a href={getReacticoonWebsiteUrl()} target="_blank" rel="noopener noreferer">
-                  Reacticoon website
-                </a>
-              </ListItem>
+            <Grid container spacing={2}>
+              <Grid
+                sm={4}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  margin: 'auto',
+                }}
+              >
+                <ReacticoonLogo height={120} />
+              </Grid>
+              <Grid sm={8}>
+                <List>
+                  <ListItem>
+                    <a href={getReacticoonWebsiteUrl()} target="_blank" rel="noopener noreferer">
+                      Reacticoon website
+                    </a>
+                  </ListItem>
 
-              <ListItem>
-                <a
-                  href={`${getReacticoonRepositoryUrl()}/issues`}
-                  target="_blank"
-                  rel="noopener noreferer"
-                >
-                  Github - Issues
-                </a>
-              </ListItem>
+                  <ListItem>
+                    <a
+                      href={`${getReacticoonRepositoryUrl()}/issues`}
+                      target="_blank"
+                      rel="noopener noreferer"
+                    >
+                      Github - Issues
+                    </a>
+                  </ListItem>
 
-              <ListItem>
-                <a href={getReacticoonOrganisationUrl()} target="_blank" rel="noopener noreferer">
-                  Reacticoon on Github
-                </a>
-              </ListItem>
-            </List>
+                  <ListItem>
+                    <a
+                      href={getReacticoonOrganisationUrl()}
+                      target="_blank"
+                      rel="noopener noreferer"
+                    >
+                      Reacticoon on Github
+                    </a>
+                  </ListItem>
+                </List>
+              </Grid>
+            </Grid>
           </Section>
 
           <Section title={`Environment - ${__ENV__}`}>

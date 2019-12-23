@@ -8,6 +8,12 @@ class CommandContainer extends Component {
   constructor(props) {
     super(props)
 
+    if (!props.manualRun) {
+      this.runCommand()
+    }
+  }
+
+  runCommand = () => {
     this.props.runCommand(this.props.id, this.props.command, {
       queryParams: this.props.queryParams,
       payload: this.props.payload,
@@ -21,6 +27,7 @@ class CommandContainer extends Component {
       data,
       isFetching,
       error,
+      runCommand: this.runCommand,
     })
   }
 }
@@ -44,21 +51,23 @@ const Container = CommandModule.connect(
   }
 )
 
-export default ({ children, ...props }) => (
+export default ({ children, manualRun, ...props }) => (
   <LoadingContainer
-    container={<Container {...props} />}
-    show={({ data, isFetching, error }) => isFetching || (!data && !error)}
+    container={<Container manualRun={manualRun} {...props} />}
+    show={({ data, isFetching, error }) => !manualRun && (isFetching || (!data && !error))}
   >
-    {({ data, error }) => (
+    {({ data, runCommand, error }) => (
       <React.Fragment>
         {error ? (
           error.code === 'NO_INTERNET' ? (
             <div>The development server is not running. Learn more. TODO: link to doc</div>
-          ) :
-          <ErrorBlock error={error} />
-        ) : ( 
+          ) : (
+            <ErrorBlock error={error} />
+          )
+        ) : (
           children({
             data,
+            runCommand,
           })
         )}
       </React.Fragment>

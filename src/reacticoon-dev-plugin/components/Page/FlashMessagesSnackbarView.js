@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
-import { FlashMessageType } from 'app/reacticoon-plugins/reacticoon-flash-messages/src/service'
+import { FlashMessageType } from 'reacticoon-plugins/reacticoon-flash-messages/src/service'
 
 // https://github.com/iamhosseindhv/notistack
 import { SnackbarProvider, useSnackbar } from 'notistack'
-import FlashMessagesContainer from 'app/reacticoon-plugins/reacticoon-flash-messages/src/container'
+import FlashMessagesContainer from 'reacticoon-plugins/reacticoon-flash-messages/src/container'
 import classNames from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 import Collapse from '@material-ui/core/Collapse'

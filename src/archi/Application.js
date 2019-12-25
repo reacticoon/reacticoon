@@ -74,11 +74,11 @@ const Application = appOptions => {
     // add dev reacticoon plugin on __DEV__.
     appOptions.plugins = [
       {
-        plugin: require('reacticoon/reacticoon-dev-plugin/index').default,
+        plugin: require('reacticoon-plugins/reacticoon-dev-plugin/src/index').default,
         config: {},
       },
       {
-        plugin: require('reacticoon/reacticoon-testing-plugin/index').default,
+        plugin: require('reacticoon-plugins/reacticoon-testing-plugin/src/index').default,
         config: {},
       },
       ...appOptions.plugins,

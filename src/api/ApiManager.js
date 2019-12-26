@@ -109,10 +109,14 @@ class ApiManager {
    * Merge headersParam with the headers given by the headersMiddleware.
    * Priority is given to the params headers over the middleware headers.
    */
-  getHeaders(headersParam: Object): Object {
-    const headersToSet = merge(this.config.headersMiddleware(), headersParam)
+  getHeaders(headersParam = {}) {
+    if (this.config.headersMiddleware) {
+      const headersToSet = merge(this.config.headersMiddleware(), headersParam)
 
-    return headersToSet
+      return headersToSet
+    }
+
+    return headersParam
   }
 
   /**

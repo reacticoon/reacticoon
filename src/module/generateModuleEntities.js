@@ -11,14 +11,19 @@ const generateModuleEntities = modules => {
 
   forOwn(modules, (module, key) => {
     // force module to set reducer to null
-    invariant(!isUndefined(module.content.reducer), `no reducer found for ${module.name}`)
-    const reducer = module.content.reducer
-    if (reducer) {
-      if (__DEV__) {
-        reducer._module = module.name
-        reducer.toString = () => `[reducer] ${module.name}`
+    invariant(
+      !isUndefined(module.content.reducer) || module.content.noReducer,
+      `no reducer found for ${module.name}`
+    )
+    if (!module.content.noReducer) {
+      const reducer = module.content.reducer
+      if (reducer) {
+        if (__DEV__) {
+          reducer._module = module.name
+          reducer.toString = () => `[reducer] ${module.name}`
+        }
+        entities[module.name] = reducer
       }
-      entities[module.name] = reducer
     }
   })
 

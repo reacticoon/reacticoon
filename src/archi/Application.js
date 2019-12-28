@@ -82,6 +82,11 @@ const Application = appOptions => {
         config: {},
       },
       {
+        plugin: require('reacticoon-plugins/reacticoon-plugin-git/src/index')
+          .default,
+        config: {},
+      },
+      {
         plugin: require('reacticoon-plugins/reacticoon-plugins-marketplace-plugin/src/index')
           .default,
         config: {},

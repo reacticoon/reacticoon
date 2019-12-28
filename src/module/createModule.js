@@ -23,6 +23,7 @@ import { connect } from 'reacticoon/view'
  * import bookmarkReducer from './reducer'
  *
  * const bookmarkModule = createModule('Bookmark', {
+ *   noReducer: true, // if you explicitely do not want a reducer.
  *   actions,
  *   reducer: bookmarkReducer,
  *   selectors,

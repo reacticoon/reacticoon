@@ -1,9 +1,9 @@
 import isNil from 'lodash/isNil'
-import startsWith from 'lodash/startsWith'
 import invariant from 'invariant'
 import isArray from 'lodash/isArray'
 import forEach from 'lodash/forEach'
 
+import { isMakeSelector } from 'reacticoon/selector/utils'
 import { connect } from 'reacticoon/view'
 
 /**
@@ -32,11 +32,11 @@ import { connect } from 'reacticoon/view'
  * export default bookmarkModule
  * ```
  */
-const createModule = (name, content) => {
+const createModule = (moduleName, content) => {
   const getAction = actionName => {
     const action = content.actions[actionName]
 
-    invariant(!isNil(action), `Module ${name}, action not found: ${actionName}`)
+    invariant(!isNil(action), `Module ${moduleName}, action not found: ${actionName}`)
 
     return action
   }
@@ -52,7 +52,7 @@ const createModule = (name, content) => {
   const getSelector = selectorName => {
     const selector = content.selectors[selectorName]
 
-    invariant(!isNil(selector), `Module ${name}, selector not found: ${selectorName}`)
+    invariant(!isNil(selector), `Module ${moduleName}, selector not found: ${selectorName}`)
 
     return selector
   }
@@ -69,10 +69,12 @@ const createModule = (name, content) => {
    * </pre>
    */
   const getMapStateToProps = selectorsNames => {
-    let isMake = false
+    let hasAMakeSelector = false
+    
     forEach(selectorsNames, selectorName => {
-      if (startsWith(selectorName, 'make')) {
-        isMake = true
+        const selector = getSelector(selectorName)
+        if (isMakeSelector(selectorName, selector)) {
+        hasAMakeSelector = true
         return false // quit loop
       }
     })
@@ -81,7 +83,8 @@ const createModule = (name, content) => {
       const selectorsMap = {}
       forEach(selectorsNames, (selectorName, valueName) => {
         const selector = getSelector(selectorName)
-        if (startsWith(selectorName, 'make')) {
+        
+        if (isMakeSelector(selectorName, selector)) {
           selectorsMap[valueName] = selector()
         } else {
           selectorsMap[valueName] = selector
@@ -98,7 +101,7 @@ const createModule = (name, content) => {
       return mapStateToProps
     }
 
-    if (isMake) {
+    if (hasAMakeSelector) {
       return () => createMapStateToProps()
     } else {
       return createMapStateToProps()
@@ -130,15 +133,20 @@ const createModule = (name, content) => {
       getActionsMap.apply(null, actions)
     )(container)
 
+    // TODO: which other options could we have ?
+    // should we spread the options ?
     if (options.defaultProps) {
       connected.defaultProps = options.defaultProps
     }
+
+    const displayName = `${connected.displayName} (${moduleName})`
+    connected.displayName = displayName
 
     return connected
   }
 
   return {
-    name,
+    name: moduleName,
     content,
     getAction,
     getSelector,

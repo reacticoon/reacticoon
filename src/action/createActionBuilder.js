@@ -45,7 +45,7 @@ import { __DEV__ } from 'reacticoon/environment'
 import isNil from 'lodash/isNil'
 import isFunction from 'lodash/isFunction'
 import isUndefined from 'lodash/isUndefined'
-import { getParamNames } from 'reacticoon/utils'
+import { getParamNames, defineFunctionName } from 'reacticoon/utils'
 
 /**
  *
@@ -103,6 +103,7 @@ const createActionBuilder = options => {
 
     if (__DEV__) {
       actionCreator.__parameters = isFunction(data) ? getParamNames(data) : []
+      defineFunctionName(actionCreator, `action ${type}`)
     }
 
     return actionCreator

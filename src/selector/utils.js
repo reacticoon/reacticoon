@@ -1,5 +1,15 @@
 import invariant from 'invariant'
 import isUndefined from 'lodash/isUndefined'
+import startsWith from 'lodash/startsWith'
+
+export const isMakeSelector = (selectorName, selector) => {
+  return (
+    // selectors created using createMakeSelector have the __IS_MAKE_SELETOR property.
+    (selector && selector.__IS_MAKE_SELECTOR) 
+    // using the make prefix for the selector name make it a "make selector"
+    || (selectorName && startsWith(selectorName, 'make'))
+  )
+}
 
 /**
  *

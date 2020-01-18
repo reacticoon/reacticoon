@@ -5,11 +5,11 @@ import isNil from 'lodash/isNil'
 
 import { Link as ReactRouterLink } from 'react-router-dom'
 
-import Route from './Route'
+import RouteDefinition from './RouteDefinition'
 import { getRoutingEnum, getRoute } from './config'
 
 /**
- * Abstract the react-router-dom Route to handle our `Route` definition.
+ * Abstract the react-router-dom RouteDefinition to handle our `RouteDefinition` definition.
  */
 const Link = props => {
   const { to, params, children, newTab, target, ...otherProps } = props
@@ -23,7 +23,7 @@ const Link = props => {
 }
 
 Link.propTypes = {
-  to: PropTypes.objectOf(Route).isRequired,
+  to: PropTypes.objectOf(RouteDefinition).isRequired,
 }
 
 // Shortcut to access to RoutingEnum

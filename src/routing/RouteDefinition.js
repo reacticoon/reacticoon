@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty'
 /**
  * Define a route.
  */
-export default class Route {
+export default class RouteDefinition {
   // The name (identifier) of the route.
   name: string
 
@@ -18,7 +18,7 @@ export default class Route {
   authRequired: boolean
 
   /**
-   * Construct a new Route object.
+   * Construct a new RouteDefinition object.
    * @param name The name (identifier) of the route.
    * @param path The path of the route. Ex: /home or /restaurants/:id
    * @param handler The handler for this route. A null handler disable the route

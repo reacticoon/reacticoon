@@ -39,7 +39,7 @@ import { getConfigForRoute, getHistory } from './config'
 //
 // see https://github.com/ReactTraining/history/blob/v3/docs/Location.md
 //
-// We do not use Location but our custom `Route` object, that is defined on `RoutingEnum`.
+// We do not use Location but our custom `RouteDefinition` object, that is defined on `RoutingEnum`.
 //
 //
 

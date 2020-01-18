@@ -3,7 +3,7 @@ import isNil from 'lodash/isNil'
 import isFunction from 'lodash/isFunction'
 import { createSelector } from 'reselect'
 
-import { getStateForModule } from './index'
+import { getStateForModule } from './utils'
 
 /**
  * Generate a simple selector with basic isFetching / getData / getError
@@ -31,46 +31,39 @@ const createApiSelectors = (stateRetriever, formatData = null) => {
   const getState = isFunction(stateRetriever) ? stateRetriever : getStateForModule(stateRetriever)
 
   return {
-    isFetching: createSelector(
-      [getState],
-      dataState => (isNil(dataState) ? false : dataState.get('isFetching') || false)
+    isFetching: createSelector([getState], dataState =>
+      isNil(dataState) ? false : dataState.get('isFetching') || false
     ),
 
-    getData: createSelector(
-      [getState],
-      dataState => {
-        if (isNil(dataState)) {
-          return null
-        }
-
-        const data = dataState.get('data')
-
-        if (isNil(data)) {
-          return null
-        }
-
-        return formatData !== null && typeof formatData === 'function'
-          ? formatData(data.toJS())
-          : data.toJS()
+    getData: createSelector([getState], dataState => {
+      if (isNil(dataState)) {
+        return null
       }
-    ),
 
-    getError: createSelector(
-      [getState],
-      dataState => {
-        if (isNil(dataState)) {
-          return null
-        }
+      const data = dataState.get('data')
 
-        const error = dataState.get('error')
-
-        if (isNil(error)) {
-          return null
-        }
-
-        return error.toJS()
+      if (isNil(data)) {
+        return null
       }
-    ),
+
+      return formatData !== null && typeof formatData === 'function'
+        ? formatData(data.toJS())
+        : data.toJS()
+    }),
+
+    getError: createSelector([getState], dataState => {
+      if (isNil(dataState)) {
+        return null
+      }
+
+      const error = dataState.get('error')
+
+      if (isNil(error)) {
+        return null
+      }
+
+      return error.toJS()
+    }),
   }
 }
 

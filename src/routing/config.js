@@ -9,7 +9,7 @@ let _routes = []
 
 export const addRoutes = routes => {
   // TODO: verify there is no conflicts on routes to add
-  _routes = [ ..._routes, ...routes ]
+  _routes = [..._routes, ...routes]
 }
 
 export const registerRoutes = addRoutes
@@ -69,7 +69,7 @@ export const getRoute = routeName => {
 //
 //
 
-export const registerRoutesConfig = (appOptions) => {
+export const registerRoutesConfig = appOptions => {
   // TODO: rename to routingEnum
   // Note: plugin routes config are handle on plugin
   // here we register the app routing

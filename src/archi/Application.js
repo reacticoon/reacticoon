@@ -68,6 +68,11 @@ const Application = appOptions => {
   setCurrentEnv(environment)
 
   //
+  // routes
+  //
+  registerRoutesConfig(appOptions)
+
+  //
   // plugins
   //
 
@@ -152,11 +157,6 @@ const Application = appOptions => {
 
   // TODO: uncomment
   // configureI18n(appOptions.i18n)
-
-  //
-  // routes
-  //
-  registerRoutesConfig(appOptions)
 
   //
   // Api manager

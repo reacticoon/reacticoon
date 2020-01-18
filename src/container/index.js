@@ -1,2 +1,2 @@
-export createSimpleContainer from './createSimpleContainer'
-export createModuleContainer from './createModuleContainer'
+export { default as createSimpleContainer } from './createSimpleContainer'
+export { default as createModuleContainer } from './createModuleContainer'

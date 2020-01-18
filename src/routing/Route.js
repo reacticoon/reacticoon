@@ -25,7 +25,12 @@ export default class Route {
    * @param handler Define if the route is restrict to loggedIn user
    * @param disable
    */
-  constructor(name: string, path: string, authRequired: boolean = true, disabled: boolean = false) {
+  constructor(
+    name: string,
+    path: string,
+    authRequired: boolean = false,
+    disabled: boolean = false
+  ) {
     invariant(path.indexOf(' ') === -1, `invalid path ${path} for route ${name}`)
     invariant(name.indexOf(' ') === -1, `invalid name ${name}`)
 

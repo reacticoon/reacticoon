@@ -12,7 +12,16 @@ import { getRoutingEnum, getRoute } from './config'
  * Abstract the react-router-dom RouteDefinition to handle our `RouteDefinition` definition.
  */
 const Link = props => {
-  const { to, params, children, newTab, target, ...otherProps } = props
+  const { to, params, children, newTab, target, href, ...otherProps } = props
+
+  if (href) {
+    return (
+      <a href={href} target={newTab ? '_blank' : target}>
+        {children}
+      </a>
+    )
+  }
+
   const finalTo = !isNil(to) ? to.generatePathWithParams(params) : '#'
 
   return (
@@ -23,7 +32,7 @@ const Link = props => {
 }
 
 Link.propTypes = {
-  to: PropTypes.objectOf(RouteDefinition).isRequired,
+  to: PropTypes.objectOf(RouteDefinition),
 }
 
 // Shortcut to access to RoutingEnum

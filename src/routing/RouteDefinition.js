@@ -7,16 +7,6 @@ import isEmpty from 'lodash/isEmpty'
  * Define a route.
  */
 export default class RouteDefinition {
-  // The name (identifier) of the route.
-  name: string
-
-  // The path of the route. Ex: /home or /users/:id
-  path: string
-
-  disable: boolean
-
-  authRequired: boolean
-
   /**
    * Construct a new RouteDefinition object.
    * @param name The name (identifier) of the route.
@@ -25,12 +15,7 @@ export default class RouteDefinition {
    * @param handler Define if the route is restrict to loggedIn user
    * @param disable
    */
-  constructor(
-    name: string,
-    path: string,
-    authRequired: boolean = false,
-    disabled: boolean = false
-  ) {
+  constructor(name, path, authRequired = false, disabled = false) {
     invariant(path.indexOf(' ') === -1, `invalid path ${path} for route ${name}`)
     invariant(name.indexOf(' ') === -1, `invalid name ${name}`)
 
@@ -40,7 +25,7 @@ export default class RouteDefinition {
     this.disabled = disabled
   }
 
-  formatQueryParams(parameters: Object): string {
+  formatQueryParams(parameters) {
     let qs = ''
     for (let key in parameters) {
       let value = parameters[key]
@@ -74,7 +59,7 @@ export default class RouteDefinition {
   /*
    * Replace params. On url definition, params start with ':'
    */
-  generatePathWithParams(params: Object, query: Object, options = {}) {
+  generatePathWithParams(params, query, options = {}) {
     const search = window.location.search.substring(1)
 
     if (!isEmpty(search) && options.keepQuery === true) {
@@ -89,7 +74,7 @@ export default class RouteDefinition {
     return path + this.formatQueryParams(query)
   }
 
-  getPath(): string {
+  getPath() {
     return this.path
   }
 }

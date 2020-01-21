@@ -80,7 +80,7 @@ const Application = appOptions => {
     // add dev reacticoon plugin on __DEV__.
     appOptions.plugins = [
       {
-        plugin: require('reacticoon-plugins/reacticoon-testing-plugin/src/index').default,
+        plugin: require('reacticoon-plugins/reacticoon-plugin-testing/src/index').default,
         config: {},
       },
       {
@@ -88,14 +88,13 @@ const Application = appOptions => {
         config: {},
       },
       {
-        plugin: require('reacticoon-plugins/reacticoon-plugins-marketplace-plugin/src/index')
-          .default,
+        plugin: require('reacticoon-plugins/reacticoon-plugin-marketplace/src/index').default,
         config: {},
       },
       ...appOptions.plugins,
       // must be final to handle 404
       {
-        plugin: require('reacticoon-plugins/reacticoon-dev-plugin/src/index').default,
+        plugin: require('reacticoon-plugins/reacticoon-plugin-dev/src/index').default,
         config: {},
       },
     ]

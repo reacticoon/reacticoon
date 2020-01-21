@@ -122,7 +122,7 @@ const ReacticoonEvents = {
 
   //
   // -- form
-  // Note: those events are generic for any form plugin to allow replace the `reacticoon-form` plugin
+  // Note: those events are generic for any form plugin to allow replace the `reacticoon-plugin-form` plugin
   // We consider it as a reacticoon/event, since form handling should be used on any Reacticoon
   // app.
   //

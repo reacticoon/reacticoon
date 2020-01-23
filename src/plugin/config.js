@@ -5,7 +5,7 @@ import isUndefined from 'lodash/isUndefined'
 import isEmpty from 'lodash/isEmpty'
 import isFunction from 'lodash/isFunction'
 // TODO: mv to reacticoon ?
-import createAsyncPage from 'reacticoon-plugins/reacticoon-plugin-dev/src/views/createAsyncPage'
+import createAsyncPage from 'reacticoon-plugin-dev/views/createAsyncPage'
 
 import { __DEV__ } from '../environment'
 

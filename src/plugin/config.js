@@ -1,3 +1,4 @@
+import React from 'react'
 import invariant from 'invariant'
 import find from 'lodash/find'
 import forEach from 'lodash/forEach'
@@ -16,7 +17,6 @@ import generateModuleEntities from '../module/generateModuleEntities'
 import generateModuleMiddlewares from '../module/generateModuleMiddlewares'
 
 import { addRoutingEnum, addRoutes, createRoutingEnum, RouteDefinition } from 'reacticoon/routing'
-
 //
 // array of plugins config
 // A plugin config is an object:
@@ -68,8 +68,15 @@ export const generatePluginRoutes = plugin => {
     }
   }
 
+  let createDevToolAsyncPage = loader => createAsyncPage(loader)
+  if (__DEV__) {
+    const LoadingPageView = require('reacticoon-plugin-dev/components/LoadingPageView').default
+    createDevToolAsyncPage = loader => createAsyncPage(loader, <LoadingPageView />)
+  }
+
   const api = {
     createAsyncPage,
+    createDevToolAsyncPage,
   }
 
   const routesData = plugin.routing(api)

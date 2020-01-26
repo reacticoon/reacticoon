@@ -162,17 +162,20 @@ class ApiManager {
    * @returns {ApiError} A populate ApiError object.
    */
   createApiError(responseBody: string): ApiError {
-    const error = { code: Error.UNKNOWN, message: 'Something went wrong, please try again' }
+    let error = { code: Error.UNKNOWN, message: 'Something went wrong, please try again' }
 
     if (!isNull(responseBody) && !isUndefined(responseBody)) {
       try {
         const json = JSON.parse(responseBody)
 
         if (json) {
-          if (!isNil(json.code)) {
-            error.code = json.code
-            error.message = json.message
-            error.detail = json.detail || null
+          if (!isNil(json.code) || !isNil(json.errorCode)) {
+            error = {
+              // TODO: remove this after refactor
+              code: json.errorCode || json.code,
+              message: json.errorMessage || json.message,
+              ...json,
+            }
           }
         }
       } catch (syntaxError) {

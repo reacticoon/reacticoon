@@ -87,10 +87,6 @@ const Application = appOptions => {
         plugin: require('reacticoon-plugin-git/index').default,
         config: {},
       },
-      {
-        plugin: require('reacticoon-plugin-marketplace/index').default,
-        config: {},
-      },
       ...appOptions.plugins,
       // must be final to handle 404
       {

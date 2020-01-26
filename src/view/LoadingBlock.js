@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import isFunction from 'lodash/isFunction'
+import get from 'lodash/get'
 
 import { withStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -15,7 +16,8 @@ const styles = theme => ({
   loadingBlock: {
     left: 0,
     top: 0,
-    backgroundColor: 'rgba(255, 255, 255, 0.54)',
+    backgroundColor: props =>
+      props.background || get(theme, 'app.loadingBlock.background', theme.palette.background.paper),
     zIndex: 1000,
     display: 'flex',
     alignItems: 'center',

@@ -38,7 +38,7 @@ const Link = props => {
 }
 
 Link.propTypes = {
-  to: PropTypes.objectOf(RouteDefinition),
+  to: PropTypes.oneOfType([PropTypes.instanceOf(RouteDefinition), PropTypes.string]),
 }
 
 // Shortcut to access to RoutingEnum

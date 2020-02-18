@@ -87,7 +87,7 @@ const Application = appOptions => {
         plugin: require('reacticoon-plugin-git/index').default,
         config: {},
       },
-      ...appOptions.plugins,
+      ...(appOptions.plugins || []),
       // must be final to handle 404
       {
         plugin: require('reacticoon-plugin-dev/index').default,
@@ -113,6 +113,7 @@ const Application = appOptions => {
 
   registerHistory(history)
 
+  // TODO: add routing data
   history.listen(location =>
     EventManager.dispatch(EventManager.Event.ON_HISTORY_CHANGE, {
       location,
@@ -159,9 +160,10 @@ const Application = appOptions => {
   //
 
   // TODO: remove
-  appOptions.ApiManagerOptions.store = store
-
-  ApiManager.configure(appOptions.ApiManagerOptions())
+  if (appOptions.ApiManagerOptions) {
+    appOptions.ApiManagerOptions.store = store
+    ApiManager.configure(appOptions.ApiManagerOptions())
+  }
 
   //
   // Event: ON_APP_INIT
@@ -174,6 +176,11 @@ const Application = appOptions => {
   endMark('ON_APP_INIT dispatched', 'Dispatch ON_APP_INIT')
 
   endMark('Reacticoon Application started', 'Reacticoon Application')
+
+  // TODO: allow to register events on app
+  if (appOptions.onAppInit) {
+    appOptions.onAppInit()
+  }
 
   //
   // RENDER

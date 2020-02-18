@@ -1,4 +1,5 @@
 import invariant from 'invariant'
+import moment from 'moment'
 import map from 'lodash/map'
 import forEach from 'lodash/forEach'
 import isArray from 'lodash/isArray'
@@ -154,14 +155,7 @@ class EventManager {
       data,
       date,
       // TODO: only on dev and better format
-      __readableDate:
-        date.getHours() +
-        ':' +
-        date.getMinutes() +
-        ':' +
-        date.getSeconds() +
-        '::' +
-        date.getMilliseconds(),
+      __readableDate: moment(date).format('HH:mm:ss:SSS'),
     }
 
     listeners.forEach(listener => {

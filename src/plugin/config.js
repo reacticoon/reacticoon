@@ -1,12 +1,8 @@
-import React from 'react'
 import invariant from 'invariant'
 import find from 'lodash/find'
 import forEach from 'lodash/forEach'
 import isUndefined from 'lodash/isUndefined'
-import isEmpty from 'lodash/isEmpty'
 import isFunction from 'lodash/isFunction'
-// TODO: mv to reacticoon ?
-import createAsyncPage from 'reacticoon-plugin-dev/views/createAsyncPage'
 
 import { __DEV__ } from '../environment'
 
@@ -16,7 +12,7 @@ import validatePlugin from './validatePlugin'
 import generateModuleEntities from '../module/generateModuleEntities'
 import generateModuleMiddlewares from '../module/generateModuleMiddlewares'
 
-import { addRoutingEnum, addRoutes, createRoutingEnum, RouteDefinition } from 'reacticoon/routing'
+import { registerRouting } from 'reacticoon/routing'
 //
 // array of plugins config
 // A plugin config is an object:
@@ -57,71 +53,9 @@ const registerPluginEvents = plugin => {
   EventManager.addListeners(plugin.eventsHandler)
 }
 
-export const generatePluginRoutes = plugin => {
-  let routesDefinitions = []
-  let routingEnum = {}
-
-  if (!plugin.routing || !isFunction(plugin.routing)) {
-    return {
-      routingEnum,
-      routesDefinitions,
-    }
-  }
-
-  let createDevToolAsyncPage = loader => createAsyncPage(loader)
-  if (__DEV__) {
-    const LoadingPageView = require('reacticoon-plugin-dev/components/LoadingPageView').default
-    createDevToolAsyncPage = loader => createAsyncPage(loader, <LoadingPageView />)
-  }
-
-  const api = {
-    createAsyncPage,
-    createDevToolAsyncPage,
-  }
-
-  const routesData = plugin.routing(api)
-
-  routesDefinitions = []
-  const routingEnumData = {}
-
-  routesData.forEach(routeData => {
-    const routeDefinition = new RouteDefinition(
-      routeData.name,
-      routeData.path,
-      routeData.authRequired,
-      routeData.disabled
-    )
-
-    const route = {
-      definition: routeDefinition,
-      handler: routeData.handler,
-    }
-
-    routesDefinitions.push(route)
-    routingEnumData[routeData.name] = routeDefinition
-  })
-
-  routingEnum = createRoutingEnum(routingEnumData)
-
-  if (__DEV__) {
-    // add additionnal private debug var
-    forEach(routingEnum, definition => {
-      definition.__plugin = plugin.name
-    })
-  }
-
-  return {
-    routingEnum,
-    routesDefinitions,
-  }
-}
-
 const registerPluginRoutes = plugin => {
   if (isFunction(plugin.routing)) {
-    const { routesDefinitions, routingEnum } = generatePluginRoutes(plugin)
-
-    addRoutes(routesDefinitions)
-    addRoutingEnum(routingEnum)
+    registerRouting(plugin.routing)
   } else {
     console.info(`No routes found for plugin ${plugin.name}`)
   }

@@ -1,5 +1,6 @@
 import { applyMiddleware } from 'redux'
 import Immutable from 'immutable'
+import get from 'lodash/get'
 
 import createStoreCustom from './createStoreCustom'
 
@@ -15,8 +16,8 @@ const composeEnhancers = composeWithDevTools({
   },
 })
 
-const configureStore = appOptions =>
-  createStoreCustom(appOptions)(
+const configureStore = appOptions => {
+  const store = createStoreCustom(appOptions)(
     appOptions.rootReducer,
     appOptions.preloadedState || {},
     composeEnhancers(
@@ -28,5 +29,8 @@ const configureStore = appOptions =>
       )
     )
   )
+
+  return store
+}
 
 export default configureStore

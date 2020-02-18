@@ -43,6 +43,13 @@ const ReacticoonEvents = {
   // - type
   // - detail
   //
+  LOG_DEBUG: createEvent('REACTICOON::LOG::INFO', 'For debug log'),
+
+  //
+  // props:
+  // - type
+  // - detail
+  //
   LOG_WARN: createEvent('REACTICOON::LOG::WARN', 'For warning log'),
 
   //

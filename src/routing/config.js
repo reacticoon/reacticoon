@@ -1,9 +1,20 @@
+import React from 'react'
+
 import invariant from 'invariant'
 import isNil from 'lodash/isNil'
 import find from 'lodash/find'
 import forEach from 'lodash/forEach'
+import isEmpty from 'lodash/isEmpty'
+import isFunction from 'lodash/isFunction'
+
+import { __DEV__ } from '../environment'
+
+// TODO: mv to reacticoon ?
+import createAsyncPage from 'reacticoon-plugin-dev/views/createAsyncPage'
 
 import ReacticoonRoutingEnum from './ReacticoonRoutingEnum'
+import RouteDefinition from './RouteDefinition'
+import createRoutingEnum from './createRoutingEnum'
 
 let _routes = []
 
@@ -70,9 +81,81 @@ export const getRoute = routeName => {
 //
 
 export const registerRoutesConfig = appOptions => {
-  // TODO: rename to routingEnum
   // Note: plugin routes config are handle on plugin
   // here we register the app routing
-  registerRoutingEnum(appOptions.RoutingEnum)
-  registerRoutes(appOptions.routes)
+  if (appOptions.routing) {
+    registerRouting(appOptions.routing)
+  } else {
+    // TODO: remove deprecated
+    registerRoutingEnum(appOptions.RoutingEnum)
+    registerRoutes(appOptions.routes)
+  }
+}
+
+export const registerRouting = routing => {
+  const { routingEnum, routesDefinitions } = generateRoutes(routing)
+  registerRoutingEnum(routingEnum)
+  registerRoutes(routesDefinitions)
+}
+
+export const generateRoutes = routing => {
+  if (!isFunction(routing)) {
+    // TODO: invariant
+  }
+  let routesDefinitions = []
+  let routingEnum = {}
+
+  if (!routing || !isFunction(routing)) {
+    return {
+      routingEnum,
+      routesDefinitions,
+    }
+  }
+
+  let createDevToolAsyncPage = loader => createAsyncPage(loader)
+  if (__DEV__) {
+    const LoadingPageView = require('reacticoon-plugin-dev/components/LoadingPageView').default
+    createDevToolAsyncPage = loader => createAsyncPage(loader, <LoadingPageView />)
+  }
+
+  const api = {
+    createAsyncPage,
+    createDevToolAsyncPage,
+  }
+
+  const routesData = routing(api)
+
+  routesDefinitions = []
+  const routingEnumData = {}
+
+  routesData.forEach(routeData => {
+    const routeDefinition = new RouteDefinition(
+      routeData.name,
+      routeData.path,
+      routeData.authRequired,
+      routeData.disabled
+    )
+
+    const route = {
+      definition: routeDefinition,
+      handler: routeData.handler,
+    }
+
+    routesDefinitions.push(route)
+    routingEnumData[routeData.name] = routeDefinition
+  })
+
+  routingEnum = createRoutingEnum(routingEnumData)
+
+  if (__DEV__) {
+    // add additionnal private debug var
+    forEach(routingEnum, definition => {
+      definition.__plugin = name
+    })
+  }
+
+  return {
+    routingEnum,
+    routesDefinitions,
+  }
 }

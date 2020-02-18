@@ -83,6 +83,12 @@ const createActionBuilder = options => {
         meta,
       }
 
+      action.debug = payload.debug === true || data.debug === true
+      if (action.debug) {
+        // TODO: only with debug or always ?
+        action.debugData = payload.debugData
+      }
+
       if (options.isError) {
         action.error = true
       }

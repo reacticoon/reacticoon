@@ -1,9 +1,8 @@
-import thunk from 'redux-thunk'
-
 import { __DEV__ } from 'reacticoon/environment'
 import { routerMiddleware } from 'react-router-redux'
 import { getHistory } from 'reacticoon/routing'
 
+import reacticoonReduxThunk from './reacticoonReduxThunk'
 import crashReporter from '../middleware/crashReporter'
 
 import apiMiddleware from '../../api/apiMiddleware'
@@ -16,7 +15,7 @@ const generateMiddlewares = (isDev, appMiddlewares) =>
     // For development use only
     // https://github.com/leoasis/redux-immutable-state-invariant
     __DEV__ ? require('redux-immutable-state-invariant').default() : null,
-    thunk,
+    reacticoonReduxThunk,
     apiMiddleware,
     crashReporter, // must be before reduxLogger and after thunk and api
     __DEV__

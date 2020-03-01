@@ -62,7 +62,9 @@ const createActionBuilder = options => {
         'action is not correctly initialized: const myAction = () => creatAction(...'
       )
 
-      const retrievedData = { ...(isFunction(data) ? data.apply(null, params) : data) }
+      const retrievedData = {
+        ...(isFunction(data) ? data.apply(null, [...params, { dispatch, type, options }]) : data),
+      }
 
       // the retrieved data can contains the payload or the payload and the meta:
       // { // payload content} OR { payload: {}, meta: {}}

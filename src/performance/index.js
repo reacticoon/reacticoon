@@ -25,19 +25,19 @@ const supportsUserTiming =
 //
 
 export const beginMark = markName => {
-  if (supportsUserTiming && FEATURE_USER_TIMING_API) {
+  if (supportsUserTiming && FEATURE_REACTICOON_USER_TIMING_API) {
     performance.mark(formatMarkName(markName))
   }
 }
 
 export const clearMark = markName => {
-  if (supportsUserTiming && FEATURE_USER_TIMING_API) {
+  if (supportsUserTiming && FEATURE_REACTICOON_USER_TIMING_API) {
     performance.clearMarks(formatMarkName(markName))
   }
 }
 
 export const endMark = (label, markName, warning = null) => {
-  if (supportsUserTiming && FEATURE_USER_TIMING_API) {
+  if (supportsUserTiming && FEATURE_REACTICOON_USER_TIMING_API) {
     const formattedMarkName = formatMarkName(markName)
     const formattedLabel = formatLabel(label, warning)
     try {
@@ -54,7 +54,7 @@ export const endMark = (label, markName, warning = null) => {
 }
 
 export const getEntries = () => {
-  if (supportsUserTiming && FEATURE_USER_TIMING_API) {
+  if (supportsUserTiming && FEATURE_REACTICOON_USER_TIMING_API) {
     return performance.getEntries().filter(entry => startsWith(entry.name, reactEmoji))
   }
 }

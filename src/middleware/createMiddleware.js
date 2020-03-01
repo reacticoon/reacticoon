@@ -106,6 +106,7 @@ const createMiddleware = (middlewareName, actionsToHandleParam, func) => {
               action,
             })
           } catch (ex) {
+            debugger
             EventManager.dispatch(EventManager.Event.LOG_EXCEPTION, {
               message: `Middleware ${middlewareName} has crashed:`,
               action,

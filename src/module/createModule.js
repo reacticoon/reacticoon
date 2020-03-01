@@ -70,10 +70,10 @@ const createModule = (moduleName, content) => {
    */
   const getMapStateToProps = selectorsNames => {
     let hasAMakeSelector = false
-    
+
     forEach(selectorsNames, selectorName => {
-        const selector = getSelector(selectorName)
-        if (isMakeSelector(selectorName, selector)) {
+      const selector = getSelector(selectorName)
+      if (isMakeSelector(selectorName, selector)) {
         hasAMakeSelector = true
         return false // quit loop
       }
@@ -83,7 +83,7 @@ const createModule = (moduleName, content) => {
       const selectorsMap = {}
       forEach(selectorsNames, (selectorName, valueName) => {
         const selector = getSelector(selectorName)
-        
+
         if (isMakeSelector(selectorName, selector)) {
           selectorsMap[valueName] = selector()
         } else {
@@ -125,7 +125,7 @@ const createModule = (moduleName, content) => {
    * )(MyContainer)
    * </pre>
    */
-  const connectModule = (container, mapStateToProps, actionsParam, options = {}) => {
+  const connectModule = (mapStateToProps, actionsParam, options = {}) => container => {
     const actions = isArray(actionsParam) ? actionsParam : [actionsParam]
 
     const connected = connect(

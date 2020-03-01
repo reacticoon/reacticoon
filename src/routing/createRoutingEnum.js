@@ -1,4 +1,3 @@
-import { __DEV__ } from '../environment/getters'
 import { validateRoute } from './validation'
 
 /**
@@ -7,8 +6,7 @@ import { validateRoute } from './validation'
  * @param {Object} routingEnum
  */
 const createRoutingEnum = routingEnum => {
-
-  if (__DEV__) {
+  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
     // Verify the user routing enum
     Object.keys(routingEnum).forEach(key => {
       const route = routingEnum[key]

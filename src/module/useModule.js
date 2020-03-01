@@ -1,11 +1,10 @@
-import { __DEV__ } from 'reacticoon/environment'
 import { registerModule } from './config'
 
 /**
  * Allows to dynamically import a module.
  */
 function useModule(rModule) {
-  if (__DEV__) {
+  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
     // invariant does not works well here.
     if (!rModule || !rModule.__IS_MODULE) {
       console.error(`invalid module given to useModule`)
@@ -14,7 +13,7 @@ function useModule(rModule) {
   try {
     registerModule(rModule)
 
-    if (__DEV__) {
+    if (FEATURE_REACTICOON_HEAVY_DEBUG) {
       console.info(`useModule ${rModule.name}`)
     }
   } catch (err) {

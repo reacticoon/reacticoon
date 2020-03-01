@@ -1,6 +1,5 @@
 import isFunction from 'lodash/isFunction'
 
-import { __DEV__ } from 'reacticoon/environment'
 import createApiEnumAction from '../api/utils/createApiEnumAction'
 import { getParamNames, defineFunctionName } from 'reacticoon/utils'
 import { API_CALL, TYPES, REQUEST, DATA } from '../api/constants'
@@ -52,7 +51,7 @@ const createApiCallAction = (type, request, data = null) => {
   func.__type = type
   func.toString = () => `${API_CALL} ${type}`
 
-  if (__DEV__) {
+  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
     func.__parameters = isFunction(request) ? getParamNames(request) : []
     defineFunctionName(func, `ApiCallAction ${API_CALL} ${type}`)
   }

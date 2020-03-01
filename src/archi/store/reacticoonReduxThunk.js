@@ -1,8 +1,6 @@
 // inspired by https://github.com/reduxjs/redux-thunk/blob/master/src/index.js
 // we need our custom thunk to handle debug
 
-import { __DEV__ } from 'reacticoon/environment'
-
 // https://stackoverflow.com/questions/13227489/how-can-one-get-the-file-path-of-the-caller-function-in-node-js
 function getStack() {
   // Save original Error.prepareStackTrace
@@ -43,7 +41,7 @@ function createThunkMiddleware(extraArgument) {
 
     let debugData = null
     // TODO: better handling
-    if (__DEV__ && (action.debug || isFunction)) {
+    if (FEATURE_REACTICOON_HEAVY_DEBUG && (action.debug || isFunction)) {
       debugData = {
         stacktrace: getStackTrace(),
       }

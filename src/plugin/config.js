@@ -4,8 +4,6 @@ import forEach from 'lodash/forEach'
 import isUndefined from 'lodash/isUndefined'
 import isFunction from 'lodash/isFunction'
 
-import { __DEV__ } from '../environment'
-
 import EventManager from '../event/EventManager'
 import validatePlugin from './validatePlugin'
 
@@ -32,7 +30,7 @@ export const registerPlugins = pluginsConfig => {
 
   forEachPlugin(({ plugin, config }) => {
     // configuration checks
-    if (__DEV__) {
+    if (FEATURE_REACTICOON_HEAVY_DEBUG) {
       // TODO: verify plugin names collusion
       validatePlugin(plugin)
     }
@@ -99,7 +97,7 @@ export const generatePluginEntities = () => {
     // add plugin modules reducers
     //
     const moduleReducers = generateModuleEntities(plugin.modules || [])
-    if (__DEV__) {
+    if (FEATURE_REACTICOON_HEAVY_DEBUG) {
       // add additionnal private debug var
       forEach(moduleReducers, (reducer, name) => {
         reducer.__plugin = plugin.name
@@ -116,7 +114,7 @@ export const generatePluginMiddlewares = () => {
 
   forEachPlugin(({ plugin, config }) => {
     const moduleMiddlewares = generateModuleMiddlewares(plugin.modules || [])
-    if (__DEV__) {
+    if (FEATURE_REACTICOON_HEAVY_DEBUG) {
       // add additionnal private debug var
       forEach(moduleMiddlewares, middleware => {
         middleware.__plugin = plugin.name

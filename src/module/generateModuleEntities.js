@@ -4,7 +4,6 @@
 import forOwn from 'lodash/forOwn'
 import isUndefined from 'lodash/isUndefined'
 import invariant from 'invariant'
-import { __DEV__ } from '../environment'
 
 const generateModuleEntities = modules => {
   const entities = {}
@@ -18,7 +17,7 @@ const generateModuleEntities = modules => {
     if (!module.content.noReducer) {
       const reducer = module.content.reducer
       if (reducer) {
-        if (__DEV__) {
+        if (FEATURE_REACTICOON_HEAVY_DEBUG) {
           reducer._module = module.name
           reducer.toString = () => `[reducer] ${module.name}`
         }

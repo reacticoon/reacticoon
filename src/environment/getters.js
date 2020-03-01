@@ -3,6 +3,7 @@ import { getEnv } from './environment'
 
 export const getProcessEnv = envVarName => process.env[envVarName]
 
+// tODO: remove
 export const __DEV__ = process.env.__DEV__ || process.env.NODE_ENV !== 'production'
 
 export const __ENV__ = process.env.__ENV__

@@ -12,7 +12,7 @@ import configureRootReducer from './utils/configureRootReducer'
 import generateEnvironment from './generateEnvironment'
 
 import { beginMark, endMark } from 'reacticoon/performance'
-import { setCurrentEnv, __DEV__ } from '../environment'
+import { setCurrentEnv } from '../environment'
 import { registerModules } from '../module'
 import OnModuleRegistered from './events/OnModuleRegistered'
 import { registerHistory, registerRoutesConfig } from '../routing/config'

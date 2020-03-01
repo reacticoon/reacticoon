@@ -7,8 +7,6 @@ import forEach from 'lodash/forEach'
 import isEmpty from 'lodash/isEmpty'
 import isFunction from 'lodash/isFunction'
 
-import { __DEV__ } from '../environment'
-
 // TODO: mv to reacticoon ?
 import createAsyncPage from 'reacticoon-plugin-dev/views/createAsyncPage'
 
@@ -147,7 +145,7 @@ export const generateRoutes = routing => {
 
   routingEnum = createRoutingEnum(routingEnumData)
 
-  if (__DEV__) {
+  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
     // add additionnal private debug var
     forEach(routingEnum, definition => {
       definition.__plugin = name

@@ -41,7 +41,6 @@
 
 import invariant from 'invariant'
 
-import { __DEV__ } from 'reacticoon/environment'
 import isNil from 'lodash/isNil'
 import isFunction from 'lodash/isFunction'
 import isUndefined from 'lodash/isUndefined'
@@ -107,7 +106,7 @@ const createActionBuilder = options => {
     actionCreator.isActionType = true
     actionCreator.toString = () => type
 
-    if (__DEV__) {
+    if (FEATURE_REACTICOON_HEAVY_DEBUG) {
       actionCreator.__parameters = isFunction(data) ? getParamNames(data) : []
       defineFunctionName(actionCreator, `action ${type}`)
     }

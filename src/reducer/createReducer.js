@@ -2,7 +2,6 @@ import isEmpty from 'lodash/isEmpty'
 import Immutable from 'immutable'
 import invariant from 'invariant'
 
-import { __DEV__ } from 'reacticoon/environment'
 import { EventManager } from 'reacticoon/event'
 import { getCircularCulprit } from 'reacticoon/utils'
 
@@ -29,7 +28,7 @@ const createReducer = (initialState, fnMap) => {
     return state
   }
 
-  if (__DEV__) {
+  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
     reducer.__fnMap = fnMap
   }
 

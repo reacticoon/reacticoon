@@ -4,7 +4,6 @@
 // https://github.com/jamiebuilds/react-loadable
 //
 import Loadable from 'react-loadable'
-import { __DEV__ } from '../environment'
 
 /**
  *
@@ -14,7 +13,7 @@ import { __DEV__ } from '../environment'
 export const createLoadable = (loader, loading) => {
   return Loadable({
     loader: () => {
-      if (__DEV__) {
+      if (FEATURE_REACTICOON_HEAVY_DEBUG) {
         console.info(`[Loadable] loading`)
       }
 

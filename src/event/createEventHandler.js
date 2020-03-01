@@ -1,5 +1,4 @@
 import invariant from 'invariant'
-import { __DEV__ } from 'reacticoon/environment'
 import { isEvent } from './utils'
 
 /**
@@ -11,7 +10,7 @@ const createEventHandler = (event, callback) => {
   // attach event name
   callback.EVENT = event
   callback.__IS_EVENT_HANDLER = true
-  if (__DEV__) {
+  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
     callback.__description = `event handler for event ${event.type} (${event.description})`
   }
 

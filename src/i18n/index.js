@@ -16,7 +16,7 @@ export * from './utils'
 //
 
 const DEFAULT = Immutable.fromJS({
-  isFetching: false,
+  isPending: false,
   locale: null,
   phrases: {},
   retrieveCount: 0,
@@ -25,7 +25,7 @@ const DEFAULT = Immutable.fromJS({
 export const i18nReducer = (state = DEFAULT, action) => {
   switch (action.type) {
     case I18nFetchingLocale.REQUEST:
-      return state.set('isFetching', true)
+      return state.set('isPending', true)
 
     case I18nFetchingLocale.SUCCESS:
       const { locale, phrases } = action
@@ -45,7 +45,7 @@ export const i18nReducer = (state = DEFAULT, action) => {
       console.info(`[i18n] lodaded for ${locale}`)
 
       return state.merge({
-        isFetching: false,
+        isPending: false,
         locale,
         phrases,
         retrieveCount: 0,
@@ -59,7 +59,7 @@ export const i18nReducer = (state = DEFAULT, action) => {
       }
 
       return state.merge({
-        isFetching: false,
+        isPending: false,
         locale,
         phrases,
         retrieveCount,

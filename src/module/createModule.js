@@ -64,7 +64,7 @@ const createModule = (moduleName, content) => {
    * <pre>
    * {
    *    data: 'getData',
-   *    isFetching: 'makeIsFetching'
+   *    isPending: 'makeisPending'
    * }
    * </pre>
    */
@@ -115,7 +115,7 @@ const createModule = (moduleName, content) => {
    * MyModule.connect(
    *    MyContainer,
    *   {
-   *     isFetching: 'makeIsFetching',
+   *     isPending: 'makeisPending',
    *     data: 'makeGetData',
    *   },
    *   'fetchData',

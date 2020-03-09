@@ -1,5 +1,6 @@
 import isFunction from 'lodash/isFunction'
 
+import createAction from './createAction'
 import createApiEnumAction from '../api/utils/createApiEnumAction'
 import { getParamNames, defineFunctionName } from 'reacticoon/utils'
 import { API_CALL, TYPES, REQUEST, DATA } from '../api/constants'
@@ -27,7 +28,7 @@ const createApiCallAction = (type, request, data = null) => {
     // }
     const action = {
       [API_CALL]: {
-        [TYPES]: [actionType.REQUEST, actionType.SUCCESS, actionType.FAILURE],
+        [TYPES]: [actionType.REQUEST, actionType.SUCCESS, actionType.FAILURE, actionType.CANCEL],
         [REQUEST]: getData(request, params),
         [DATA]: getData(data, params),
       },
@@ -44,6 +45,7 @@ const createApiCallAction = (type, request, data = null) => {
   func.REQUEST = actionType.REQUEST
   func.SUCCESS = actionType.SUCCESS
   func.FAILURE = actionType.FAILURE
+  func.CANCEL = actionType.CANCEL
 
   // requried by `isActionType`
   func.isActionType = true
@@ -55,6 +57,11 @@ const createApiCallAction = (type, request, data = null) => {
     func.__parameters = isFunction(request) ? getParamNames(request) : []
     defineFunctionName(func, `ApiCallAction ${API_CALL} ${type}`)
   }
+
+  // add action to cancel this api call action.
+  func.cancelRequest = createAction(actionType.CANCEL, () => ({
+    date: new Date().toISOString(),
+  }))
 
   return func
 }

@@ -28,7 +28,7 @@ A default `config` directory contains the following files (extension `.js`):
 - Content
 - i18n
 - modules
-- routes
+- routing
 
 ### Optionnal configuration files
 
@@ -44,7 +44,7 @@ import entities from './config/entities'
 import middlewares from './config/middlewares'
 import modules from './config/modules'
 import i18n from './config/i18n'
-import routes from './config/routes'
+import routing from './config/routing'
 import Content from './config/Content'
 import ApiManagerOptions from './config/ApiManagerOptions'
 
@@ -54,7 +54,7 @@ const appOptions = {
   entities,
   modules,
   i18n,
-  routes,
+  routing,
   Content,
   ApiManagerOptions,
 }
@@ -163,49 +163,38 @@ export default [
 ]
 ```
 
-### routes
+### routing
 
 Must export an array of route configuration:
 
 ```javascript
-import RoutingEnum from './RoutingEnum'
+import React from 'react'
 
-import LoginPage from '../pages/login'
+import { createLoadable } from 'reacticoon/view'
 
-const routes = [
+import PageLoader from '../components/PageLoader'
+
+const createAsyncPage = loader => createLoadable(loader, () => <PageLoader />)
+
+const routing = [
   {
-    definition: RoutingEnum.LOGIN,
-    handler: LoginPage,
+    name: 'LOGIN',
+    path: '/login',
+    handler: createAsyncPage(() => import(/*  webpackChunkName: "LoginPage" */ '../pages/login')),
   },
   {
-    definition: RoutingEnum.DISABLED_PAGE,
-    disabled: true,
-    handler: null,
+    name: 'DASHBOARD',
+    path: '/',
+    authRequired: true,
+    handler: createAsyncPage(() =>
+      import(/*  webpackChunkName: "DashboardPage" */ '../pages/dashboard')
+    ),
   },
-]
 
-export default routes
+export default routing
 
 ```
 
-### RoutingEnum
-
-A route definition is an instance of a `RouteDefinition` object (`reacticoon/routing/RouteDefinition`).
-The RoutingEnum is an object that contains multiple definition of routes.
-It must be created using `createRoutingEnum`, that will:
-
-- add default routes used by Reacticoon (e.g PAGE_NOT_FOUND)
-- verify the routes configuration
-
-ex:
-
-```javascript
-import { RouteDefinition, createRoutingEnum } from 'reacticoon/routing'
-
-const RoutingEnum = createRoutingEnum({
- LOGIN: new RouteDefinition('LOGIN', '/login')
-})
-```
 
 ### Plugins
 

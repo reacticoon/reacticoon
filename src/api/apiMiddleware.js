@@ -70,8 +70,8 @@ export default store => next => action => {
   //   throw new Error('Specify one of the exported Schemas.')
   // }
 
-  if (!Array.isArray(types) || types.length !== 3) {
-    throw new Error('Expected an array of three action types.')
+  if (!Array.isArray(types) || types.length !== 4) {
+    throw new Error('Expected an array of 4 action types.')
   }
 
   if (!types.every(type => typeof type === 'string')) {

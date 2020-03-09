@@ -78,16 +78,13 @@ export const getRoute = routeName => {
 //
 //
 
-export const registerRoutesConfig = appOptions => {
+export const registerAppRouting = appOptions => {
   // Note: plugin routes config are handle on plugin
   // here we register the app routing
-  if (appOptions.routing) {
-    registerRouting(appOptions.routing)
-  } else {
-    // TODO: remove deprecated
-    registerRoutingEnum(appOptions.RoutingEnum)
-    registerRoutes(appOptions.routes)
-  }
+  // TODO: link to doc tutorial
+  invariant(isEmpty(appOptions.routing), `routing configuration not found or empty`)
+
+  registerRouting(appOptions.routing)
 }
 
 export const registerRouting = routing => {
@@ -110,14 +107,28 @@ export const generateRoutes = routing => {
     }
   }
 
-  let createDevToolAsyncPage = loader => createAsyncPage(loader)
+  let createDevToolAsyncPage
   if (__DEV__) {
     const LoadingPageView = require('reacticoon-plugin-dev/components/LoadingPageView').default
     createDevToolAsyncPage = loader => createAsyncPage(loader, <LoadingPageView />)
   }
 
+  let _loadingView = <div />
   const api = {
-    createAsyncPage,
+    //
+    // Allow to define a default loadingView for all the createAsyncPage calls.
+    //
+    registerAsyncLoaderView: loadingView => {
+      _loadingView = loadingView
+    },
+    //
+    // We can specify a loadingView that differs from the default one (_loadingView).
+    //
+    createAsyncPage: (loader, loadingView) => createAsyncPage(loader, loadingView || _loadingView),
+    //
+    // Allow to use the dev pages loading view directly. It will use the
+    // `reacticoon-plugin-dev/components/LoadingPageView` as loading view, avoiding repetitive code.
+    //
     createDevToolAsyncPage,
   }
 

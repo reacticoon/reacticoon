@@ -15,7 +15,7 @@ import { beginMark, endMark } from 'reacticoon/performance'
 import { setCurrentEnv } from '../environment'
 import { registerModules } from '../module'
 import OnModuleRegistered from './events/OnModuleRegistered'
-import { registerHistory, registerRoutesConfig } from '../routing/config'
+import { registerHistory, registerAppRouting } from '../routing/config'
 import { registerStore } from '../store'
 import { configureI18n } from '../i18n/index'
 import configureStore from './store/configureStore'
@@ -70,7 +70,7 @@ const Application = appOptions => {
   //
   // routes
   //
-  registerRoutesConfig(appOptions)
+  registerAppRouting(appOptions)
 
   //
   // plugins

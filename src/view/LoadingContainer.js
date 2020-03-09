@@ -27,8 +27,8 @@ import LoadingBlockWrapper from './LoadingBlockWrapper'
  *   }
  *   error={({ myEntityError }) => myEntityError)}
  *   error="myEntityError"
- *   show={({ myEntity, isFetchingMyEntity }) =>
- *     isFetchingMyEntity || !myEntity
+ *   show={({ myEntity, isPendingMyEntity }) =>
+ *     isPendingMyEntity || !myEntity
  *   }
  * >
  *   {({ myEntity }) => (

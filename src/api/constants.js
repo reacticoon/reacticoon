@@ -41,3 +41,10 @@ export const REQUEST = 'API::API_CALL::REQUEST'
 export const DATA = 'API::API_CALL::DATA'
 
 export const isApiCallAction = action => action[API_CALL] !== undefined
+
+export const RequestStatus = {
+  NOT_LOADED: 'NOT_LOADED',
+  PENDING: 'PENDING',
+  LOADED: 'LOADED',
+  FAILED: 'FAILED',
+}

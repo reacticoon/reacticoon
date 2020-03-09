@@ -11,12 +11,7 @@ import { RequestStatus } from 'reacticoon/api/constants'
  * @return {Immutable}          Updated state
  */
 
-const DEFAULT_STATE = Immutable.fromJS({
-  data: null,
-  isPending: false,
-  error: null,
-  status: RequestStatus.NOT_NOT_LOADED,
-})
+const DEFAULT_STATE = Immutable.fromJS({})
 
 const handleRequest = (state, action) =>
   state.merge({
@@ -52,14 +47,19 @@ const handleCancel = (state, action) =>
     status: RequestStatus.CANCEL,
   })
 
-const handleAction = (defaultReducer, additionalReducer) => {
+const handleAction = (defaultReducer, getProp, additionalReducer) => {
   return (state, action) => {
-    const newState = defaultReducer(state, action)
+    const path = getProp(action)
+
+    let newObjectState = Immutable.fromJS(
+      defaultReducer(state.getIn(path) || Immutable.fromJS({}), action)
+    )
 
     if (additionalReducer) {
-      return additionalReducer(newState, action)
+      newObjectState = additionalReducer(newObjectState, action)
     }
-    return newState
+
+    return state.setIn(path, newObjectState)
   }
 }
 
@@ -73,23 +73,37 @@ const handleAction = (defaultReducer, additionalReducer) => {
  * It allows to add additionnal action handling, via the `reducer` parameter.
  *
  * @param {function} actionType the action to handle (created via `createApiCallAction`)
+ * @param {function} getProp function that receives props and return the identifier to use.
+ *  types.
  * @param {function} reducer optionnal. Additionnal reducer function that will handle other action
  *  types.
  * @param {object} additionalReducers optionnal. Object (key: action type, value: reducer). Custom
  * reducer functions that does not replace the default reducer functions, but are called after the
  * default reducer function. Allows to reduce more than the default behavior for an api call actions
  */
-const createApiReducer = (actionType, reducer = null, additionalReducers = {}) => {
+const createApiObjectReducer = (actionType, getProp, reducer = null, additionalReducers = {}) => {
   invariant(isActionType(actionType), `actionType must be defined`)
 
   //
   // define handlers
   //
   const handlers = {
-    [actionType.REQUEST]: handleAction(handleRequest, additionalReducers[actionType.REQUEST]),
-    [actionType.SUCCESS]: handleAction(handleSuccess, additionalReducers[actionType.SUCCESS]),
-    [actionType.FAILURE]: handleAction(handleFailure, additionalReducers[actionType.FAILURE]),
-    [actionType.CANCEL]: handleAction(handleCancel, additionalReducers[actionType.CANCEL]),
+    [actionType.REQUEST]: handleAction(
+      handleRequest,
+      getProp,
+      additionalReducers[actionType.REQUEST]
+    ),
+    [actionType.SUCCESS]: handleAction(
+      handleSuccess,
+      getProp,
+      additionalReducers[actionType.SUCCESS]
+    ),
+    [actionType.FAILURE]: handleAction(
+      handleFailure,
+      getProp,
+      additionalReducers[actionType.FAILURE]
+    ),
+    [actionType.CANCEL]: handleAction(handleCancel, getProp, additionalReducers[actionType.CANCEL]),
   }
 
   return (state = DEFAULT_STATE, action) => {
@@ -107,4 +121,6 @@ const createApiReducer = (actionType, reducer = null, additionalReducers = {}) =
   }
 }
 
-export default createApiReducer
+createApiObjectReducer.DEFAULT_STATE = DEFAULT_STATE
+
+export default createApiObjectReducer

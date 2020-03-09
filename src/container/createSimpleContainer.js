@@ -13,6 +13,9 @@ import isArray from 'lodash/isArray'
  *  - apiCallParameters: Object
  *  - selectors, name of the selectors, result of createApiSelectors
  *  - mapChildrenProps: function(childrenProps)
+ *
+ * TODO: implement cancel request action
+ * TODO: implement reset data action
  */
 function createSimpleContainer(containerName, options) {
   try {
@@ -36,12 +39,22 @@ function createSimpleContainer(containerName, options) {
       }
 
       render() {
-        const { children, mapChildrenProps, isFetching, data, error } = this.props
+        const {
+          children,
+          mapChildrenProps,
+          isPending,
+          request,
+          data,
+          error,
+          cancelRequest,
+        } = this.props
 
         let childrenProps = {
-          isFetching: isFetching,
-          data: data,
-          error: error,
+          isPending,
+          data,
+          error,
+          request,
+          cancelRequest,
         }
 
         if (isFunction(mapChildrenProps)) {
@@ -61,20 +74,21 @@ function createSimpleContainer(containerName, options) {
     const mapStateToProps = (state, ownProps) => {
       const getSelector = Module.getSelector
       return {
-        isFetching: getSelector('fetchBookSelectors').isFetching(state, ownProps),
-        data: getSelector('fetchBookSelectors').getData(state, ownProps),
-        error: getSelector('fetchBookSelectors').getError(state, ownProps),
+        isPending: getSelector('isPending')(state, ownProps),
+        data: getSelector('getData')(state, ownProps),
+        error: getSelector('getError')(state, ownProps),
+        request: getSelector('getRequest')(state, ownProps),
       }
     }
 
+    const apiCallAction = Module.getAction(options.apiCallAction)
+
     const mapActions = {
-      apiCallAction: Module.getAction(options.apiCallAction),
+      apiCallAction,
+      cancelRequest: apiCallAction.cancelRequest,
     }
 
-    return connect(
-      mapStateToProps,
-      mapActions
-    )(SimpleContainer)
+    return connect(mapStateToProps, mapActions)(SimpleContainer)
   } catch (e) {
     console.error(e)
     debugger

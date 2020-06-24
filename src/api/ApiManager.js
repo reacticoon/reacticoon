@@ -129,7 +129,7 @@ class ApiManager {
    * @param success the closure called on success. Take a json object as parameter.
    * @param failure the closure called on failure. Take an ApiError as parameter.
    */
-  handleResponse(error: Object, res: Object, success: Function, failure: Function) {
+  handleResponse(error, res, success, failure) {
     if (!isUndefined(res) && this.isSuccessResponse(res.statusCode)) {
       if (!isEmpty(res.text)) {
         try {
@@ -215,6 +215,21 @@ class ApiManager {
    */
   run(request) {
     console.info('apiCall', request)
+
+    // TODO: doc response to give response (fixture)
+    if (request.response) {
+      this.handleResponse(
+        null,
+         { statusCode: 200, text: request.response },
+        (json) => {
+          request.success(json)
+        },
+        (apiError) => {
+          request.failure(apiError)
+        }
+      )
+      return
+    }
     switch (request.type) {
       case 'GET':
         this.get(request)

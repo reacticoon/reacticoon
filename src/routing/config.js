@@ -69,7 +69,7 @@ export const getRoute = routeName => {
   const route = getRoutingEnum()[routeName]
   invariant(
     !isNil(route),
-    `Not route found for ${routeName}. Verify that you defined the route on the routes`
+    `No route found for ${routeName}. Verify that you defined the route on the routes`
   )
   return route
 }

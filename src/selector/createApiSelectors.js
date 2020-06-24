@@ -48,8 +48,9 @@ const createApiSelectors = (stateRetriever, formatData = null) => {
       }
 
       return formatData !== null && typeof formatData === 'function'
-        ? formatData(data.toJS())
-        : data.toJS()
+        // TODO: fix not immutable.
+        ? formatData(data.toJS ? data.toJS() : data)
+        : data.toJS ? data.toJS() : data
     }),
 
     getError: createSelector([getState], dataState => {
@@ -63,7 +64,7 @@ const createApiSelectors = (stateRetriever, formatData = null) => {
         return null
       }
 
-      return error.toJS()
+      return error.toJS ? error.toJS() : error
     }),
 
     getMeta: createSelector([getState], dataState => {

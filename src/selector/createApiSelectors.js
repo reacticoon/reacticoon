@@ -1,6 +1,7 @@
 import invariant from 'invariant'
 import isNil from 'lodash/isNil'
 import isFunction from 'lodash/isFunction'
+import cloneDeep from 'lodash/cloneDeep'
 import { createSelector } from 'reselect'
 import { RequestStatus } from 'reacticoon/api/constants'
 
@@ -49,8 +50,8 @@ const createApiSelectors = (stateRetriever, formatData = null) => {
 
       return formatData !== null && typeof formatData === 'function'
         // TODO: fix not immutable.
-        ? formatData(data.toJS ? data.toJS() : data)
-        : data.toJS ? data.toJS() : data
+        ? formatData(data.toJS ? data.toJS() : cloneDeep(data))
+        : data.toJS ? data.toJS() : cloneDeep(data)
     }),
 
     getError: createSelector([getState], dataState => {

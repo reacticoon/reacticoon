@@ -18,7 +18,7 @@ const Link = props => {
   if (href) {
     // TODO: handle query?
     return (
-      <a href={href} target={newTab ? '_blank' : target}>
+      <a href={href} target={newTab ? '_blank' : target} {...otherProps}>
         {children}
       </a>
     )

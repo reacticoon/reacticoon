@@ -2,6 +2,7 @@ import isNil from 'lodash/isNil'
 import invariant from 'invariant'
 import isArray from 'lodash/isArray'
 import forEach from 'lodash/forEach'
+import get from 'lodash/get'
 
 import { isMakeSelector } from 'reacticoon/selector/utils'
 import { connect } from 'reacticoon/view'
@@ -50,11 +51,16 @@ const createModule = (moduleName, content) => {
   }
 
   const getSelector = selectorName => {
-    const selector = content.selectors[selectorName]
+    const selector = get(content.selectors, selectorName)
 
     invariant(!isNil(selector), `Module ${moduleName}, selector not found: ${selectorName}`)
 
     return selector
+  }
+
+  const getOptionalSelector = selectorName => {
+    const selector = get(content.selectors, selectorName)
+    return selector || (() => null)
   }
 
   /**
@@ -71,7 +77,7 @@ const createModule = (moduleName, content) => {
   const getMapStateToProps = selectorsNames => {
     let hasAMakeSelector = false
 
-    forEach(selectorsNames, selectorName => {
+    forEach(selectorsNames, (selectorName, valueName) => {
       const selector = getSelector(selectorName)
       if (isMakeSelector(selectorName, selector)) {
         hasAMakeSelector = true
@@ -150,6 +156,7 @@ const createModule = (moduleName, content) => {
     content,
     getAction,
     getSelector,
+    getOptionalSelector,
     getActionsMap,
     getMapStateToProps,
     connect: connectModule,

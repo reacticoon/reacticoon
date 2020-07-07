@@ -53,7 +53,7 @@ import { getConfigForRoute, getHistory } from './config'
 export const generatePathWithParams = (route, params, query, options = {}) => {
   const config = getConfigForRoute(route)
 
-  invariant(!isNil(config), `Config for route ${route.name} not found`)
+  invariant(!isNil(config), `Config for route ${route.name || route} not found`)
 
   // keep query from url
   let finalQueries = { ...query }
@@ -73,14 +73,11 @@ export const generatePathWithParams = (route, params, query, options = {}) => {
   // remove undefined values
   finalQueries = pickBy(finalQueries, value => value !== undefined)
 
-  return route.generatePathWithParams(params, finalQueries, options)
+  return config.definition?.generatePathWithParams(params, finalQueries, options)
 }
 
 export const redirectTo = (route, params, query, options = {}) => {
-  if (isString(route)) {
-    return push(route)
-  }
-  const path = generatePathWithParams(route, params, query, options)
+ const path = generatePathWithParams(route, params, query, options)
   return push(path)
 }
 
@@ -88,17 +85,11 @@ export const createRedirectToAction = (route, params, query) => dispatch =>
   dispatch(redirectTo(route, params, query))
 
 export const replaceWith = (route, params, query, options = {}) => {
-  if (isString(route)) {
-    return push(route)
-  }
   const path = generatePathWithParams(route, params, query, options)
   return replace(path)
 }
 
 export const openOnNewTab = (route, params, query, options = {}) => {
-  if (isString(route)) {
-    return push(route)
-  }
   const path = generatePathWithParams(route, params, query, options)
   return openExternalLink(path)
 }
@@ -107,9 +98,6 @@ export const createReplaceWithAction = (route, params, query) => dispatch =>
   dispatch(replaceWith(route, params, query))
 
 export const reloadTo = (route, params, query, options = {}) => {
-  if (isString(route)) {
-    return push(route)
-  }
   const path = generatePathWithParams(route, params, query, options)
   window.location = path
 }

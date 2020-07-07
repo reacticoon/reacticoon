@@ -26,7 +26,13 @@ export const registerRoutes = addRoutes
 export const getRoutes = () => _routes
 
 export const getConfigForRoute = route =>
-  find(_routes, routeDefinition => route && route.name === routeDefinition.definition.name)
+  find(_routes, routeDefinition => {
+    if (route && route.name) {
+     return route.name === routeDefinition.definition.name
+    }
+    // handle route being a string
+    return route === routeDefinition.definition.name
+  })
 
 //
 //

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { connect } from 'reacticoon/view'
+import isEqual from 'lodash/isEqual'
 import isFunction from 'lodash/isFunction'
 import isArray from 'lodash/isArray'
 
@@ -29,12 +30,22 @@ function createSimpleContainer(containerName, options) {
       }
 
       loadData() {
-        const { apiCallAction, apiCallParameters } = this.props
-        // TODO: find better way
-        if (isArray(apiCallParameters)) {
-          apiCallAction.apply(null, apiCallParameters)
-        } else {
-          apiCallAction(apiCallParameters)
+        const { apiCallAction, apiCallParameters, isPending } = this.props
+
+        // TODO: compare apiCallParameters
+        if (!isPending) {
+          // TODO: find better way
+          if (isArray(apiCallParameters)) {
+            apiCallAction.apply(null, apiCallParameters)
+          } else {
+            apiCallAction(apiCallParameters)
+          }
+        }
+      }
+
+      componentDidUpdate(prevProps) {
+        if (!isEqual(prevProps.apiCallParameters, this.props.apiCallParameters)) {
+          this.loadData()
         }
       }
 
@@ -47,6 +58,8 @@ function createSimpleContainer(containerName, options) {
           data,
           error,
           cancelRequest,
+          // optionnal
+          paging,
         } = this.props
 
         let childrenProps = {
@@ -55,6 +68,31 @@ function createSimpleContainer(containerName, options) {
           error,
           request,
           cancelRequest,
+          // optionnal
+          paging,
+          loadMore: () => {
+            const { apiCallAction, apiCallParameters, isPending } = this.props
+            const page = paging?.next?.page
+            const limit = paging?.limit
+            // TODO: compare apiCallParameters
+            if (!isPending) {
+              // TODO: find better way
+              if (isArray(apiCallParameters)) {
+                const finalApiCallParameters = [...apiCallParameters, page, limit]
+                apiCallAction.apply(null, finalApiCallParameters)
+              } else {
+                const finalApiCallParameters = {
+                  page,
+                  limit,
+                }
+                apiCallAction(finalApiCallParameters)
+              }
+            }
+          }
+        }
+
+        if (!children) {
+          return null
         }
 
         if (isFunction(mapChildrenProps)) {
@@ -73,11 +111,14 @@ function createSimpleContainer(containerName, options) {
 
     const mapStateToProps = (state, ownProps) => {
       const getSelector = Module.getSelector
+      const getOptionalSelector = Module.getOptionalSelector
       return {
-        isPending: getSelector('isPending')(state, ownProps),
-        data: getSelector('getData')(state, ownProps),
-        error: getSelector('getError')(state, ownProps),
-        request: getSelector('getRequest')(state, ownProps),
+        isPending: options.selectors?.isPending ? options.selectors?.isPending(state, ownProps) :getSelector('isPending')(state, ownProps),
+        data: options.selectors?.getData ? options.selectors?.getData(state, ownProps) : getSelector('getData')(state, ownProps),
+        error: options.selectors?.getError ? options.selectors?.getError(state, ownProps) :getSelector('getError')(state, ownProps),
+        request:options.selectors?.getRequest ? options.selectors?.getRequest(state, ownProps) : getSelector('getRequest')(state, ownProps),
+        // optionnal
+        paging: options.selectors?.getPaging ? options.selectors?.getPaging(state, ownProps) : getOptionalSelector('getPaging')(state, ownProps),
       }
     }
 

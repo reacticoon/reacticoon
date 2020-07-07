@@ -74,7 +74,7 @@ export const findOnArray = (array, comparator) => {
 export const findIndexOnArray = (array, comparator) => {
   const match = findIndex(array, item => compare(comparator, item))
 
-  return isUndefined(match) ? null : match
+  return isUndefined(match) ? -1 : match
 }
 
 export const existsOnArray = (array, comparator) => {

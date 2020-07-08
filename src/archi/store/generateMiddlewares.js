@@ -7,7 +7,7 @@ import crashReporter from '../middleware/crashReporter'
 import apiMiddleware from '../../api/apiMiddleware'
 import createAppMiddleware from '../../middleware/appMiddleware/createAppMiddleware'
 
-const generateMiddlewares = (isDev, appMiddlewares) =>
+const generateMiddlewares = (isEnvDev, appMiddlewares) =>
   [
     // Redux middleware that spits an error when we try to mutate the state either inside
     // a dispatch or between dispatches.

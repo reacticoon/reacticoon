@@ -117,6 +117,11 @@ export const generateRoutes = routing => {
   if (__DEV__) {
     const LoadingPageView = require('reacticoon-plugin-dev/components/LoadingPageView').default
     createDevToolAsyncPage = loader => createAsyncPage(loader, <LoadingPageView />)
+  } else {
+    const noopPage = () => null
+    noopPage.__REACTICOON_NOOP_PAGE = true
+    createDevToolAsyncPage = () => noopPage
+    createDevToolAsyncPage.__REACTICOON_NOOP_PAGE = true
   }
 
   let _loadingView = <div />

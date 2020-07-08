@@ -28,6 +28,9 @@ export const registerModule = module => {
 
 export const registerModules = modules => {
   const newModules = []
+  if (process.env.__DEV__) {
+    console.info('registerModules', modules)
+  }
   modules.forEach(module => {
     if (!_modules[module.name]) {
       _modules[module.name] = module

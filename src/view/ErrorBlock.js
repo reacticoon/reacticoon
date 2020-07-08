@@ -13,7 +13,7 @@ const styles = theme => {
   return {
     errorBlock: {
       marginTop: 20,
-      color: theme.app.colors.error,
+      color: theme.color.error,
       textAlign: 'center',
     },
   }

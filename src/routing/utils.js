@@ -135,3 +135,20 @@ export const removeUrlParameter = (url, queryToRemoveParam) => {
 
   return formatQueryParams(baseUrl, queries)
 }
+
+/**
+ * format a given path to an absolute url
+ *
+ * @param {*} path can be either an object like getRoute('XXX') or a path as string directly
+ */
+export const getAbsolutePath = (path, queryParams = {}) => {
+  const base = `${window.location.protocol}//${window.location.host}`
+
+  if (isString(path)) {
+    return formatQueryParams(`${base}${path}`, queryParams)
+  }
+  if (!isNil(path.path)) {
+    return formatQueryParams(`${base}${path.path}`, queryParams)
+  }
+  invariant(`[getAbsolutePath] unable to dertermine path`)
+}

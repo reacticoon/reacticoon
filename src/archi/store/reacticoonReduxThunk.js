@@ -41,7 +41,7 @@ function createThunkMiddleware(extraArgument) {
 
     let debugData = null
     // TODO: better handling
-    if (FEATURE_REACTICOON_HEAVY_DEBUG && (action.debug || isFunction)) {
+    if (FEATURE_REACTICOON_HEAVY_DEBUG && (action?.debug || isFunction)) {
       debugData = {
         stacktrace: getStackTrace(),
       }

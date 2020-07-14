@@ -10,7 +10,7 @@ import { Query } from './constants'
 
 import { formatQueryParams, getQueryFromUri } from './utils'
 
-import { getConfigForRoute, getHistory } from './config'
+import { getConfigForRoute } from './config'
 
 //
 // react-router-redux need a middleware to handle functions such as `push(location)`,
@@ -115,16 +115,14 @@ export const redirectToExternal = (uri, query = {}) => {
 }
 
 export const updatePageQueries = (query = {}) => {
-  const history = getHistory()
   const currentQuery = getQueryFromUri(window.location.href)
 
-  history.push({
-    pathname: window.location.pathname,
-    query: {
-      ...currentQuery,
-      ...query,
-    },
+  const path = formatQueryParams(window.location.pathname, {
+    ...currentQuery,
+    ...query,
   })
+
+  return push(path)
 }
 
 export const goBack = goBackAction

@@ -54,9 +54,9 @@ const registerPluginEvents = plugin => {
 const registerPluginRoutes = plugin => {
   if (isFunction(plugin.routing)) {
     registerRouting(plugin.routing)
-  } else {
-    console.info(`No routes found for plugin ${plugin.name}`)
-  }
+  } //else { TODO: HEAVY_DEBUG
+    //console.info(`No routes found for plugin ${plugin.name}`)
+  //}
 }
 
 export const getPlugins = () => _pluginsConfig

@@ -29,7 +29,11 @@ export const registerModule = module => {
 export const registerModules = modules => {
   const newModules = []
   if (process.env.__DEV__) {
-    console.info('registerModules', modules)
+    console.groupCollapsed('[Reacticoon][module] registerModules')
+    console.table(modules.map(mod => ({
+      name: mod.name
+    })))
+    console.groupEnd()
   }
   modules.forEach(module => {
     if (!_modules[module.name]) {

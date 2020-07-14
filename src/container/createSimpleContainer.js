@@ -70,6 +70,10 @@ function createSimpleContainer(containerName, options) {
           cancelRequest,
           // optionnal
           paging,
+          run: (apiCallParameters) => {
+            const { apiCallAction } = this.props
+            apiCallAction(apiCallParameters)
+          },
           loadMore: () => {
             const { apiCallAction, apiCallParameters, isPending } = this.props
             const page = paging?.next?.page

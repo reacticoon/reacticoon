@@ -15,7 +15,7 @@ const DEFAULT_STATE = Immutable.fromJS({
   data: null,
   isPending: false,
   error: null,
-  status: RequestStatus.NOT_NOT_LOADED,
+  status: RequestStatus.NOT_LOADED,
 })
 
 const handleRequest = (state, action) =>

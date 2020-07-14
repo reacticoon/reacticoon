@@ -106,7 +106,7 @@ function createSimpleContainer(containerName, options) {
     SimpleContainer.displayName = containerName
 
     SimpleContainer.propTypes = {
-      apiCallParameters: PropTypes.object.isRequired,
+      apiCallParameters: PropTypes.object,
     }
 
     const mapStateToProps = (state, ownProps) => {

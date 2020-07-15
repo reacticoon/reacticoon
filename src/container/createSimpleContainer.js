@@ -58,6 +58,7 @@ function createSimpleContainer(containerName, options) {
           data,
           error,
           cancelRequest,
+          resetRequestData,
           // optionnal
           paging,
         } = this.props
@@ -68,6 +69,7 @@ function createSimpleContainer(containerName, options) {
           error,
           request,
           cancelRequest,
+          resetRequestData,
           // optionnal
           paging,
           run: (apiCallParameters) => {
@@ -131,6 +133,7 @@ function createSimpleContainer(containerName, options) {
     const mapActions = {
       apiCallAction,
       cancelRequest: apiCallAction.cancelRequest,
+      resetRequestData: apiCallAction.resetRequestData,
     }
 
     return connect(mapStateToProps, mapActions)(SimpleContainer)

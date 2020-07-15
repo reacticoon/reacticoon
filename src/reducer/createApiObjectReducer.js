@@ -3,6 +3,7 @@ import invariant from 'invariant'
 import { isActionType } from 'reacticoon/action'
 import isFunction from 'lodash/isFunction'
 import isUndefined from 'lodash/isUndefined'
+import isEmpty from 'lodash/isEmpty'
 import { RequestStatus } from 'reacticoon/api/constants'
 
 /**
@@ -16,7 +17,7 @@ const DEFAULT_STATE = Immutable.fromJS({})
 const handleRequest = (state, action) =>
   state.merge({
     data: null,
-    meta: action.meta,
+    meta: action.meta || null,
     isPending: true,
     error: null,
     status: RequestStatus.PENDING,
@@ -47,9 +48,22 @@ const handleCancel = (state, action) =>
     status: RequestStatus.CANCEL,
   })
 
+const handleReset = (state, action) => 
+  state.merge({
+    data: null,
+    isPending: false,
+    meta: null,
+    error: null,
+    status: null,
+  })
+
 const handleAction = (defaultReducer, getProp, additionalReducer) => {
   return (state, action) => {
     const path = getProp(action)
+
+    if (!path || isEmpty(path.filter(Boolean))) {
+      return state
+    }
 
     let newObjectState = Immutable.fromJS(
       defaultReducer(state.getIn(path) || Immutable.fromJS({}), action)
@@ -104,6 +118,7 @@ const createApiObjectReducer = (actionType, getProp, reducer = null, additionalR
       additionalReducers[actionType.FAILURE]
     ),
     [actionType.CANCEL]: handleAction(handleCancel, getProp, additionalReducers[actionType.CANCEL]),
+    [actionType.RESET]: handleAction(handleReset, getProp, additionalReducers[actionType.RESET]),
   }
 
   return (state = DEFAULT_STATE, action) => {

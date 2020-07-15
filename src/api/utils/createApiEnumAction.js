@@ -6,6 +6,7 @@ const createApiEnumAction = prefix => ({
   SUCCESS: `${prefix}::SUCCESS`,
   FAILURE: `${prefix}::FAILURE`,
   CANCEL: `${prefix}::CANCEL`,
+  RESET: `${prefix}::RESET`,
 })
 
 export default createApiEnumAction

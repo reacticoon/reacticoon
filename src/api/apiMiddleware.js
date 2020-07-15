@@ -70,8 +70,8 @@ export default store => next => action => {
   //   throw new Error('Specify one of the exported Schemas.')
   // }
 
-  if (!Array.isArray(types) || types.length !== 4) {
-    throw new Error('Expected an array of 4 action types.')
+  if (!Array.isArray(types) || types.length !== 5) {
+    throw new Error('Expected an array of 5 action types.')
   }
 
   if (!types.every(type => typeof type === 'string')) {
@@ -89,7 +89,9 @@ export default store => next => action => {
     actionWith({
       type: requestType,
       request: request,
-      data: data,
+      // TODO: remove data for payload
+      // data: data,
+      payload: data,
     })
   )
 
@@ -99,7 +101,9 @@ export default store => next => action => {
         actionWith({
           type: successType,
           response,
-          data: data,
+          // TODO: remove data for payload
+          // data: data,
+          payload: data,        
         })
       )
     )
@@ -108,7 +112,9 @@ export default store => next => action => {
         actionWith({
           type: failureType,
           apiError,
-          data: data,
+          // TODO: remove data for payload
+          // data: data,
+          payload: data, 
         })
       )
     )

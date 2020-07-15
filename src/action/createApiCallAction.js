@@ -28,7 +28,13 @@ const createApiCallAction = (type, request, data = null) => {
     // }
     const action = {
       [API_CALL]: {
-        [TYPES]: [actionType.REQUEST, actionType.SUCCESS, actionType.FAILURE, actionType.CANCEL],
+        [TYPES]: [
+          actionType.REQUEST, 
+          actionType.SUCCESS, 
+          actionType.FAILURE, 
+          actionType.CANCEL, 
+          actionType.RESET
+        ],
         [REQUEST]: getData(request, params),
         [DATA]: getData(data, params),
       },
@@ -46,6 +52,7 @@ const createApiCallAction = (type, request, data = null) => {
   func.SUCCESS = actionType.SUCCESS
   func.FAILURE = actionType.FAILURE
   func.CANCEL = actionType.CANCEL
+  func.RESET = actionType.RESET
 
   // requried by `isActionType`
   func.isActionType = true
@@ -59,9 +66,10 @@ const createApiCallAction = (type, request, data = null) => {
   }
 
   // add action to cancel this api call action.
-  func.cancelRequest = createAction(actionType.CANCEL, () => ({
-    date: new Date().toISOString(),
-  }))
+  func.cancelRequest = (actionHandler) => createAction(actionType.CANCEL, actionHandler)
+
+  // add action to reset this api call action data.
+  func.resetRequestData = (actionHandler) => createAction(actionType.RESET, actionHandler)
 
   return func
 }

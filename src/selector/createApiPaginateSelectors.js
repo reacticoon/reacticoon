@@ -13,7 +13,7 @@ import { RequestStatus } from 'reacticoon/api/constants'
  * @return {object}             Object with 3 selectors
  *                              isFetching / getData / getErrors
  */
-const createPaginateSelector = (stateRetriever, formatData = null) => {
+const createApiPaginateSelectors = (stateRetriever, formatData = null) => {
   const getState = isFunction(stateRetriever) ? stateRetriever : getStateForModule(stateRetriever)
 
   return {
@@ -101,4 +101,4 @@ const createPaginateSelector = (stateRetriever, formatData = null) => {
   }
 }
 
-export default createPaginateSelector
+export default createApiPaginateSelectors

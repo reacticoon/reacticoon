@@ -31,8 +31,8 @@ const createApiPaginateReducer = (
   actionType,
   reducer = null,
   options = {
-    isTypeCursor: true,
-    isTypePage: false,
+    isTypeCursor: false,
+    isTypePage: true,
   }
 ) => {
   

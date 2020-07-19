@@ -88,6 +88,7 @@ function createSimpleContainer(containerName, options) {
                 apiCallAction.apply(null, finalApiCallParameters)
               } else {
                 const finalApiCallParameters = {
+                  ...apiCallParameters,
                   page,
                   limit,
                 }

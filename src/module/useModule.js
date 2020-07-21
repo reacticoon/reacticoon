@@ -7,14 +7,14 @@ function useModule(rModule) {
   if (FEATURE_REACTICOON_HEAVY_DEBUG) {
     // invariant does not works well here.
     if (!rModule || !rModule.__IS_MODULE) {
-      console.error(`invalid module given to useModule`)
+      console.error(`[Reacticoon][useModule] invalid module given to useModule`)
     }
   }
   try {
     registerModule(rModule)
 
     if (FEATURE_REACTICOON_HEAVY_DEBUG) {
-      console.info(`useModule ${rModule.name}`)
+      console.trace(`[Reacticoon][useModule] ${rModule.name}`)
     }
   } catch (err) {
     // TODO: event

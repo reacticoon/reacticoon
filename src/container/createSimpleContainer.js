@@ -1,10 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { connect } from 'reacticoon/view'
 import isEqual from 'lodash/isEqual'
 import isFunction from 'lodash/isFunction'
 import isArray from 'lodash/isArray'
+
+import { connect } from 'reacticoon/view'
+import { useModule } from 'reacticoon/module'
 
 /**
  *
@@ -21,6 +23,8 @@ import isArray from 'lodash/isArray'
 function createSimpleContainer(containerName, options) {
   try {
     const Module = options.module
+
+    useModule(Module)
 
     class SimpleContainer extends React.Component {
       constructor(props) {

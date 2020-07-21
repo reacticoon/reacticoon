@@ -24,6 +24,12 @@ export const registerModule = module => {
       modules: { ..._modules },
     })
   }
+  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+    console.trace(`[Reacticoon][registerModule] ${key}`)
+
+    console.log('[Reacticoon][module] registered modules')
+    console.table(_modules)
+  }
 }
 
 export const registerModules = modules => {
@@ -48,6 +54,11 @@ export const registerModules = modules => {
   })
 
   _configured = true
+
+  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+    console.log('[Reacticoon][module] registered modules')
+    console.table(_modules)
+  }
 }
 
 export const getModules = () => _modules

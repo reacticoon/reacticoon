@@ -6,7 +6,6 @@ import get from 'lodash/get'
 
 import { isMakeSelector } from 'reacticoon/selector/utils'
 import { connect } from 'reacticoon/view'
-import useModule from 'reacticoon/module/useModule'
 
 /**
  *
@@ -37,14 +36,9 @@ import useModule from 'reacticoon/module/useModule'
  */
 const createModule = (moduleName, content) => {
 
-  // sub-modules handling
-  // register the sub-modules
-  if (content.subModules) {
-    contrent.subModules.forEach(subModule => {
-      useModule(subModule)
-    })
+  const getSubModules = () => {
+    return content.subModules || []
   }
-
   
   const getAction = actionName => {
     const action = content.actions[actionName]
@@ -172,6 +166,7 @@ const createModule = (moduleName, content) => {
     getActionsMap,
     getMapStateToProps,
     connect: connectModule,
+    getSubModules,
     __IS_MODULE: true,
   }
 }

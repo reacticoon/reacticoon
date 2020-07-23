@@ -29,8 +29,17 @@ export const registerModule = module => {
   if (!_modules[key]) {
     _modules[key] = module
 
+    // add subModules
+    const subModulesToRegister = []
+    module.getSubModules().forEach(subModule => {
+      if (!_modules[module.name]) {
+        _modules[module.name] = subModule
+        subModulesToRegister.push(subModule)
+      }
+    })
+
     EventManager.dispatch(EventManager.Event.REGISTER_MODULES, {
-      newModules: [module],
+      newModules: [module, ...subModulesToRegister],
       modules: { ..._modules },
     })
   }

@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import isNil from 'lodash/isNil'
 import isEqual from 'lodash/isEqual'
 import isFunction from 'lodash/isFunction'
 import isArray from 'lodash/isArray'
@@ -16,6 +17,7 @@ import { useModule } from 'reacticoon/module'
  *  - apiCallParameters: Object
  *  - selectors, name of the selectors, result of createApiSelectors
  *  - mapChildrenProps: function(childrenProps)
+ *  - forceReload: change the default forceReload prop.
  *
  * TODO: implement cancel request action
  * TODO: implement reset data action
@@ -119,7 +121,7 @@ function createSimpleContainer(containerName, options) {
     SimpleContainer.displayName = containerName
 
     SimpleContainer.defaultProps = {
-      forceReload: true,
+      forceReload: !isNil(options?.forceReload) ? options.forceReload : true
     }
 
     SimpleContainer.propTypes = {

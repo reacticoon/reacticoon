@@ -18,14 +18,14 @@ const DEFAULT_STATE = Immutable.fromJS({
   status: RequestStatus.NOT_LOADED,
 })
 
-const handleRequest = (state, action) =>
+const handleRequest = (state, action, options) =>
   state.merge({
-    data: null,
     meta: action.meta,
     isPending: true,
     error: null,
     status: RequestStatus.PENDING,
   })
+  .merge(options.resetDataOnRequest ? { data: null } : {})
 
 const handleSuccess = (state, action) =>
   state.merge({
@@ -52,12 +52,12 @@ const handleCancel = (state, action) =>
     status: RequestStatus.CANCEL,
   })
 
-const handleAction = (defaultReducer, additionalReducer) => {
+const handleAction = (defaultReducer, additionalReducer, options) => {
   return (state, action) => {
-    const newState = defaultReducer(state, action)
+    const newState = defaultReducer(state, action, options)
 
     if (additionalReducer) {
-      return additionalReducer(newState, action)
+      return additionalReducer(newState, action, options)
     }
     return newState
   }
@@ -79,17 +79,19 @@ const handleAction = (defaultReducer, additionalReducer) => {
  * reducer functions that does not replace the default reducer functions, but are called after the
  * default reducer function. Allows to reduce more than the default behavior for an api call actions
  */
-const createApiReducer = (actionType, reducer = null, additionalReducers = {}) => {
+const createApiReducer = (actionType, options = { resetDataOnRequest: true, reducer: null, additionalReducers: {} }) => {
   invariant(isActionType(actionType), `actionType must be defined`)
+
+  const { reducer = null,  additionalReducers = {} } = options
 
   //
   // define handlers
   //
   const handlers = {
-    [actionType.REQUEST]: handleAction(handleRequest, additionalReducers[actionType.REQUEST]),
-    [actionType.SUCCESS]: handleAction(handleSuccess, additionalReducers[actionType.SUCCESS]),
-    [actionType.FAILURE]: handleAction(handleFailure, additionalReducers[actionType.FAILURE]),
-    [actionType.CANCEL]: handleAction(handleCancel, additionalReducers[actionType.CANCEL]),
+    [actionType.REQUEST]: handleAction(handleRequest, additionalReducers[actionType.REQUEST], options),
+    [actionType.SUCCESS]: handleAction(handleSuccess, additionalReducers[actionType.SUCCESS], options),
+    [actionType.FAILURE]: handleAction(handleFailure, additionalReducers[actionType.FAILURE], options),
+    [actionType.CANCEL]: handleAction(handleCancel, additionalReducers[actionType.CANCEL], options),
   }
 
   return (state = DEFAULT_STATE, action) => {

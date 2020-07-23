@@ -12,9 +12,19 @@ const _modules = {}
 // TODO: remove TRICK
 let _configured = false
 
+let _registerModulesCalled = false
+// contains modules to be registered using registerModule, but called before registerModules is called.
+// we need to register them once registerModules is called for the first time.
+const modulesToRegister = []
+
 export const isConfigured = () => _configured
 
 export const registerModule = module => {
+  if (!_registerModulesCalled) {
+    modulesToRegister.push(module)
+    return;
+  }
+
   const key = module.name
   if (!_modules[key]) {
     _modules[key] = module
@@ -32,7 +42,12 @@ export const registerModule = module => {
   }
 }
 
-export const registerModules = modules => {
+export const registerModules = modulesParam => {
+  let modules = [ ...modulesParam ]
+  if (!_registerModulesCalled) {
+    modules = [ ...modulesParam, ...modulesToRegister]
+  }
+  _registerModulesCalled = true
   const newModules = []
   if (process.env.__DEV__) {
     console.groupCollapsed('[Reacticoon][module] registerModules')

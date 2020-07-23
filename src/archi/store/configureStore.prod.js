@@ -10,6 +10,7 @@ const configureStore = appOptions =>
     appOptions.preloadedState || {},
     applyMiddleware(
       ...generateMiddlewares(false, [
+        // TODO: remove
         ...(appOptions.prodMiddlewares || []),
         ...(appOptions.middlewares || []),
       ])

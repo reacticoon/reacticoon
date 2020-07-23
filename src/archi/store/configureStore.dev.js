@@ -23,6 +23,7 @@ const configureStore = appOptions => {
     composeEnhancers(
       applyMiddleware(
         ...generateMiddlewares(true, [
+          // TODO: remove
           ...(appOptions.devMiddlewares || []),
           ...(appOptions.middlewares || []),
         ])

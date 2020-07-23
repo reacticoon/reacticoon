@@ -6,7 +6,7 @@ import get from 'lodash/get'
 
 import { isMakeSelector } from 'reacticoon/selector/utils'
 import { connect } from 'reacticoon/view'
-import { useModule } from 'reacticoon/module'
+import useModule from 'reacticoon/module/useModule'
 
 /**
  *
@@ -25,7 +25,8 @@ import { useModule } from 'reacticoon/module'
  * import bookmarkReducer from './reducer'
  *
  * const bookmarkModule = createModule('Bookmark', {
- *   noReducer: true, // if you explicitely do not want a reducer.
+ *   // TODO: use noReducer instead of reducer null on generateModuleEntities
+ *   noReducer: true, // if you explicitely do not want a reducer, or use reducer: null
  *   actions,
  *   reducer: bookmarkReducer,
  *   selectors,

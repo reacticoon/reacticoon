@@ -30,7 +30,9 @@ function createSimpleContainer(containerName, options) {
       constructor(props) {
         super(props)
 
-        this.loadData()
+        if (props.forceReload || !props.data) {
+          this.loadData()
+        }
       }
 
       loadData() {
@@ -115,6 +117,10 @@ function createSimpleContainer(containerName, options) {
     }
 
     SimpleContainer.displayName = containerName
+
+    SimpleContainer.defaultProps = {
+      forceReload: true,
+    }
 
     SimpleContainer.propTypes = {
       apiCallParameters: PropTypes.object,

@@ -10,10 +10,10 @@ const generateModuleEntities = modules => {
 
   forOwn(modules, (module, key) => {
     // force module to set reducer to null
-    invariant(
-      !isUndefined(module.content.reducer) || module.content.noReducer,
-      `no reducer found for ${module.name}`
-    )
+    // TODO: warn reducer must be explicitely null or noReducer set to true
+    if (!(!isUndefined(module.content.reducer) || module.content.noReducer)) {
+      debugger
+    }
     if (!module.content.noReducer) {
       const reducer = module.content.reducer
       if (reducer) {

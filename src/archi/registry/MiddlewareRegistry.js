@@ -19,6 +19,16 @@ export class MiddlewareRegistry {
       ]
     })
   }
+
+  addMiddlewares(middlewares) {
+    const middlewareMap = generateMiddlewareMap(middlewares)
+    forEach(middlewareMap, (middlewares, middlewareName) => {
+      this._middlewares[middlewareName] = [
+        ...(this._middlewares[middlewareName] || []),
+        ...middlewares,
+      ]
+    })
+  }
 }
 
 const middlewareRegistry = new MiddlewareRegistry()

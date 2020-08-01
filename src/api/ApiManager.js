@@ -146,7 +146,7 @@ class ApiManager {
       if (!errorMiddlewareUsed) {
         if (isUndefined(res)) {
           // no internet connexion / no response
-          const apiError = ApiError(Error.NO_INTERNET, 'No internet connectivity')
+          const apiError = ApiError(Error.NO_INTERNET, 'An error occured')
           apiError.localizedMessage = tr('api_error.no_internet')
           failure(apiError)
         } else {

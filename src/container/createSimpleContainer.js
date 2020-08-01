@@ -80,9 +80,9 @@ function createSimpleContainer(containerName, options) {
           resetRequestData,
           // optionnal
           paging,
-          run: (apiCallParameters) => {
-            const { apiCallAction } = this.props
-            apiCallAction(apiCallParameters)
+          run: (apiCallParametersParams) => {
+            const { apiCallAction, apiCallParameters } = this.props
+            apiCallAction(apiCallParametersParams || apiCallParameters)
           },
           loadMore: () => {
             const { apiCallAction, apiCallParameters, isPending } = this.props

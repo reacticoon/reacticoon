@@ -30,11 +30,14 @@ const DEFAULT_STATE = Immutable.fromJS({
 const createApiPaginateReducer = (
   actionType,
   reducer = null,
-  options = {
+  optionsParam = {}
+) => {
+  const options = {
     isTypeCursor: false,
     isTypePage: true,
+    id: 'id',
+    ...optionsParam
   }
-) => {
   
   const paginateReducer = (state = DEFAULT_STATE, action) => {
     switch (action.type) {
@@ -87,7 +90,7 @@ const createApiPaginateReducer = (
 
           newList = concat(currentList, action.response.data)
           // TODO: provide option that gives a callback instead of comparing id
-          newList = uniqWith(newList, (a, b) => a.id === b.id)
+          newList = uniqWith(newList, (a, b) => a[options.id] === b[options.id])
         }
 
         return state.merge({

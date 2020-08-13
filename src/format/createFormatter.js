@@ -43,12 +43,17 @@ const createFormatter = (...functionsParams) => (data, props = {}) => {
       `invalid paremeter pass to createFormatter at index ${index}: ${func}`
     )
 
-    const funcRes = func(formattedObject, props)
-
-    // allow formatter to modify data by reference, or return it
-    if (!isNil(funcRes)) {
-      // invariant(!isNil(funcRes), `[formatter] invalid return, data is nil on ${func}`)
-      formattedObject = funcRes
+    try {
+      const funcRes = func(formattedObject, props)
+      // allow formatter to modify data by reference, or return it
+      if (!isNil(funcRes)) {
+        // invariant(!isNil(funcRes), `[formatter] invalid return, data is nil on ${func}`)
+        formattedObject = funcRes
+      }
+    } catch (e) {
+      console.info(`Formatter crashed:`)
+      console.error(e)
+      // TODO: event
     }
   })
 

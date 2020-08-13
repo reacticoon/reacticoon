@@ -2,10 +2,10 @@ import invariant from 'invariant'
 import { isEvent } from './utils'
 
 /**
- * Creates an event handler
+ * Creates an event listener
  */
-const createEventHandler = (event, callback) => {
-  invariant(isEvent(event), `createEventHandler: an event must be given, ${typeof event} given`)
+const createEventListener = (event, callback) => {
+  invariant(isEvent(event), `createEventListener: an event must be given, ${typeof event} given`)
 
   // attach event name
   callback.EVENT = event
@@ -17,4 +17,4 @@ const createEventHandler = (event, callback) => {
   return callback
 }
 
-export default createEventHandler
+export default createEventListener

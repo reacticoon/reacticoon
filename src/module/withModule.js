@@ -12,36 +12,42 @@ const withModule = (
   moduleLoader,
   FallbackComponent = <div />
 ) => ComposedComponent => {
-  class WithModuleHOC extends React.Component {
-    constructor(props) {
-      super(props)
+  try {
+    class WithModuleHOC extends React.Component {
+      constructor(props) {
+        super(props)
 
-      this.state = {
-        module: null,
+        this.state = {
+          module: null,
+        }
+
+        moduleLoader().then(module => {
+          useModule(module.default)
+          this.setState({ module: module.default })
+        })
       }
 
-      moduleLoader().then(module => {
-        useModule(module.default)
-        this.setState({ module: module.default })
-      })
-    }
+      render() {
+        const module = this.state.module
 
-    render() {
-      const module = this.state.module
+        if (!module) {
+          return React.cloneElement(FallbackComponent)
+        }
 
-      if (!module) {
-        return React.cloneElement(FallbackComponent)
+        return React.createElement(
+          module.connect.apply(null, connectData)(ComposedComponent),
+          this.props
+        )
       }
-
-      return React.createElement(
-        module.connect.apply(null, connectData)(ComposedComponent),
-        this.props
-      )
     }
+    WithModuleHOC.displayName = `WithModuleHOC_${moduleName}`
+
+    return WithModuleHOC
+  } catch (e) {
+    console.info(`Crash on withModule`)
+    console.error(e)
   }
-  WithModuleHOC.displayName = `WithModuleHOC_${moduleName}`
-
-  return WithModuleHOC
+  return null
 }
 
 export default withModule

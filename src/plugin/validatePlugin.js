@@ -25,7 +25,7 @@ const validatePlugin = plugin => {
   plugin.eventsHandler.forEach(event => {
     invariant(
       event.__IS_EVENT_HANDLER,
-      `plugin 'eventsHandler' event ${event.name} must be created with 'createEventHandler'`
+      `plugin 'eventsHandler' event ${event.name} must be created with 'createEventListener'`
     )
   })
 

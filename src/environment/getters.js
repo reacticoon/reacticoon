@@ -12,10 +12,12 @@ export const __ENV__ = process.env.__ENV__
 // the version set on the app package.json
 //
 export const __VERSION__ = process.env.__VERSION__
+window.__VERSION__ = process.env.__VERSION__
 
 export const __REACTICOON_VERSION__ = 'TODO'
 
 export const __APP_GIT_COMMIT__ = process.env.__APP_GIT_COMMIT__
+window.__APP_GIT_COMMIT__ = process.env.__APP_GIT_COMMIT__
 
 export const __APP_GIT_BRANCH__ = process.env.__APP_GIT_BRANCH__
 

@@ -1,6 +1,7 @@
 import invariant from 'invariant'
 import moment from 'moment'
 import map from 'lodash/map'
+import find from 'lodash/find'
 import forEach from 'lodash/forEach'
 import isArray from 'lodash/isArray'
 import isString from 'lodash/isString'
@@ -9,38 +10,8 @@ import isFunction from 'lodash/isFunction'
 import ReacticoonEvents from './ReacticoonEvents'
 
 import { isEventHandler, isEvent, isSameEvent } from './utils'
+import createEventListener from "./createEventListener"
 
-/**
- * Retrieve the given event. It can either be:
- * - the event type string
- * - the event object
- * - an event handler (that will contains the event object on the EVENT property)
- */
-const getEvent = event => {
-  if (isString(event)) {
-    return event
-  }
-
-  // handle event given as the event handler
-  if (isFunction(event)) {
-    if (event.__IS_EVENT_HANDLER) {
-      // created with createEventHandler
-      return event.EVENT
-    }
-
-    if (event.EVENT) {
-      // not created with createEventHandler but has an `EVENT`, just warn
-      console.warn(`Event ${event.EVENT} given has not been created with 'createEventHandler'`)
-      return event.EVENT
-    }
-  }
-
-  if (isEvent(event)) {
-    return event
-  }
-
-  throw new Error(`Invalid event given: ${event}`)
-}
 
 /**
  * Manage dispatch of Reacticoon Events and plugins custom events
@@ -57,6 +28,43 @@ class EventManager {
    * Also contains the plugins events. (see registerEvents)
    */
   Event = { ...ReacticoonEvents }
+  
+  createEventListener = createEventListener;
+
+  /**
+   * Retrieve the given event. It can either be:
+   * - the event type string
+   * - the event object
+   * - an event handler (that will contains the event object on the EVENT property)
+   */
+  getEvent(event) {
+    if (isString(event)) {
+      return (
+        this.Event[event] ||
+        find(this.Event, (e) => e.type === event)
+      );
+    }
+
+    // handle event given as the event handler
+    if (isFunction(event)) {
+      if (event.__IS_EVENT_HANDLER) {
+        // created with createEventListener
+        return event.EVENT
+      }
+
+      if (event.EVENT) {
+        // not created with createEventListener but has an `EVENT`, just warn
+        console.warn(`Event ${event.EVENT} given has not been created with 'createEventListener'`)
+        return event.EVENT
+      }
+    }
+
+    if (isEvent(event)) {
+      return event
+    }
+
+    throw new Error(`Invalid event given: ${event}`)
+  }
 
   getEvents() {
     return this.Event
@@ -118,8 +126,9 @@ class EventManager {
     }
   }
 
+  // TODO: rename data to payload?
   dispatch(eventParam, data = {}) {
-    const eventDefinition = getEvent(eventParam)
+    const eventDefinition = this.getEvent(eventParam)
 
     const date = new Date()
 
@@ -192,13 +201,13 @@ class EventManager {
   addListeners(listenersParam) {
     let listeners = listenersParam
 
-    // allow to receive a parameters as an array of createEventHandler.
+    // allow to receive a parameters as an array of createEventListener.
     if (isArray(listenersParam)) {
       listeners = {}
       listenersParam.forEach(listener => {
         invariant(
           isEventHandler(listener),
-          `listener must be created with 'createEventHandler', ${typeof listener} given.`
+          `listener must be created with 'createEventListener', ${typeof listener} given.`
         )
         listeners[listener.EVENT.type] = listener
       })

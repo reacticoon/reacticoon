@@ -1,3 +1,14 @@
+// TODO: handle chaining api calls / multiple api calls
+// TODO: refactor, use fetch
+// in dev we can log requests with:
+// fetch = (originalFetch => {
+//   return (...arguments) => {
+//     const result = originalFetch.apply(this, arguments);
+//       return result.then(console.log('Request was sent'));
+//   };
+// })(fetch);
+
+
 import merge from 'lodash/merge'
 import isUndefined from 'lodash/isUndefined'
 import isNull from 'lodash/isNull'

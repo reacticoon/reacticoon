@@ -14,14 +14,19 @@ import { RequestStatus } from 'reacticoon/api/constants'
 
 const DEFAULT_STATE = Immutable.fromJS({})
 
-const handleRequest = (state, action) =>
-  state.merge({
-    data: null,
-    meta: action.meta || null,
-    isPending: true,
-    error: null,
-    status: RequestStatus.PENDING,
-  })
+const handleRequest = (state, action, options) => {
+  state = state.set('meta', action.meta || null)
+  state = state.set('isPending', true) 
+  state = state.set('error', null)
+  state = state.set('status', RequestStatus.PENDING)
+  
+  if (action.payload?.keepDataOnRequest || options.keepDataOnRequest
+    || action.payload?.resetDataOnRequest === false || options.resetDataOnRequest === false) {
+    return state
+  }
+
+  return state.set('data', null)
+}
 
 const handleSuccess = (state, action) =>
   state.merge({
@@ -57,7 +62,7 @@ const handleReset = (state, action) =>
     status: null,
   })
 
-const handleAction = (defaultReducer, getProp, additionalReducer) => {
+const handleAction = (defaultReducer, getProp, additionalReducer, options) => {
   return (state, action) => {
     const path = getProp(action)
 
@@ -66,11 +71,11 @@ const handleAction = (defaultReducer, getProp, additionalReducer) => {
     }
 
     let newObjectState = Immutable.fromJS(
-      defaultReducer(state.getIn(path) || Immutable.fromJS({}), action)
+      defaultReducer(state.getIn(path) || Immutable.fromJS({}), action, options)
     )
 
     if (additionalReducer) {
-      newObjectState = additionalReducer(newObjectState, action)
+      newObjectState = additionalReducer(newObjectState, action, options)
     }
 
     return state.setIn(path, newObjectState)
@@ -95,9 +100,11 @@ const handleAction = (defaultReducer, getProp, additionalReducer) => {
  * reducer functions that does not replace the default reducer functions, but are called after the
  * default reducer function. Allows to reduce more than the default behavior for an api call actions
  */
-const createApiObjectReducer = (actionType, getProp, reducer = null, additionalReducers = {}) => {
+const createApiObjectReducer = (actionType, getProp, options = { resetDataOnRequest: true, reducer: null, additionalReducers: {} }) => {
   invariant(isActionType(actionType), `actionType must be defined`)
 
+  const { reducer = null,  additionalReducers = {} } = options
+  
   //
   // define handlers
   //
@@ -105,20 +112,25 @@ const createApiObjectReducer = (actionType, getProp, reducer = null, additionalR
     [actionType.REQUEST]: handleAction(
       handleRequest,
       getProp,
-      additionalReducers[actionType.REQUEST]
+      additionalReducers[actionType.REQUEST],
+      options
     ),
     [actionType.SUCCESS]: handleAction(
       handleSuccess,
       getProp,
-      additionalReducers[actionType.SUCCESS]
+      additionalReducers[actionType.SUCCESS],
+      options
     ),
     [actionType.FAILURE]: handleAction(
       handleFailure,
       getProp,
-      additionalReducers[actionType.FAILURE]
+      additionalReducers[actionType.FAILURE],
+      options
     ),
-    [actionType.CANCEL]: handleAction(handleCancel, getProp, additionalReducers[actionType.CANCEL]),
-    [actionType.RESET]: handleAction(handleReset, getProp, additionalReducers[actionType.RESET]),
+    [actionType.CANCEL]: handleAction(handleCancel, getProp, additionalReducers[actionType.CANCEL],
+      options),
+    [actionType.RESET]: handleAction(handleReset, getProp, additionalReducers[actionType.RESET],
+      options),
   }
 
   return (state = DEFAULT_STATE, action) => {

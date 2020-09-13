@@ -1,5 +1,7 @@
 import isNil from 'lodash/isNil'
 import isArray from 'lodash/isArray'
+import pickBy from 'lodash/pickBy'
+import { Query } from './constants'
 
 const asArray = param => (isArray(param) ? param : [param])
 
@@ -34,7 +36,7 @@ export const getQueryFromUri = uri => {
  * Append the given `parameters` to the `uri`
  * if the `uri` already contains query parameters
  */
-export const formatQueryParams = (uri, parameters: Object): string => {
+export const formatQueryParams = (uri, parameters) => {
   if (isNil(uri)) {
     return null
   }
@@ -47,6 +49,12 @@ export const formatQueryParams = (uri, parameters: Object): string => {
     ...uriParameters,
     ...parameters,
   }
+  // remove queries that have the Query.REMOVE_ME value.
+  parameters = pickBy(parameters, value => value !== Query.REMOVE_ME)
+  // remove undefined values
+  parameters = pickBy(parameters, value => value !== undefined)
+
+
 
   // remove query
   uri = uri.split('?')[0]

@@ -62,7 +62,7 @@ const handleReset = (state, action) =>
     status: null,
   })
 
-const handleAction = (defaultReducer, getProp, additionalReducer, options) => {
+const handleAction = (defaultReducer, getProp, additionalReducer, overrideReducer, options) => {
   return (state, action) => {
     const path = getProp(action)
 
@@ -70,9 +70,16 @@ const handleAction = (defaultReducer, getProp, additionalReducer, options) => {
       return state
     }
 
-    let newObjectState = Immutable.fromJS(
-      defaultReducer(state.getIn(path) || Immutable.fromJS({}), action, options)
-    )
+    let newObjectState
+    if (overrideReducer) {
+      newObjectState = Immutable.fromJS(
+        overrideReducer(state.getIn(path) || Immutable.fromJS({}), action, options)
+      )
+    } else {
+      newObjectState = Immutable.fromJS(
+        defaultReducer(state.getIn(path) || Immutable.fromJS({}), action, options)
+      )
+    }
 
     if (additionalReducer) {
       newObjectState = additionalReducer(newObjectState, action, options)
@@ -100,10 +107,10 @@ const handleAction = (defaultReducer, getProp, additionalReducer, options) => {
  * reducer functions that does not replace the default reducer functions, but are called after the
  * default reducer function. Allows to reduce more than the default behavior for an api call actions
  */
-const createApiObjectReducer = (actionType, getProp, options = { resetDataOnRequest: true, reducer: null, additionalReducers: {} }) => {
+const createApiObjectReducer = (actionType, getProp, options = { resetDataOnRequest: true, reducer: null, overrideReducers: {}, additionalReducers: {} }) => {
   invariant(isActionType(actionType), `actionType must be defined`)
 
-  const { reducer = null,  additionalReducers = {} } = options
+  const { reducer = null,  additionalReducers = {}, overrideReducers = {} } = options
   
   //
   // define handlers
@@ -113,24 +120,37 @@ const createApiObjectReducer = (actionType, getProp, options = { resetDataOnRequ
       handleRequest,
       getProp,
       additionalReducers[actionType.REQUEST],
+      overrideReducers[actionType.REQUEST],
       options
     ),
     [actionType.SUCCESS]: handleAction(
       handleSuccess,
       getProp,
       additionalReducers[actionType.SUCCESS],
+      overrideReducers[actionType.SUCCESS],
       options
     ),
     [actionType.FAILURE]: handleAction(
       handleFailure,
       getProp,
       additionalReducers[actionType.FAILURE],
+      overrideReducers[actionType.FAILURE],
       options
     ),
-    [actionType.CANCEL]: handleAction(handleCancel, getProp, additionalReducers[actionType.CANCEL],
-      options),
-    [actionType.RESET]: handleAction(handleReset, getProp, additionalReducers[actionType.RESET],
-      options),
+    [actionType.CANCEL]: handleAction(
+      handleCancel, 
+      getProp, 
+      additionalReducers[actionType.CANCEL],
+      overrideReducers[actionType.CANCEL],
+      options
+    ),
+    [actionType.RESET]: handleAction(
+      handleReset, 
+      getProp, 
+      additionalReducers[actionType.RESET],
+      overrideReducers[actionType.RESET],
+      options
+    ),
   }
 
   return (state = DEFAULT_STATE, action) => {

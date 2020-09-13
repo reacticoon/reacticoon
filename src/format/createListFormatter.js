@@ -11,7 +11,8 @@ const createListFormatter = (itemFormatter, callback = null) => (list, props) =>
   // TODO:
   // invariant((callback === null || isFunction(list)), 'callback is not a function')
 
-  const listResult = (list || []).map(item => itemFormatter(item, props))
+  // filter to remove nil values from the list.
+  const listResult = (list || []).filter(Boolean).map(item => itemFormatter(item, props))
 
   return callback ? callback(listResult) : listResult
 }

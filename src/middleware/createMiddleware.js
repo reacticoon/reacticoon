@@ -106,12 +106,15 @@ const createMiddleware = (middlewareName, actionsToHandleParam, func) => {
               action,
             })
           } catch (ex) {
+            console.info(`Middleware ${middlewareName} has crashed:`)
+            console.error(ex)
             debugger
-            EventManager.dispatch(EventManager.Event.LOG_EXCEPTION, {
-              message: `Middleware ${middlewareName} has crashed:`,
-              action,
-              ex,
-            })
+            // TODO: this can cause infinite loops of state mutation
+            // EventManager.dispatch(EventManager.Event.LOG_EXCEPTION, {
+            //   message: `Middleware ${middlewareName} has crashed:`,
+            //   action,
+            //   ex,
+            // })
           }
 
           // action should stop if the middleware returns `STOP_PROPAGATION`

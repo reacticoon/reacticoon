@@ -26,9 +26,13 @@ function getStack() {
 const getStackTrace = function() {
   const stack = getStack()
   // Remove superfluous function call on stack
-  stack.shift()
-  stack.shift()
-  stack.shift()
+
+  var isChromium = window.chrome;
+  if (isChromium) {
+    stack.shift()
+    stack.shift()
+    stack.shift()
+  }
 
   // TODO: transform to readable stack trace with source map
 

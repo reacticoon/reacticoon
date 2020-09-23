@@ -199,3 +199,34 @@ export const addToArray = (target, source) => {
   }
   return target
 }
+
+/**
+ * Filter duplicates from the given array. The array sorting is not preserved.
+ *
+ * @param getId function that returns the id of the given object
+ * @param comparator function(object, other). returns true if other must replace the given object
+ */
+export const filterDuplicates = (arrayParam, getId, comparator) => {
+  const objects = {}
+
+  arrayParam.forEach(other => {
+    const id = getId(other)
+
+    const object = objects[id]
+    if (!object) {
+      objects[id] = other
+    } else {
+      // duplicate, compare which one we keep
+      if (comparator(object, other)) {
+        objects[id] = other
+      }
+    }
+  })
+
+  // the purpose here is to keep the returned array in the same order of keys as it was before
+  return getOrderedArray(
+    arrayParam,
+    values(objects),
+    (value, other) => value.id === other.id
+  ).filter(Boolean)
+}

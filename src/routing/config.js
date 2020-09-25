@@ -62,6 +62,7 @@ export const registerRoutingEnum = addRoutingEnum
 export const getRoutingEnum = () => _routingEnum
 
 export const getRouteNameForRoute = routeToFind => {
+  // TODO: use find
   let res = null
   forEach(_routingEnum, (route, name) => {
     if (route.name === routeToFind.definition.name) {
@@ -149,12 +150,7 @@ export const generateRoutes = routing => {
   const routingEnumData = {}
 
   routesData.forEach(routeData => {
-    const routeDefinition = new RouteDefinition(
-      routeData.name,
-      routeData.path,
-      routeData.authRequired,
-      routeData.disabled
-    )
+    const routeDefinition = new RouteDefinition(routeData)
 
     const route = {
       definition: routeDefinition,

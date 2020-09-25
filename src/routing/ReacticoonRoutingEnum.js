@@ -7,7 +7,7 @@ import RouteDefinition from './RouteDefinition'
 const ReacticoonRoutingEnum = {
   // generic 404 page
   // https://stackoverflow.com/questions/32128978/react-router-no-not-found-route
-  PAGE_NOT_FOUND: new RouteDefinition('PAGE_NOT_FOUND', '*', false),
+  PAGE_NOT_FOUND: new RouteDefinition({ name: 'PAGE_NOT_FOUND', path: '*' }),
 }
 
 export default ReacticoonRoutingEnum

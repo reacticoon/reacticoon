@@ -18,6 +18,7 @@ import { useModule } from 'reacticoon/module'
  *  - selectors, name of the selectors, result of createApiSelectors
  *  - mapChildrenProps: function(childrenProps)
  *  - forceReload: change the default forceReload prop.
+ *  - context
  *
  * TODO: implement cancel request action
  * TODO: implement reset data action
@@ -107,12 +108,21 @@ function createSimpleContainer(containerName, options) {
         }
 
         if (!children) {
-          return null
+          if (options.context) {
+            return <options.context.Provider value={data} />
+          } 
+          return null 
         }
 
         if (isFunction(mapChildrenProps)) {
           childrenProps = mapChildrenProps(childrenProps)
         }
+
+        if (options.context) {
+          return <options.context.Provider value={data}>
+              {children(childrenProps)}
+            </options.context.Provider> 
+        } 
 
         return children(childrenProps)
       }

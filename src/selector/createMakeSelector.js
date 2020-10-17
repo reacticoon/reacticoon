@@ -39,7 +39,7 @@ const createMakeSelector = (
   // - a string path: 'myVar'
   // - an array: [ 'myVar', 'default value' ]
   // - an object: [ path: 'myVar', defaultValue: 'default value' ]
-  const propsSelectors = propsParam.map(propParam => {
+  const propsSelectors = (isFunction(propsParam) ? [ propsParam ] : propsParam).map(propParam => {
     if (isString(propParam)) {
       return createPropGetter(propParam, null)
     }

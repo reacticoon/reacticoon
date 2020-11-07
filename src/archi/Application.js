@@ -2,7 +2,6 @@ import React from 'react'
 
 import invariant from 'invariant'
 import isNil from 'lodash/isNil'
-import debounce from 'lodash/debounce'
 
 import { render } from 'react-dom'
 // hot loader inserted by create-reacticoon-app

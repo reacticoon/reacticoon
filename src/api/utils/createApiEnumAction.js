@@ -7,6 +7,7 @@ const createApiEnumAction = prefix => ({
   FAILURE: `${prefix}::FAILURE`,
   CANCEL: `${prefix}::CANCEL`,
   RESET: `${prefix}::RESET`,
+  SET_DATA: `${prefix}::SET_DATA`,
 })
 
 export default createApiEnumAction

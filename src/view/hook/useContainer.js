@@ -18,7 +18,9 @@ const useContainer = (container, options) => {
   const [containerData, setContainerData] = React.useState({})
 
   const handleDataChange = React.useCallback((data) => {
-    setContainerData(data)
+    if (data) {
+      setContainerData(data)
+    }
   }, []);
 
   return { 

@@ -19,6 +19,10 @@ const handleRequest = (state, action, options) => {
   state = state.set('isPending', true) 
   state = state.set('error', null)
   state = state.set('status', RequestStatus.PENDING)
+
+  if (action.payload?._data) {
+    return state.set('data', action.payload?._data)
+  }
   
   if (action.payload?.keepDataOnRequest || options.keepDataOnRequest
     || action.payload?.resetDataOnRequest === false || options.resetDataOnRequest === false) {
@@ -60,6 +64,11 @@ const handleReset = (state, action) =>
     meta: null,
     error: null,
     status: null,
+  })
+
+const handleSetData = (state, action) => 
+  state.merge({
+    data: action.payload.data,
   })
 
 const handleAction = (defaultReducer, getProp, additionalReducer, overrideReducer, options) => {
@@ -149,6 +158,13 @@ const createApiObjectReducer = (actionType, getProp, options = { resetDataOnRequ
       getProp, 
       additionalReducers[actionType.RESET],
       overrideReducers[actionType.RESET],
+      options
+    ),
+    [actionType.SET_DATA]: handleAction(
+      handleSetData, 
+      getProp, 
+      additionalReducers[actionType.SET_DATA],
+      overrideReducers[actionType.SET_DATA],
       options
     ),
   }

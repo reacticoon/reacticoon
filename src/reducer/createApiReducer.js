@@ -25,7 +25,7 @@ const handleRequest = (state, action, options) =>
     error: null,
     status: RequestStatus.PENDING,
   })
-  .merge(options.resetDataOnRequest ? { data: null } : {})
+  .merge(action.payload?._data ? { data: action.payload?._data } : options.resetDataOnRequest ? { data: null } : {})
 
 const handleSuccess = (state, action) =>
   state.merge({
@@ -63,6 +63,17 @@ const handleAction = (defaultReducer, additionalReducer, options) => {
   }
 }
 
+const handleReset = (state) =>state.merge({
+    data: null,
+    isPending: false,
+    error: null,
+    status: RequestStatus.NOT_LOADED
+  })
+
+const handleSetData = (state, action) => state.merge({
+  data: action.data
+})
+
 /**
  * Creates a reducer that handles an api call action (created via `createApiCallAction`).
  * - REQUEST
@@ -92,6 +103,8 @@ const createApiReducer = (actionType, options = { resetDataOnRequest: true, redu
     [actionType.SUCCESS]: handleAction(handleSuccess, additionalReducers[actionType.SUCCESS], options),
     [actionType.FAILURE]: handleAction(handleFailure, additionalReducers[actionType.FAILURE], options),
     [actionType.CANCEL]: handleAction(handleCancel, additionalReducers[actionType.CANCEL], options),
+    [actionType.RESET]: handleAction(handleReset, additionalReducers[actionType.RESET], options),
+    [actionType.SET_DATA]: handleAction(handleSetData, additionalReducers[actionType.SET_DATA], options),
   }
 
   return (state = DEFAULT_STATE, action) => {

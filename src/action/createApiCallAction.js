@@ -33,13 +33,13 @@ const createApiCallAction = (type, request, data = null) => {
           actionType.SUCCESS, 
           actionType.FAILURE, 
           actionType.CANCEL, 
-          actionType.RESET
+          actionType.RESET,
+          actionType.SET_DATA,
         ],
         [REQUEST]: getData(request, params),
         [DATA]: getData(data, params),
       },
     }
-
     return action
   }
 
@@ -53,6 +53,7 @@ const createApiCallAction = (type, request, data = null) => {
   func.FAILURE = actionType.FAILURE
   func.CANCEL = actionType.CANCEL
   func.RESET = actionType.RESET
+  func.SET_DATA = actionType.SET_DATA
 
   // requried by `isActionType`
   func.isActionType = true
@@ -70,6 +71,8 @@ const createApiCallAction = (type, request, data = null) => {
 
   // add action to reset this api call action data.
   func.resetRequestData = (actionHandler) => createAction(actionType.RESET, actionHandler)
+
+  func.setData = (actionHandler) => createAction(actionType.SET_DATA, actionHandler)
 
   return func
 }

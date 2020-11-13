@@ -28,7 +28,7 @@ const getStackTrace = function() {
   // Remove superfluous function call on stack
 
   var isChromium = window.chrome;
-  if (isChromium) {
+  if (isChromium && stack.shift) {
     stack.shift()
     stack.shift()
     stack.shift()

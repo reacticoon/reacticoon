@@ -6,6 +6,7 @@ import isUndefined from 'lodash/isUndefined'
 import isNull from 'lodash/isNull'
 import isNil from 'lodash/isNil'
 import isFunction from 'lodash/isFunction'
+import isString from 'lodash/isString'
 import isArray from 'lodash/isArray'
 import map from 'lodash/map'
 import clone from 'lodash/clone'
@@ -31,6 +32,10 @@ export const compare = (comparator, item, toCompare = null) => {
       )
       return item['id'] === comparator
     }
+  }
+
+  if (isString(item)) {
+    return item === toCompare
   }
 
   invariant(false, 'not handled')
@@ -104,7 +109,7 @@ export const deleteObjectOnArray = (arrayParam, comparator) => {
   return array
 }
 
-export const toggleArrayObject = (arrayParam, obj, comparator) => {
+export const toggleObjectOnArray = (arrayParam, obj, comparator) => {
   const array = copyArray(arrayParam)
   if (existsOnArray(array, comparator)) {
     return deleteObjectOnArray(array, comparator)
@@ -114,30 +119,30 @@ export const toggleArrayObject = (arrayParam, obj, comparator) => {
   return array
 }
 
-export const updateArrayObjectAtIndex = (arrayParam, obj, index) => {
+export const updateObjectAtIndexOnArray = (arrayParam, obj, index) => {
   const array = arrayParam
   array[index] = obj
   return array
 }
 
-export const updateArrayObject = (arrayParam, obj, comparator) => {
+export const updateObjectOnArray = (arrayParam, obj, comparator) => {
   const array = arrayParam
 
   return array.map(item => (compare(comparator, item) === true ? obj : item))
 }
 
-export const updateArrayObjectOrCreate = (arrayParam, obj, comparator) => {
+export const updateObjectOrCreateOnArray = (arrayParam, obj, comparator) => {
   const array = arrayParam
 
   if (existsOnArray(array, comparator)) {
-    return updateArrayObject(array, obj, comparator)
+    return updateObjectOnArray(array, obj, comparator)
   }
 
   array.push(obj)
   return array
 }
 
-export const addUniqueOnArray = (arrayParam, obj, comparator) => {
+export const addUniqueObjectOnArray = (arrayParam, obj, comparator) => {
   const array = copyArray(arrayParam)
   if (!existsOnArray(array, comparator)) {
     array.push(obj)
@@ -165,7 +170,7 @@ export const mergeArray = (array, source, getValueFunc, appendMode = false) => {
   return res
 }
 
-export const toggleArrayValue = (arrayParam, value) => {
+export const toggleValueOnArray = (arrayParam, value) => {
   const array = copyArray(arrayParam)
 
   if (array.includes(value)) {

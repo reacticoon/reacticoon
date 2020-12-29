@@ -1,4 +1,7 @@
 import React from 'react';
+
+import isNil from 'lodash/isNil'
+import cloneDeep from 'lodash/cloneDeep'
 import isEqual from 'lodash/isEqual'
 import isFunction from 'lodash/isFunction'
 import set from 'lodash/set'
@@ -9,39 +12,46 @@ const memoryState = {};
 function useMemoryState(key, getInitialState) {
   const [state, setState] = React.useState(() => {
     const initialState = isFunction(getInitialState) ? getInitialState() : getInitialState;
-    const hasMemoryValue = Object.prototype.hasOwnProperty.call(memoryState, key);
+    const hasMemoryValue = !isNil(memoryState[key]);
+    const a = JSON.stringify(initialState)
+    const b =  JSON.stringify(memoryState[key]?.initialState)
+    const equals = a === b
 
-    let state
-    if (hasMemoryValue && isEqual(initialState, memoryState[key].initialState)) {
-      state = memoryState[key].state
-    } else {
-      state = initialState
+    if (!hasMemoryValue || !equals) {
+      memoryState[key] = {
+        initialState: cloneDeep(initialState),
+        state: cloneDeep(initialState)
+      }
     }
 
-    memoryState[key] = {
-      initialState,
-      state
-    }
-    return state
+    return memoryState[key].state
   });
 
   function onChange(nextState) {
-    set(memoryState, [key, 'state'], nextState);
-    setState(nextState)
+    if (!isEqual(nextState, state)) {
+      set(memoryState, [key, 'state'], nextState);
+      setState(nextState)
+    }
   }
 
   React.useEffect(() => {
     const initialState = isFunction(getInitialState) ? getInitialState() : getInitialState;
-    const hasMemoryValue = Object.prototype.hasOwnProperty.call(memoryState, key);
+    const hasMemoryValue = !isNil(memoryState[key]);
+    const a = JSON.stringify(initialState)
+    const b =  JSON.stringify(memoryState[key]?.initialState)
+    const equals = a === b
 
-    if (hasMemoryValue) {
-      if (!isEqual(initialState, memoryState[key].initialState)) {
-        onChange(initialState)
+    if (!hasMemoryValue || !equals) {
+      memoryState[key] = {
+        initialState,
+        state: cloneDeep(initialState)
       }
+      onChange(cloneDeep(initialState))
     }
+
   }, [getInitialState])
 
-  return [state, onChange];
+  return {state, onChange, initialState: memoryState[key]?.initialState };
 }
 
 export default useMemoryState

@@ -31,7 +31,7 @@ const createMakeSelector = (
     !startsWith(selectorName, 'make'),
     `Make selector name must not start with 'make' ${name}`
   )
-  invariant(!isEmpty(selectorsParam), `createMakeSelector: Missing props params`)
+  invariant(!isEmpty(selectorsParam) || isFunction(selectorsParam), `createMakeSelector: Missing props params`)
   invariant(!isNil(selector), `createMakeSelector: Missing selector param`)
 
   // generate props selectors. Prop selector can be in multiple forms:
@@ -76,7 +76,10 @@ const createMakeSelector = (
     return props
   })
 
-  const finalSelectors = [propsSelector, ...selectorsParam]
+  const finalSelectors = [
+    propsSelector, 
+    ...(isFunction(selectorsParam) ? selectorsParam() : selectorsParam)
+  ]
 
   selector.__FROM_CREATE_MAKE_SELECTOR = true
   selector.__IS_SELECTOR = true

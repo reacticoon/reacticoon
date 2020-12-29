@@ -1,4 +1,6 @@
 import isNil from 'lodash/isNil'
+import cloneDeep from 'lodash/cloneDeep'
+import isFunction from 'lodash/isFunction'
 import { createSelector } from 'reselect'
 import { RequestStatus } from 'reacticoon/api/constants'
 
@@ -10,80 +12,64 @@ import { RequestStatus } from 'reacticoon/api/constants'
  * @param  {function} formatData  Callback function to format data
  * @return {object}             Object with 3 selectors
  *                              isFetching / getData / getErrors
- 
  */
 const createApiObjectSelectors = (getState, getPath, formatData = null) => {
   const getProps = (state, props) => props
 
+  const getDataInPath = () => createSelector([getState, getPath], (state, path) => {
+    if (isNil(state)) {
+      return null
+    }
+
+    const listObject = state.getIn(path)
+    if (isNil(listObject)) {
+      return null
+    }
+
+    return { listObject, path }
+  })
+
+  const makeGetDataForCommand = () => createSelector([getDataInPath()], commandData => {
+    if (!commandData) {
+      return null
+    }
+    const { listObject, path } = commandData
+    return listObject
+  })
+  
   return {
-    makeIsPending: () =>
-      createSelector([getState, getPath], (dataState, path) => {
-        if (isNil(dataState)) {
+    makeIsPending: () => createSelector([makeGetDataForCommand()], data => {
+        if (isNil(data)) {
           return false
         }
 
-        const listObject = dataState.getIn(path)
-
-        return isNil(listObject) ? false : listObject.get('isPending') || false
+        return data.get('isPending') ?? false
       }),
 
-    makeGetData: () =>
-      createSelector([getState, getPath, getProps], (dataState, path, props) => {
-        if (isNil(dataState)) {
-          return null
-        }
-
-        const listObject = dataState.getIn(path)
-
-        if (isNil(listObject)) {
-          return null
-        }
-
-        const data = listObject.get('data')
-
+    makeGetData: () => createSelector([makeGetDataForCommand(), getProps], (data, props) => {
         if (isNil(data)) {
           return null
         }
 
-        return formatData !== null && typeof formatData === 'function'
-          ? formatData(data, props)
-          : data
+        const objectData = cloneDeep(data.get('data'))
+
+        return isFunction(formatData)
+          ? formatData(objectData, props)
+          : cloneDeep(objectData)
       }),
 
-    makeGetError: () =>
-      createSelector([getState, getPath], (dataState, path) => {
-        if (isNil(dataState)) {
+    makeGetError: () => createSelector([makeGetDataForCommand()], data => {
+        if (isNil(data)) {
           return null
         }
 
-        const listObject = dataState.getIn(path)
-
-        if (isNil(listObject)) {
-          return null
-        }
-
-        const error = listObject.get('error')
-
-        if (isNil(error)) {
-          return null
-        }
-
-        return error
+        return data.get('error')
       }),
 
-    makeGetRequest: () =>
-      createSelector([getState, getPath], (dataState, path) => {
-        if (isNil(dataState)) {
+    makeGetRequest: () => createSelector([makeGetDataForCommand()], data => {
+        if (isNil(data)) {
           return null
         }
-
-        const listObject = dataState.getIn(path)
-
-        if (isNil(listObject)) {
-          return null
-        }
-
-        const data = listObject.toJS()
 
         const status = data?.status || RequestStatus.NOT_LOADED
         const isPending = status === RequestStatus.PENDING

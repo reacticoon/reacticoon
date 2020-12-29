@@ -81,20 +81,16 @@ const handleAction = (defaultReducer, getProp, additionalReducer, overrideReduce
 
     let newObjectState
     if (overrideReducer) {
-      newObjectState = Immutable.fromJS(
-        overrideReducer(state.getIn(path) || Immutable.fromJS({}), action, options)
-      )
+      newObjectState = overrideReducer(state.getIn(path) || Immutable.fromJS({}), action, options)
     } else {
-      newObjectState = Immutable.fromJS(
-        defaultReducer(state.getIn(path) || Immutable.fromJS({}), action, options)
-      )
+      newObjectState = defaultReducer(state.getIn(path) || Immutable.fromJS({}), action, options)
     }
 
     if (additionalReducer) {
       newObjectState = additionalReducer(newObjectState, action, options)
     }
 
-    return state.setIn(path, newObjectState)
+    return state.setIn(path, Immutable.fromJS(newObjectState))
   }
 }
 

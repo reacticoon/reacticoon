@@ -1,5 +1,6 @@
 import isNil from 'lodash/isNil'
 import invariant from 'invariant'
+import isFunction from 'lodash/isFunction'
 import isArray from 'lodash/isArray'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
@@ -84,22 +85,28 @@ const createModule = (moduleName, content) => {
     let hasAMakeSelector = false
 
     forEach(selectorsNames, (selectorName, valueName) => {
-      const selector = getSelector(selectorName)
-      if (isMakeSelector(selectorName, selector)) {
-        hasAMakeSelector = true
-        return false // quit loop
+      if (!isFunction(selectorName)) {
+        const selector = getSelector(selectorName)
+        if (isMakeSelector(selectorName, selector)) {
+          hasAMakeSelector = true
+          return false // quit loop
+        }
       }
     })
 
     const createMapStateToProps = () => {
       const selectorsMap = {}
       forEach(selectorsNames, (selectorName, valueName) => {
-        const selector = getSelector(selectorName)
-
-        if (isMakeSelector(selectorName, selector)) {
-          selectorsMap[valueName] = selector()
+        if (isFunction(selectorName)) { 
+          selectorsMap[valueName] = selectorName
         } else {
-          selectorsMap[valueName] = selector
+          const selector = getSelector(selectorName)
+
+          if (isMakeSelector(selectorName, selector)) {
+            selectorsMap[valueName] = selector()
+          } else {
+            selectorsMap[valueName] = selector
+          }
         }
       })
 

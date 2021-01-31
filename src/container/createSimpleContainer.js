@@ -85,7 +85,7 @@ function createSimpleContainer(containerName, options) {
             const { apiCallAction, apiCallParameters } = this.props
             apiCallAction(apiCallParametersParams || apiCallParameters)
           },
-          loadMore: () => {
+          loadMore: (payload = {}) => {
             const { apiCallAction, apiCallParameters, isPending } = this.props
             const page = paging?.next?.page
             const limit = paging?.limit
@@ -100,6 +100,7 @@ function createSimpleContainer(containerName, options) {
                   ...apiCallParameters,
                   page,
                   limit,
+                  ...payload
                 }
                 apiCallAction(finalApiCallParameters)
               }

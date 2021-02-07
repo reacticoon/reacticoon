@@ -85,7 +85,9 @@ function createSimpleContainer(containerName, options) {
             const { apiCallAction, apiCallParameters } = this.props
             apiCallAction(apiCallParametersParams || apiCallParameters)
           },
-          loadMore: (payload = {}) => {
+          loadMore: (params) => {
+            // handle payload given. we could receive the onClick event here, so we handle it.
+            const payload = params.target ? {} : params
             const { apiCallAction, apiCallParameters, isPending } = this.props
             const page = paging?.next?.page
             const limit = paging?.limit

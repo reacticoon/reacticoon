@@ -39,21 +39,23 @@ function createSimpleContainer(containerName, options) {
       }
 
       loadData() {
-        const { apiCallAction, apiCallParameters, isPending } = this.props
+        const { apiCallAction, apiCallParameters, isPending, manualRun = false } = this.props
 
         // TODO: compare apiCallParameters
-        if (!isPending) {
-          // TODO: find better way
-          if (isArray(apiCallParameters)) {
-            apiCallAction.apply(null, apiCallParameters)
-          } else {
-            apiCallAction(apiCallParameters)
+        if (!manualRun) {
+          if (!isPending) {
+            // TODO: find better way
+            if (isArray(apiCallParameters)) {
+              apiCallAction.apply(null, apiCallParameters)
+            } else {
+              apiCallAction(apiCallParameters)
+            }
           }
         }
       }
 
       componentDidUpdate(prevProps) {
-        if (!isEqual(prevProps.apiCallParameters, this.props.apiCallParameters)) {
+        if (!isEqual(prevProps.apiCallParameters, this.props.apiCallParameters) && !this.props.manualRun) {
           this.loadData()
         }
       }

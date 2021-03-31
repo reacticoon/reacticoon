@@ -40,6 +40,12 @@ export const REQUEST = 'API::API_CALL::REQUEST'
  */
 export const DATA = 'API::API_CALL::DATA'
 
+/**
+ * Additionnal data to attach to the action, which should not be set on the data. It contains
+ * contextual data for the reducers / formatters.
+ */
+export const META = 'API::API_CALL::META'
+
 export const isApiCallAction = action => action[API_CALL] !== undefined
 
 export const RequestStatus = {

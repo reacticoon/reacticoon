@@ -45,6 +45,7 @@ const createApiPaginateReducer = (
         return state.merge({
           isFetching: true,
           error: null,
+          meta: action.meta
         })
 
       case actionType.SUCCESS:

@@ -4,7 +4,7 @@ import { camelizeKeys } from 'humps'
 
 import ApiManager from './ApiManager'
 
-import { API_CALL, TYPES, REQUEST, DATA } from '../api/constants'
+import { API_CALL, TYPES, REQUEST, DATA, META } from '../api/constants'
 import { getCustomApiCaller } from './config'
 
 // Fetches an API response and normalizes the result JSON according to schema.
@@ -53,6 +53,7 @@ export default store => next => action => {
   const request = apiCall[REQUEST]
   const types = apiCall[TYPES]
   const data = apiCall[DATA]
+  const meta = apiCall[META]
 
   let { endpoint } = request
 
@@ -92,6 +93,7 @@ export default store => next => action => {
       // TODO: remove data for payload
       // data: data,
       payload: data,
+      meta,
     })
   )
 
@@ -104,6 +106,7 @@ export default store => next => action => {
           // TODO: remove data for payload
           // data: data,
           payload: data,        
+          meta,
         })
       )
     )
@@ -115,6 +118,7 @@ export default store => next => action => {
           // TODO: remove data for payload
           // data: data,
           payload: data, 
+          meta,
         })
       )
     )

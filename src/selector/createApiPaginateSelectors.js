@@ -97,6 +97,21 @@ const createApiPaginateSelectors = (stateRetriever, formatData = null) => {
         status,
       }
     }),
+
+    getMeta: createSelector([getState], dataState => {
+      if (isNil(dataState)) {
+        return null
+      }
+
+      const meta = dataState.get('meta')
+
+      if (isNil(meta)) {
+        return null
+      }
+
+      // TODO:
+      return meta.toJS ? meta.toJS() : meta
+    }),
   
   }
 }

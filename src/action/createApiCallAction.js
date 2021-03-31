@@ -3,7 +3,7 @@ import isFunction from 'lodash/isFunction'
 import createAction from './createAction'
 import createApiEnumAction from '../api/utils/createApiEnumAction'
 import { getParamNames, defineFunctionName } from 'reacticoon/utils'
-import { API_CALL, TYPES, REQUEST, DATA } from '../api/constants'
+import { API_CALL, TYPES, REQUEST, DATA, META } from '../api/constants'
 
 const getData = (dataOrCallback, params) =>
   isFunction(dataOrCallback) ? dataOrCallback.apply(null, params) : dataOrCallback
@@ -14,7 +14,7 @@ const getData = (dataOrCallback, params) =>
  * @param {*} request api call or function. Function will receive arguments sent to the action
  * @param {*} data object or function. Function will receive arguments sent to the action
  */
-const createApiCallAction = (type, request, data = null) => {
+const createApiCallAction = (type, request, data = null, meta = null) => {
   const actionType = createApiEnumAction(type)
   const func = (...params) => {
     // TODO: refactor createApiCallAction to follow flux-standard-action
@@ -38,6 +38,7 @@ const createApiCallAction = (type, request, data = null) => {
         ],
         [REQUEST]: getData(request, params),
         [DATA]: getData(data, params),
+        [META]: getData(meta, params)
       },
     }
     return action

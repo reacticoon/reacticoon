@@ -3,7 +3,7 @@ import { getHistory } from 'reacticoon/routing'
 
 import reacticoonReduxThunk from './reacticoonReduxThunk'
 import crashReporter from '../middleware/crashReporter'
-
+import { isTraceLogLevel, isDebugLogLevel } from 'reacticoon/environment'
 import apiMiddleware from '../../api/apiMiddleware'
 import createAppMiddleware from '../../middleware/appMiddleware/createAppMiddleware'
 
@@ -13,11 +13,11 @@ const generateMiddlewares = (isEnvDev, appMiddlewares) =>
     // a dispatch or between dispatches.
     // For development use only
     // https://github.com/leoasis/redux-immutable-state-invariant
-    FEATURE_REACTICOON_HEAVY_DEBUG ? require('redux-immutable-state-invariant').default() : null,
+    isDebugLogLevel() ? require('redux-immutable-state-invariant').default() : null,
     reacticoonReduxThunk,
     apiMiddleware,
     crashReporter, // must be before reduxLogger and after thunk and api
-    FEATURE_REACTICOON_HEAVY_DEBUG
+    isTraceLogLevel()
       ? require('redux-logger').createLogger({
           collapsed: true,
         })

@@ -1,3 +1,5 @@
+import { isTraceLogLevel } from 'reacticoon/environment'
+
 // inspired by https://github.com/reduxjs/redux-thunk/blob/master/src/index.js
 // we need our custom thunk to handle debug
 
@@ -45,7 +47,7 @@ function createThunkMiddleware(extraArgument) {
 
     let debugData = null
     // TODO: better handling
-    if (FEATURE_REACTICOON_HEAVY_DEBUG && (action?.debug || isFunction)) {
+    if (isTraceLogLevel() && (action?.debug || isFunction)) {
       debugData = {
         stacktrace: getStackTrace(),
       }

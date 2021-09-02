@@ -17,6 +17,7 @@ import OnModuleRegistered from './events/OnModuleRegistered'
 import { registerHistory, registerAppRouting } from '../routing/config'
 import { registerStore } from '../store'
 import { configureI18n } from '../i18n/index'
+import { getLogLevel } from 'reacticoon/environment'
 import configureStore from './store/configureStore'
 import {
   registerPlugins,
@@ -65,6 +66,8 @@ const Application = appOptions => {
   //
   const environment = appOptions.environment
   setCurrentEnv(environment)
+
+  console.info(`[Reacticoon][init] LogLevel: ${getLogLevel()}`)
 
   //
   // routes

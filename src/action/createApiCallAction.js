@@ -3,6 +3,7 @@ import isFunction from 'lodash/isFunction'
 import createAction from './createAction'
 import createApiEnumAction from '../api/utils/createApiEnumAction'
 import { getParamNames, defineFunctionName } from 'reacticoon/utils'
+import { isDebugLogLevel } from 'reacticoon/environment'
 import { API_CALL, TYPES, REQUEST, DATA, META } from '../api/constants'
 
 const getData = (dataOrCallback, params) =>
@@ -62,7 +63,7 @@ const createApiCallAction = (type, request, data = null, meta = null) => {
   func.__type = type
   func.toString = () => `${API_CALL} ${type}`
 
-  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+  if (isDebugLogLevel()) {
     func.__parameters = isFunction(request) ? getParamNames(request) : []
     defineFunctionName(func, `ApiCallAction ${API_CALL} ${type}`)
   }

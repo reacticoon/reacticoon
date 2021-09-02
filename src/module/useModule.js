@@ -1,10 +1,11 @@
 import { registerModule } from './config'
+import { isDebugLogLevel } from 'reacticoon/environment'
 
 /**
  * Allows to dynamically import a module.
  */
 function useModule(rModule) {
-  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+  if (isDebugLogLevel()) {
     // invariant does not works well here.
     if (!rModule || !rModule.__IS_MODULE) {
       console.error(`[Reacticoon][useModule] invalid module given to useModule`)
@@ -13,7 +14,7 @@ function useModule(rModule) {
   try {
     registerModule(rModule)
 
-    if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+    if (isDebugLogLevel()) {
       console.trace(`[Reacticoon][useModule] ${rModule.name}`)
     }
   } catch (err) {

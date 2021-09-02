@@ -10,6 +10,7 @@ import validatePlugin from './validatePlugin'
 import generateModuleEntities from '../module/generateModuleEntities'
 import generateModuleMiddlewares from '../module/generateModuleMiddlewares'
 
+import { isDebugLogLevel } from 'reacticoon/environment'
 import { registerRouting } from 'reacticoon/routing'
 //
 // array of plugins config
@@ -30,7 +31,7 @@ export const registerPlugins = pluginsConfig => {
 
   forEachPlugin(({ plugin, config }) => {
     // configuration checks
-    if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+    if (isDebugLogLevel()) {
       // TODO: verify plugin names collusion
       validatePlugin(plugin)
     }
@@ -97,7 +98,7 @@ export const generatePluginEntities = () => {
     // add plugin modules reducers
     //
     const moduleReducers = generateModuleEntities(plugin.modules || [])
-    if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+    if (isDebugLogLevel()) {
       // add additionnal private debug var
       forEach(moduleReducers, (reducer, name) => {
         reducer.__plugin = plugin.name
@@ -114,7 +115,7 @@ export const generatePluginMiddlewares = () => {
 
   forEachPlugin(({ plugin, config }) => {
     const moduleMiddlewares = generateModuleMiddlewares(plugin.modules || [])
-    if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+    if (isDebugLogLevel()) {
       // add additionnal private debug var
       forEach(moduleMiddlewares, middleware => {
         middleware.__plugin = plugin.name

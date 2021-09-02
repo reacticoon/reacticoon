@@ -9,6 +9,7 @@ import isFunction from 'lodash/isFunction'
 
 // TODO: mv to reacticoon ?
 import createAsyncPage from 'reacticoon-plugin-dev/views/createAsyncPage'
+import { isDebugLogLevel } from 'reacticoon/environment'
 
 import ReacticoonRoutingEnum from './ReacticoonRoutingEnum'
 import RouteDefinition from './RouteDefinition'
@@ -163,7 +164,7 @@ export const generateRoutes = routing => {
 
   routingEnum = createRoutingEnum(routingEnumData)
 
-  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+  if (isDebugLogLevel()) {
     // add additionnal private debug var
     forEach(routingEnum, definition => {
       definition.__plugin = name

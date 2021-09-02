@@ -174,6 +174,7 @@ class EventManager {
         console.group('event dispatch error')
         console.log(`An error occured while dispatching the event on the listener`)
         console.log({ event, listener })
+        console.error(ex)
         console.groupEnd('event dispatch error')
       }
     })

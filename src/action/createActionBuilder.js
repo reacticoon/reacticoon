@@ -45,6 +45,7 @@ import isNil from 'lodash/isNil'
 import isFunction from 'lodash/isFunction'
 import isUndefined from 'lodash/isUndefined'
 import { getParamNames, defineFunctionName } from 'reacticoon/utils'
+import { isDebugLogLevel } from 'reacticoon/environment'
 
 /**
  *
@@ -108,7 +109,7 @@ const createActionBuilder = options => {
     actionCreator.isActionType = true
     actionCreator.toString = () => type
 
-    if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+    if (isDebugLogLevel()) {
       actionCreator.__parameters = isFunction(data) ? getParamNames(data) : []
       defineFunctionName(actionCreator, `action ${type}`)
     }

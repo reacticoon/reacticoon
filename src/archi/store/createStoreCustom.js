@@ -1,12 +1,12 @@
 import isEmpty from 'lodash/isEmpty'
 import isNil from 'lodash/isNil'
 import invariant from 'invariant'
-
+import { isTraceLogLevel } from 'reacticoon/environment'
 import { createStore, compose } from 'redux'
 
 const createStoreCustom = appOptions => {
   // verify
-  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+  if (isTraceLogLevel()) {
     appOptions.middlewares.forEach((middleware, index) => {
       invariant(!isNil(middleware), `defined middleware is nil at index ${index}`)
     })

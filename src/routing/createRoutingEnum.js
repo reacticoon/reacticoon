@@ -1,4 +1,5 @@
 import { validateRoute } from './validation'
+import { isDebugLogLevel } from 'reacticoon/environment'
 
 /**
  * Creates a Reacticoon RoutingEnum
@@ -6,7 +7,7 @@ import { validateRoute } from './validation'
  * @param {Object} routingEnum
  */
 const createRoutingEnum = routingEnum => {
-  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+  if (isDebugLogLevel()) {
     // Verify the user routing enum
     Object.keys(routingEnum).forEach(key => {
       const route = routingEnum[key]

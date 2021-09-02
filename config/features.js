@@ -1,8 +1,8 @@
 //
 // Reacticoon feature flags.
 //
+
 module.exports = api => ({
-  FEATURE_REACTICOON_HEAVY_DEBUG: !api.env.isEnvProduction,
   FEATURE_REACTICOON_USER_TIMING_API: !api.env.isEnvProduction,
   // true if working on reacticoon or a reacticoon plugin
   // TODO: put to false when building reacticoon.

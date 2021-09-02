@@ -58,3 +58,28 @@ export const isEnvProduction = () => __ENV__ === 'prod' || __ENV__ === 'producti
 export const isEnvTesting = () => __ENV__ === 'testing'
 
 export const getProjectSrcPath = () => process.env.PROJECT_SRC
+
+//
+// INFO DEBUG TRACE
+//
+const TraceLevel = {
+  ERROR : 'ERROR',
+  WARN: 'WARN',
+  INFO: 'INFO',
+  DEBUG: 'DEBUG',
+  TRACE: 'TRACE',
+}
+
+const TraceLevelIndex = [
+  TraceLevel.ERROR,
+  TraceLevel.WARN,
+  TraceLevel.INFO,
+  TraceLevel.DEBUG,
+  TraceLevel.TRACE,
+]
+
+export const getLogLevel = () => getProcessEnv('LOG_LEVEL')?.toUpperCase() || (__DEV__ ? TraceLevel.DEBUG : TraceLevel.ERROR)
+
+export const isTraceLogLevel = () => TraceLevelIndex.indexOf(getLogLevel()) >= TraceLevelIndex.indexOf(TraceLevel.TRACE)
+export const isDebugLogLevel = () =>  TraceLevelIndex.indexOf(getLogLevel()) >= TraceLevelIndex.indexOf(TraceLevel.DEBUG)
+export const isWarnLogLevel = () =>  TraceLevelIndex.indexOf(getLogLevel()) >= TraceLevelIndex.indexOf(TraceLevel.WARN)

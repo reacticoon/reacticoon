@@ -1,4 +1,5 @@
 import { EventManager } from 'reacticoon/event'
+import { isDebugLogLevel } from 'reacticoon/environment'
 import isArray from 'lodash/isArray'
 import isNull from 'lodash/isNull'
 import memoize from 'lodash/memoize'
@@ -43,7 +44,7 @@ export const registerModule = module => {
       modules: { ..._modules },
     })
   }
-  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+  if (isDebugLogLevel()) {
     console.trace(`[Reacticoon][registerModule] ${key}`)
 
     console.log('[Reacticoon][module] registered modules')
@@ -79,7 +80,7 @@ export const registerModules = modulesParam => {
 
   _configured = true
 
-  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+  if (isDebugLogLevel()) {
     console.log('[Reacticoon][module] registered modules')
     console.table(_modules)
   }

@@ -229,7 +229,7 @@ class ApiManager {
    * }
    */
   run(request) {
-    console.info('apiCall', request)
+    // console.info('apiCall', request)
 
     // TODO: doc response to give response (fixture)
     if (request.response) {

@@ -2,8 +2,9 @@ import isNil from 'lodash/isNil'
 import invariant from 'invariant'
 
 import { EventManager } from 'reacticoon/event'
-import { OTHER_MIDDLEWARES } from './constants'
+import { isDebugLogLevel } from 'reacticoon/environment'
 import MiddlewareRegistry from 'reacticoon/archi/registry/MiddlewareRegistry'
+import { OTHER_MIDDLEWARES } from './constants'
 
 //
 // appMiddlewares correspond to the config/middlewares.
@@ -35,7 +36,7 @@ const createAppMiddleware = defaultAppMiddlewares => {
 
     const middlewaresForAction = middlewareMap[action.type] || []
 
-    if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+    if (isDebugLogLevel()) {
       if (middlewaresForAction.length !== 0) {
         // TODO: better display
         console.info(
@@ -101,7 +102,7 @@ const createAppMiddleware = defaultAppMiddlewares => {
     if (!res) {
       // quit forEach loop since the middleware returned undefined.
       // The middleware asked to stop
-      if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+      if (isDebugLogLevel()) {
         // TODO: add middleware name
         console.debug('no next action for ' + nextAction.type)
       }

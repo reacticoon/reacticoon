@@ -2,6 +2,7 @@ import isEmpty from 'lodash/isEmpty'
 import Immutable from 'immutable'
 import invariant from 'invariant'
 
+import { isDebugLogLevel } from 'reacticoon/environment'
 import { EventManager } from 'reacticoon/event'
 import { getCircularCulprit } from 'reacticoon/utils'
 
@@ -28,7 +29,7 @@ const createReducer = (initialState, fnMap) => {
     return state
   }
 
-  if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+  if (isDebugLogLevel()) {
     reducer.__fnMap = fnMap
   }
 

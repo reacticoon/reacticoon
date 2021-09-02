@@ -4,6 +4,7 @@
 import forOwn from 'lodash/forOwn'
 import isUndefined from 'lodash/isUndefined'
 import invariant from 'invariant'
+import { isDebugLogLevel } from 'reacticoon/environment'
 
 const generateModuleEntities = modules => {
   const entities = {}
@@ -17,7 +18,7 @@ const generateModuleEntities = modules => {
     if (!module.content.noReducer) {
       const reducer = module.content.reducer
       if (reducer) {
-        if (FEATURE_REACTICOON_HEAVY_DEBUG) {
+        if (isDebugLogLevel()) {
           reducer._module = module.name
           reducer.toString = () => `[reducer] ${module.name}`
         }

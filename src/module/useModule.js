@@ -12,9 +12,9 @@ function useModule(rModule) {
     }
   }
   try {
-    registerModule(rModule)
+    const registered = registerModule(rModule)
 
-    if (isDebugLogLevel()) {
+    if (isDebugLogLevel() && registered) {
       console.trace(`[Reacticoon][useModule] ${rModule.name}`)
     }
   } catch (err) {

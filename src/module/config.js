@@ -4,6 +4,7 @@ import isArray from 'lodash/isArray'
 import isNull from 'lodash/isNull'
 import memoize from 'lodash/memoize'
 import invariant from 'invariant'
+import { isTraceLogLevel } from 'reacticoon/environment'
 
 //
 // modules are saved on an object where the key is the module name. Allow direct access
@@ -23,7 +24,7 @@ export const isConfigured = () => _configured
 export const registerModule = module => {
   if (!_registerModulesCalled) {
     modulesToRegister.push(module)
-    return;
+    return true;
   }
 
   const key = module.name
@@ -43,13 +44,17 @@ export const registerModule = module => {
       newModules: [module, ...subModulesToRegister],
       modules: { ..._modules },
     })
-  }
-  if (isDebugLogLevel()) {
-    console.trace(`[Reacticoon][registerModule] ${key}`)
+    if (isDebugLogLevel()) {
+      console.trace(`[Reacticoon][registerModule] ${key}`)
 
-    console.log('[Reacticoon][module] registered modules')
-    console.table(_modules)
+      console.log('[Reacticoon][module] registered modules')
+      console.table(_modules)
+    }
+    return true
+  } else if (isTraceLogLevel()) {
+    console.log(`[Reacticoon][registerModule] already registered ${key}`)
   }
+  return false
 }
 
 export const registerModules = modulesParam => {

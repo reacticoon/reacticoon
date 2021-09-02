@@ -2,7 +2,7 @@ import isNil from 'lodash/isNil'
 import invariant from 'invariant'
 
 import { EventManager } from 'reacticoon/event'
-import { isDebugLogLevel } from 'reacticoon/environment'
+import { isDebugLogLevel, isTraceLogLevel } from 'reacticoon/environment'
 import MiddlewareRegistry from 'reacticoon/archi/registry/MiddlewareRegistry'
 import { OTHER_MIDDLEWARES } from './constants'
 
@@ -36,7 +36,7 @@ const createAppMiddleware = defaultAppMiddlewares => {
 
     const middlewaresForAction = middlewareMap[action.type] || []
 
-    if (isDebugLogLevel()) {
+    if (isTraceLogLevel()) {
       if (middlewaresForAction.length !== 0) {
         // TODO: better display
         console.info(

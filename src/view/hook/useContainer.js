@@ -24,7 +24,6 @@ const useContainer = (container, containerProps, options) => {
       setContainerData(data)
     }
     if (!mounted && !containerData && data) {
-      console.log('mounted !')
       options?.onMount && options.onMount(data)
       setMounted(true)
     }

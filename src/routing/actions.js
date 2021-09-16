@@ -5,12 +5,14 @@ import { push, replace, goBack as goBackAction } from 'react-router-redux'
 import invariant from 'invariant'
 import isNil from 'lodash/isNil'
 import pickBy from 'lodash/pickBy'
+import forEach from 'lodash/forEach'
+import isArray from 'lodash/isArray'
 
 import { Query } from './constants'
 
 import { formatQueryParams, getQueryFromUri } from './utils'
 
-import { getConfigForRoute } from './config'
+import { getConfigForRoute, getHistory } from './config'
 
 //
 // react-router-redux need a middleware to handle functions such as `push(location)`,
@@ -123,6 +125,35 @@ export const updatePageQueries = (query = {}) => {
   })
 
   return push(path)
+}
+
+// avoid using updatePageQueries as an action. TODO: does it work well?
+export const updatePageQueriesDirectly = (query = {}) => {
+  const history = getHistory()
+  const currentQuery = getQueryFromUri(window.location.href)
+
+  let finalQueries = {}
+
+  // transform the query values.
+  // E.g we transform arrays as string with `,` separation
+  forEach(query, (value, key) => {
+    let finalValue = value
+    if (isArray(value)) {
+      finalValue = value.join(',')
+    }
+
+    finalQueries[key] = finalValue
+  })
+
+  finalQueries = {
+    ...currentQuery,
+    ...finalQueries,
+  }
+
+  finalQueries = pickBy(finalQueries, value => value !== Query.REMOVE_ME)
+
+  // https://github.com/ReactTraining/history
+  history.push(formatQueryParams(window.location.pathname, finalQueries))
 }
 
 export const goBack = goBackAction

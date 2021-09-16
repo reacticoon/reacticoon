@@ -52,8 +52,11 @@ const createFormatter = (...functionsParams) => (data, props = {}) => {
       }
     } catch (e) {
       console.info(`Formatter crashed:`)
-      console.error(e)
+      // console.error(e)
       // TODO: event
+
+      // re-throw to no silence the error
+      throw e
     }
   })
 

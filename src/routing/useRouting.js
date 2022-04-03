@@ -5,7 +5,7 @@ import {
   replaceWith,
   reloadTo,
   goBack,
-  // openOnNewTab,
+  openOnNewTab,
   openExternalLink,
   redirectToExternal,
   updatePageQueries,
@@ -19,9 +19,11 @@ function useRouting() {
 		replaceWith: (...args) => dispatch(replaceWith.apply(null, args)),
 		reloadTo: (...args) => dispatch(reloadTo.apply(null, args)),
 		goBack: (...args) => dispatch(goBack.apply(null, args)),
-		openExternalLink: (...args) => dispatch(openExternalLink.apply(null, args)),
 		redirectToExternal: (...args) => dispatch(redirectToExternal.apply(null, args)),
 		updatePageQueries: (...args) => dispatch(updatePageQueries.apply(null, args)),
+		// no dispatch
+		openExternalLink,
+		openOnNewTab,
 	}
 }
 

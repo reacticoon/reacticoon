@@ -1,6 +1,7 @@
 import invariant from 'invariant'
 import findIndex from 'lodash/findIndex'
 import indexOf from 'lodash/indexOf'
+import values from 'lodash/values'
 import find from 'lodash/find'
 import isUndefined from 'lodash/isUndefined'
 import isNull from 'lodash/isNull'

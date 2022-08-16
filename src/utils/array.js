@@ -139,8 +139,7 @@ export const updateObjectOrCreateOnArray = (arrayParam, obj, comparator) => {
     return updateObjectOnArray(array, obj, comparator)
   }
 
-  array.push(obj)
-  return array
+  return [ ...array, obj ]
 }
 
 export const addUniqueObjectOnArray = (arrayParam, obj, comparator) => {

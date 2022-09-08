@@ -1,5 +1,5 @@
 import forEach from 'lodash/forEach'
-import { EventManager, createEventHandler } from 'reacticoon/event'
+import { EventManager, createEventListener } from 'reacticoon/event'
 import { combineReducers } from 'redux'
 import { getStore } from 'reacticoon/store'
 import generateModuleEntities from 'reacticoon/module/generateModuleEntities'
@@ -17,7 +17,7 @@ const combine = reducers => {
   return combineReducers(reducers)
 }
 
-const OnModuleRegistered = createEventHandler(EventManager.Event.REGISTER_MODULES, event => {
+const OnModuleRegistered = createEventListener(EventManager.Event.REGISTER_MODULES, event => {
   //
   // reducers
   //

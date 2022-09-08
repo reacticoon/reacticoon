@@ -26,7 +26,7 @@ function createModuleContainer(containerName, Module, options) {
 
   ModuleContainer.propTypes = {}
 
-  return Module.connect(ModuleContainer, selectors, actions)
+  return Module.connect(selectors, actions)(ModuleContainer)
 }
 
 export default createModuleContainer

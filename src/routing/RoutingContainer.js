@@ -7,12 +7,13 @@ import {
   replaceWith,
   reloadTo,
   goBack,
+  openOnNewTab,
   openExternalLink,
   redirectToExternal,
   updatePageQueries,
-} from '../../actions.js'
+} from './actions.js'
 
-import { getRoutingEnum } from './config'
+import { getRoutingEnum, getRoute } from './config'
 
 /**
  * Gives the shortcut to routing module such as:
@@ -38,9 +39,11 @@ class RoutingContainer extends React.Component {
       goBack,
       reloadTo,
       openExternalLink,
+      openOnNewTab,
       redirectToExternal,
       updatePageQueries,
       RoutingEnum: getRoutingEnum(),
+      getRoute,
     })
   }
 }

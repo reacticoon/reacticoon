@@ -4,7 +4,7 @@ import { camelizeKeys } from 'humps'
 
 import ApiManager from './ApiManager'
 
-import { API_CALL, TYPES, REQUEST, DATA } from '../api/constants'
+import { API_CALL, TYPES, REQUEST, DATA, META } from '../api/constants'
 import { getCustomApiCaller } from './config'
 
 // Fetches an API response and normalizes the result JSON according to schema.
@@ -53,6 +53,7 @@ export default store => next => action => {
   const request = apiCall[REQUEST]
   const types = apiCall[TYPES]
   const data = apiCall[DATA]
+  const meta = apiCall[META]
 
   let { endpoint } = request
 
@@ -70,8 +71,8 @@ export default store => next => action => {
   //   throw new Error('Specify one of the exported Schemas.')
   // }
 
-  if (!Array.isArray(types) || types.length !== 3) {
-    throw new Error('Expected an array of three action types.')
+  if (!Array.isArray(types) || types.length !== 6) {
+    throw new Error('Expected an array of 6 action types.')
   }
 
   if (!types.every(type => typeof type === 'string')) {
@@ -89,7 +90,10 @@ export default store => next => action => {
     actionWith({
       type: requestType,
       request: request,
-      data: data,
+      // TODO: remove data for payload
+      // data: data,
+      payload: data,
+      meta,
     })
   )
 
@@ -99,7 +103,10 @@ export default store => next => action => {
         actionWith({
           type: successType,
           response,
-          data: data,
+          // TODO: remove data for payload
+          // data: data,
+          payload: data,        
+          meta,
         })
       )
     )
@@ -108,7 +115,10 @@ export default store => next => action => {
         actionWith({
           type: failureType,
           apiError,
-          data: data,
+          // TODO: remove data for payload
+          // data: data,
+          payload: data, 
+          meta,
         })
       )
     )

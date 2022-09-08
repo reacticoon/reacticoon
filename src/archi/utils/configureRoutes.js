@@ -33,7 +33,9 @@ const generateRoute = route => {
   invariant(!isNil(route.definition), `definition does not exists for ${route.handler}`)
   invariant(!isNil(route.handler), `handler does not exists for ${route.definition.name}`)
 
-  if (!route.definition.disabled) {
+  // __REACTICOON_NOOP_PAGE is used for pages that will not be handled. For example pages that
+  // only exists on dev env.
+  if (!route.definition.disabled && !route.handler.__REACTICOON_NOOP_PAGE) {
     return (
       <Route
         exact

@@ -1,4 +1,4 @@
-import Route from './Route'
+import RouteDefinition from './RouteDefinition'
 
 //
 // Contains the routing enum for reacticoon.
@@ -7,7 +7,7 @@ import Route from './Route'
 const ReacticoonRoutingEnum = {
   // generic 404 page
   // https://stackoverflow.com/questions/32128978/react-router-no-not-found-route
-  PAGE_NOT_FOUND: new Route('PAGE_NOT_FOUND', '*', false),
+  PAGE_NOT_FOUND: new RouteDefinition({ name: 'PAGE_NOT_FOUND', path: '*' }),
 }
 
 export default ReacticoonRoutingEnum

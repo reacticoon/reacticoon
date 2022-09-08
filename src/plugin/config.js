@@ -2,9 +2,7 @@ import invariant from 'invariant'
 import find from 'lodash/find'
 import forEach from 'lodash/forEach'
 import isUndefined from 'lodash/isUndefined'
-import isEmpty from 'lodash/isEmpty'
-
-import { __DEV__ } from '../environment'
+import isFunction from 'lodash/isFunction'
 
 import EventManager from '../event/EventManager'
 import validatePlugin from './validatePlugin'
@@ -12,8 +10,8 @@ import validatePlugin from './validatePlugin'
 import generateModuleEntities from '../module/generateModuleEntities'
 import generateModuleMiddlewares from '../module/generateModuleMiddlewares'
 
-import { addRoutingEnum, addRoutes } from 'reacticoon/routing'
-
+import { isDebugLogLevel } from 'reacticoon/environment'
+import { registerRouting } from 'reacticoon/routing'
 //
 // array of plugins config
 // A plugin config is an object:
@@ -33,7 +31,7 @@ export const registerPlugins = pluginsConfig => {
 
   forEachPlugin(({ plugin, config }) => {
     // configuration checks
-    if (__DEV__) {
+    if (isDebugLogLevel()) {
       // TODO: verify plugin names collusion
       validatePlugin(plugin)
     }
@@ -55,18 +53,11 @@ const registerPluginEvents = plugin => {
 }
 
 const registerPluginRoutes = plugin => {
-  if (plugin.routing && !isEmpty(plugin.routing.routes)) {
-    const routing = plugin.routing
-    if (__DEV__) {
-      // add additionnal private debug var
-      forEach(routing.routingEnum, definition => {
-        definition.__plugin = plugin.name
-      })
-    }
-
-    addRoutes(routing.routes)
-    addRoutingEnum(routing.routingEnum)
-  }
+  if (isFunction(plugin.routing)) {
+    registerRouting(plugin.routing)
+  } //else { TODO: HEAVY_DEBUG
+    //console.info(`No routes found for plugin ${plugin.name}`)
+  //}
 }
 
 export const getPlugins = () => _pluginsConfig
@@ -107,7 +98,7 @@ export const generatePluginEntities = () => {
     // add plugin modules reducers
     //
     const moduleReducers = generateModuleEntities(plugin.modules || [])
-    if (__DEV__) {
+    if (isDebugLogLevel()) {
       // add additionnal private debug var
       forEach(moduleReducers, (reducer, name) => {
         reducer.__plugin = plugin.name
@@ -124,7 +115,7 @@ export const generatePluginMiddlewares = () => {
 
   forEachPlugin(({ plugin, config }) => {
     const moduleMiddlewares = generateModuleMiddlewares(plugin.modules || [])
-    if (__DEV__) {
+    if (isDebugLogLevel()) {
       // add additionnal private debug var
       forEach(moduleMiddlewares, middleware => {
         middleware.__plugin = plugin.name

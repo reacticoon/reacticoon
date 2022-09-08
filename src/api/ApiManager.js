@@ -1,3 +1,14 @@
+// TODO: handle chaining api calls / multiple api calls
+// TODO: refactor, use fetch
+// in dev we can log requests with:
+// fetch = (originalFetch => {
+//   return (...arguments) => {
+//     const result = originalFetch.apply(this, arguments);
+//       return result.then(console.log('Request was sent'));
+//   };
+// })(fetch);
+
+
 import merge from 'lodash/merge'
 import isUndefined from 'lodash/isUndefined'
 import isNull from 'lodash/isNull'
@@ -61,7 +72,7 @@ class ApiManager {
      *   }
      * ```
      */
-    errorMiddleware: (error: Object, res: Object, success: Function, failure: Function) => {
+    errorMiddleware: (error, res, success, failure) => {
       return false
     },
 
@@ -89,7 +100,7 @@ class ApiManager {
     apiUrl: '',
   }
 
-  configure(configuration: Object) {
+  configure(configuration) {
     this.config = merge(this.config, configuration)
   }
 
@@ -97,7 +108,7 @@ class ApiManager {
   // ------------- Tools
   //
 
-  getApiUrl(defaultUrl, endpoint): string {
+  getApiUrl(defaultUrl, endpoint) {
     if (!isEmpty(defaultUrl)) {
       return `${defaultUrl}${endpoint}`
     }
@@ -109,10 +120,14 @@ class ApiManager {
    * Merge headersParam with the headers given by the headersMiddleware.
    * Priority is given to the params headers over the middleware headers.
    */
-  getHeaders(headersParam: Object): Object {
-    const headersToSet = merge(this.config.headersMiddleware(), headersParam)
+  getHeaders(headersParam = {}) {
+    if (this.config.headersMiddleware) {
+      const headersToSet = merge(this.config.headersMiddleware(), headersParam)
 
-    return headersToSet
+      return headersToSet
+    }
+
+    return headersParam
   }
 
   /**
@@ -125,7 +140,7 @@ class ApiManager {
    * @param success the closure called on success. Take a json object as parameter.
    * @param failure the closure called on failure. Take an ApiError as parameter.
    */
-  handleResponse(error: Object, res: Object, success: Function, failure: Function) {
+  handleResponse(error, res, success, failure) {
     if (!isUndefined(res) && this.isSuccessResponse(res.statusCode)) {
       if (!isEmpty(res.text)) {
         try {
@@ -142,7 +157,11 @@ class ApiManager {
       if (!errorMiddlewareUsed) {
         if (isUndefined(res)) {
           // no internet connexion / no response
-          const apiError = ApiError(Error.NO_INTERNET, 'No internet connectivity')
+          const apiError = ApiError(
+            Error.NO_INTERNET,
+            // TODO: localized + allow project to override
+            `Une erreur est survenue. Veuillez recharger la page.`
+          )
           apiError.localizedMessage = tr('api_error.no_internet')
           failure(apiError)
         } else {
@@ -157,18 +176,21 @@ class ApiManager {
    * @param responseBody The HTTP response body.
    * @returns {ApiError} A populate ApiError object.
    */
-  createApiError(responseBody: string): ApiError {
-    const error = { code: Error.UNKNOWN, message: 'Something went wrong, please try again' }
+  createApiError(responseBody) {
+    let error = { code: Error.UNKNOWN, message: 'Something went wrong, please try again' }
 
     if (!isNull(responseBody) && !isUndefined(responseBody)) {
       try {
         const json = JSON.parse(responseBody)
 
         if (json) {
-          if (!isNil(json.code)) {
-            error.code = json.code
-            error.message = json.message
-            error.detail = json.detail || null
+          if (!isNil(json.code) || !isNil(json.errorCode)) {
+            error = {
+              // TODO: remove this after refactor
+              code: json.errorCode || json.code,
+              message: json.errorMessage || json.message,
+              ...json,
+            }
           }
         }
       } catch (syntaxError) {
@@ -185,7 +207,7 @@ class ApiManager {
    * @param statusCode the response status code
    * @returns {boolean} True if the status code indicate a successful response
    */
-  isSuccessResponse(statusCode: number): boolean {
+  isSuccessResponse(statusCode) {
     return statusCode >= 200 && statusCode < 300
   }
 
@@ -198,7 +220,7 @@ class ApiManager {
    * {
    *  type: PUT, POST, UPDATE, DELETE, GET
    *  success: success callback (param: JSON)
-   *  failure: failure callback (param: ApiError)
+   *  failure: failure callback (param)
    *  endpoint: the endpoint,
    *  params: the url parameters to set on the endpoint,
    *  query: the url query params,
@@ -207,7 +229,22 @@ class ApiManager {
    * }
    */
   run(request) {
-    console.info('apiCall', request)
+    // console.info('apiCall', request)
+
+    // TODO: doc response to give response (fixture)
+    if (request.response) {
+      this.handleResponse(
+        null,
+         { statusCode: 200, text: request.response },
+        (json) => {
+          request.success(json)
+        },
+        (apiError) => {
+          request.failure(apiError)
+        }
+      )
+      return
+    }
     switch (request.type) {
       case 'GET':
         this.get(request)
@@ -237,7 +274,7 @@ class ApiManager {
    * @param success the closure called on success. Take a json object as parameter.
    * @param failure the closure called on failure. Take an ApiError as parameter.
    */
-  get(options: Object) {
+  get(options) {
     const { url, endpoint, params, query, headers, success, failure } = options
 
     request
@@ -245,14 +282,14 @@ class ApiManager {
       .query(query)
       .set('Accept', 'application/json')
       .set(this.getHeaders(headers))
-      .end((error: Object, res: Object) => {
+      .end((error, res) => {
         this.handleResponse(
           error,
           res,
-          (json: Object) => {
+          (json) => {
             success(json)
           },
-          (apiError: ApiError) => {
+          (apiError) => {
             failure(apiError)
           }
         )
@@ -266,7 +303,7 @@ class ApiManager {
    * @param success the closure called on success. Take a json object as parameter.
    * @param failure the closure called on failure. Take an ApiError as parameter.
    */
-  delete(options: Object) {
+  delete(options) {
     const { url, endpoint, params, query, headers, success, failure } = options
 
     request
@@ -274,22 +311,27 @@ class ApiManager {
       .query(query)
       .set('Accept', 'application/json')
       .set(this.getHeaders(headers))
-      .end((error: Object, res: Object) => {
+      .end((error, res) => {
         this.handleResponse(
           error,
           res,
-          (json: Object) => {
+          (json) => {
             success(json)
           },
-          (apiError: ApiError) => {
+          (apiError) => {
             failure(apiError)
           }
         )
       })
   }
 
-  post(options: Object) {
-    const { url, endpoint, params, data, body, headers, query, success, failure } = options
+  post(options) {
+    const { url, endpoint, params, data, body = {}, headers, query = {}, success, failure } = options
+
+    // TODO: move on project
+    if (endpoint.endsWith('/commands')) {
+      query.command = body.command
+    }
 
     request
       .post(this.getApiUrl(url, formatEndpoint(endpoint, params)), null, null)
@@ -299,14 +341,14 @@ class ApiManager {
       .send(JSON.stringify(body ? body : data))
       .set('Accept', 'application/json')
       .set(this.getHeaders(headers))
-      .end((error: Object, res: Object) => {
+      .end((error, res) => {
         this.handleResponse(
           error,
           res,
-          (json: Object) => {
+          (json) => {
             success(json)
           },
-          (apiError: ApiError) => {
+          (apiError) => {
             failure(apiError)
           }
         )
@@ -322,7 +364,7 @@ class ApiManager {
    * @param success
    * @param failure
    */
-  postMultipart(options: Object) {
+  postMultipart(options) {
     const { url, endpoint, params, data, files, headers, query, success, failure } = options
 
     const req = request
@@ -345,14 +387,14 @@ class ApiManager {
     req
       .set('Accept', 'application/json')
       .set(this.getHeaders(headers))
-      .end((error: Object, res: Object) => {
+      .end((error, res) => {
         this.handleResponse(
           error,
           res,
-          (json: Object) => {
+          (json) => {
             success(json)
           },
-          (apiError: ApiError) => {
+          (apiError) => {
             failure(apiError)
           }
         )
@@ -371,7 +413,7 @@ class ApiManager {
    * @param success the closure called on success. Take a json object as parameter.
    * @param failure the closure called on failure. Take an ApiError as parameter.
    */
-  put(options: Object) {
+  put(options) {
     const { url, endpoint, params, data, headers, query, success, failure } = options
 
     request
@@ -381,14 +423,14 @@ class ApiManager {
       .query(query)
       .set('Accept', 'application/json')
       .set(this.getHeaders(headers))
-      .end((error: Object, res: Object) => {
+      .end((error, res) => {
         this.handleResponse(
           error,
           res,
-          (json: Object) => {
+          (json) => {
             success(json)
           },
-          (apiError: ApiError) => {
+          (apiError) => {
             failure(apiError)
           }
         )
@@ -404,7 +446,7 @@ class ApiManager {
    * @param success
    * @param failure
    */
-  putMultipart(options: Object) {
+  putMultipart(options) {
     const { url, endpoint, params, data, files, headers, query, success, failure } = options
 
     const req = request
@@ -435,14 +477,14 @@ class ApiManager {
     req
       .set('Accept', 'application/json')
       .set(this.getHeaders(headers))
-      .end((error: Object, res: Object) => {
+      .end((error, res) => {
         this.handleResponse(
           error,
           res,
-          (json: Object) => {
+          (json) => {
             success(json)
           },
-          (apiError: ApiError) => {
+          (apiError) => {
             failure(apiError)
           }
         )
@@ -456,14 +498,14 @@ class ApiManager {
   /**
    * Create an HTTP GET request.
    */
-  getExtern(options: Object) {
+  getExtern(options) {
     const { url, query, headers, success, failure } = options
 
     request
       .get(url)
       .query(query)
       .set(headers)
-      .end((error: Object, res: Object) => {
+      .end((error, res) => {
         if (!isNil(res) && this.isSuccessResponse(res.statusCode)) {
           success(res)
         } else {
@@ -475,14 +517,14 @@ class ApiManager {
   /**
    * Create an HTTP GET request.
    */
-  postExtern(options: Object) {
+  postExtern(options) {
     const { url, data, headers, success, failure } = options
 
     request
       .post(url)
       .send(data)
       .set(headers)
-      .end((error: Object, res: Object) => {
+      .end((error, res) => {
         if (!isNil(res) && this.isSuccessResponse(res.statusCode)) {
           success(res)
         } else {

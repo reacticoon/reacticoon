@@ -4,7 +4,7 @@
 // https://github.com/jamiebuilds/react-loadable
 //
 import Loadable from 'react-loadable'
-import { __DEV__ } from '../environment'
+import { isTraceLogLevel } from 'reacticoon/environment'
 
 /**
  *
@@ -14,7 +14,7 @@ import { __DEV__ } from '../environment'
 export const createLoadable = (loader, loading) => {
   return Loadable({
     loader: () => {
-      if (__DEV__) {
+      if (isTraceLogLevel()) {
         console.info(`[Loadable] loading`)
       }
 

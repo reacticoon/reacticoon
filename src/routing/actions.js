@@ -5,6 +5,8 @@ import { push, replace, goBack as goBackAction } from 'react-router-redux'
 import invariant from 'invariant'
 import isNil from 'lodash/isNil'
 import pickBy from 'lodash/pickBy'
+import forEach from 'lodash/forEach'
+import isArray from 'lodash/isArray'
 
 import { Query } from './constants'
 
@@ -39,7 +41,7 @@ import { getConfigForRoute, getHistory } from './config'
 //
 // see https://github.com/ReactTraining/history/blob/v3/docs/Location.md
 //
-// We do not use Location but our custom `Route` object, that is defined on `RoutingEnum`.
+// We do not use Location but our custom `RouteDefinition` object, that is defined on `RoutingEnum`.
 //
 //
 
@@ -53,14 +55,14 @@ import { getConfigForRoute, getHistory } from './config'
 export const generatePathWithParams = (route, params, query, options = {}) => {
   const config = getConfigForRoute(route)
 
-  invariant(!isNil(config), `Config for route ${route.name} not found`);
+  invariant(!isNil(config), `Config for route ${route.name || route} not found`)
 
   // keep query from url
-  let finalQueries = {...query}
+  let finalQueries = { ...query }
   const queryParamsToKeep = !isNil(config.props) ? config.props.query || [] : []
   const currentUrlQueries = getQueryFromUri(window.location.href)
 
-  queryParamsToKeep.forEach((queryParam) => {
+  queryParamsToKeep.forEach(queryParam => {
     const currentValueOnUrl = currentUrlQueries[queryParam]
     const alreadySet = !isNil(finalQueries[queryParam])
     if (currentValueOnUrl && !alreadySet) {
@@ -73,37 +75,31 @@ export const generatePathWithParams = (route, params, query, options = {}) => {
   // remove undefined values
   finalQueries = pickBy(finalQueries, value => value !== undefined)
 
-  return route.generatePathWithParams(params, finalQueries, options)
+  return config.definition?.generatePathWithParams(params, finalQueries, options)
 }
 
 export const redirectTo = (route, params, query, options = {}) => {
-  if (isString(route)) {
-    return push(route)
-  }
-  const path = generatePathWithParams(route, params, query, options)
+ const path = generatePathWithParams(route, params, query, options)
   return push(path)
 }
 
-export const createRedirectToAction = (route, params, query) => dispatch => (
+export const createRedirectToAction = (route, params, query) => dispatch =>
   dispatch(redirectTo(route, params, query))
-)
 
 export const replaceWith = (route, params, query, options = {}) => {
-  if (isString(route)) {
-    return push(route)
-  }
   const path = generatePathWithParams(route, params, query, options)
   return replace(path)
 }
 
-export const createReplaceWithAction = (route, params, query) => dispatch => (
+export const openOnNewTab = (route, params, query, options = {}) => {
+  const path = generatePathWithParams(route, params, query, options)
+  return openExternalLink(path)
+}
+
+export const createReplaceWithAction = (route, params, query) => dispatch =>
   dispatch(replaceWith(route, params, query))
-)
 
 export const reloadTo = (route, params, query, options = {}) => {
-  if (isString(route)) {
-    return push(route)
-  }
   const path = generatePathWithParams(route, params, query, options)
   window.location = path
 }
@@ -112,7 +108,7 @@ export const reloadToPath = path => {
   window.location = path
 }
 
-export const openExternalLink = (uri) => {
+export const openExternalLink = uri => {
   window.open(uri, '_blank')
 }
 
@@ -121,16 +117,43 @@ export const redirectToExternal = (uri, query = {}) => {
 }
 
 export const updatePageQueries = (query = {}) => {
+  const currentQuery = getQueryFromUri(window.location.href)
+
+  const path = formatQueryParams(window.location.pathname, {
+    ...currentQuery,
+    ...query,
+  })
+
+  return push(path)
+}
+
+// avoid using updatePageQueries as an action. TODO: does it work well?
+export const updatePageQueriesDirectly = (query = {}) => {
   const history = getHistory()
   const currentQuery = getQueryFromUri(window.location.href)
 
-  history.push({
-    pathname: window.location.pathname,
-    query: {
-      ...currentQuery,
-      ...query,
+  let finalQueries = {}
+
+  // transform the query values.
+  // E.g we transform arrays as string with `,` separation
+  forEach(query, (value, key) => {
+    let finalValue = value
+    if (isArray(value)) {
+      finalValue = value.join(',')
     }
+
+    finalQueries[key] = finalValue
   })
+
+  finalQueries = {
+    ...currentQuery,
+    ...finalQueries,
+  }
+
+  finalQueries = pickBy(finalQueries, value => value !== Query.REMOVE_ME)
+
+  // https://github.com/ReactTraining/history
+  history.push(formatQueryParams(window.location.pathname, finalQueries))
 }
 
 export const goBack = goBackAction

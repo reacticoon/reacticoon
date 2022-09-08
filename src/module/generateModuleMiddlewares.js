@@ -5,7 +5,7 @@ import forOwn from 'lodash/forOwn'
 import isArray from 'lodash/isArray'
 import isFunction from 'lodash/isFunction'
 import invariant from 'invariant'
-import { __DEV__ } from '../environment'
+import { isDebugLogLevel } from 'reacticoon/environment'
 
 /**
  * Generate an array of the middlewares defined on our modules.
@@ -59,7 +59,7 @@ const generateModuleMiddlewares = modules => {
 }
 
 export const addDevDataToMiddleware = (middleware, module) => {
-  if (__DEV__) {
+  if (isDebugLogLevel()) {
     middleware._moduleName = module.name
     middleware.toString = () => `[middleware] ${module.name}::${middleware.middlewareName}`
   }

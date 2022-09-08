@@ -29,21 +29,25 @@ class ErrorBoundary extends React.Component {
       info,
     })
 
+    console.error(error)
+
     // You can also log the error to an error reporting service
     EventManager.dispatch(EventManager.Event.LOG_COMPONENT_DID_CATCH, { error, info })
   }
 
   render() {
-    if (this.state.hasError) {
+    const { hasError, error, info } = this.state
+    const { errorView } = this.props
+    if (hasError) {
       // You can render any custom fallback UI
-      if (this.props.errorView) {
-        return this.props.errorView()
+      if (errorView) {
+        return errorView()
       }
 
       return (
         <div>
-          {this.state.error}
-          {this.state.info}
+          <pre>{JSON.stringify(error, null, 2)}</pre>
+          <pre>{JSON.stringify(info, null, 2)}</pre>
         </div>
       )
 

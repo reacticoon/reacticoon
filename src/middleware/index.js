@@ -1,1 +1,1 @@
-export createMiddleware from './createMiddleware'
+export { default as createMiddleware } from './createMiddleware'

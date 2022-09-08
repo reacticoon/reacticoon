@@ -10,7 +10,7 @@ const validatePlugin = plugin => {
 
   invariant(plugin.__IS_PLUGIN === true, `${plugin}: must be created with 'createPlugin' method`)
 
-  // plugin name 
+  // plugin name
   invariant(!isEmpty(plugin.name), 'Plugin name not defined')
 
   invariant(isFunction(plugin.registerConfig), `${plugin.name}: registerConfig is not a function`)
@@ -18,22 +18,25 @@ const validatePlugin = plugin => {
   //
   // events handler
   //
-  invariant(isEmpty(plugin.eventsHandler) || isArray(plugin.eventsHandler), `plugin 'eventsHandler' must be an array`)
+  invariant(
+    isEmpty(plugin.eventsHandler) || isArray(plugin.eventsHandler),
+    `plugin 'eventsHandler' must be an array`
+  )
   plugin.eventsHandler.forEach(event => {
     invariant(
-      event.__IS_EVENT_HANDLER, 
-      `plugin 'eventsHandler' event ${event.name} must be created with 'createEventHandler'`
+      event.__IS_EVENT_HANDLER,
+      `plugin 'eventsHandler' event ${event.name} must be created with 'createEventListener'`
     )
   })
 
   //
-  // events 
+  // events
   //
   invariant(isEmpty(plugin.events) || isArray(plugin.events), `plugin 'events' must be an array`)
   plugin.events.forEach(event => {
     // Must be an event or an event handler
     invariant(
-      event.__IS_EVENT || event.__IS_EVENT_HANDLER, 
+      event.__IS_EVENT || event.__IS_EVENT_HANDLER,
       `plugin 'events' event ${event} must be created with 'createEvent'`
     )
   })
@@ -44,15 +47,9 @@ const validatePlugin = plugin => {
   if (plugin.routing && !isEmpty(plugin.routing.routes)) {
     const routing = plugin.routing
     // TODO: validate routes
-    invariant(
-      !isUndefined(routing.routingEnum),
-      `[plugin][${plugin.name}] Invalid routing enum`
-    )
+    invariant(!isUndefined(routing.routingEnum), `[plugin][${plugin.name}] Invalid routing enum`)
 
-    invariant(
-      !isUndefined(routing.routes),
-      `[plugin][${plugin.name}] Invalid routes`
-    )
+    invariant(!isUndefined(routing.routes), `[plugin][${plugin.name}] Invalid routes`)
 
     routing.routes.forEach(route => {
       invariant(!isUndefined(route.definition), `Missing route definition`)

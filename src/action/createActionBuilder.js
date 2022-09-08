@@ -41,11 +41,11 @@
 
 import invariant from 'invariant'
 
-import { __DEV__ } from 'reacticoon/environment'
 import isNil from 'lodash/isNil'
 import isFunction from 'lodash/isFunction'
 import isUndefined from 'lodash/isUndefined'
-import { getParamNames } from 'reacticoon/utils'
+import { getParamNames, defineFunctionName } from 'reacticoon/utils'
+import { isDebugLogLevel } from 'reacticoon/environment'
 
 /**
  *
@@ -63,7 +63,9 @@ const createActionBuilder = options => {
         'action is not correctly initialized: const myAction = () => creatAction(...'
       )
 
-      const retrievedData = { ...(isFunction(data) ? data.apply(null, params) : data) }
+      const retrievedData = {
+        ...(isFunction(data) ? data.apply(null, [...params, { dispatch, type, options }]) : data),
+      }
 
       // the retrieved data can contains the payload or the payload and the meta:
       // { // payload content} OR { payload: {}, meta: {}}
@@ -81,6 +83,12 @@ const createActionBuilder = options => {
         type,
         payload,
         meta,
+      }
+
+      action.debug = payload.debug === true || data.debug === true
+      if (action.debug) {
+        // TODO: only with debug or always ?
+        action.debugData = payload.debugData
       }
 
       if (options.isError) {
@@ -101,8 +109,9 @@ const createActionBuilder = options => {
     actionCreator.isActionType = true
     actionCreator.toString = () => type
 
-    if (__DEV__) {
+    if (isDebugLogLevel()) {
       actionCreator.__parameters = isFunction(data) ? getParamNames(data) : []
+      defineFunctionName(actionCreator, `action ${type}`)
     }
 
     return actionCreator

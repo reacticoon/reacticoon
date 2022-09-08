@@ -43,6 +43,13 @@ const ReacticoonEvents = {
   // - type
   // - detail
   //
+  LOG_DEBUG: createEvent('REACTICOON::LOG::INFO', 'For debug log'),
+
+  //
+  // props:
+  // - type
+  // - detail
+  //
   LOG_WARN: createEvent('REACTICOON::LOG::WARN', 'For warning log'),
 
   //
@@ -122,7 +129,7 @@ const ReacticoonEvents = {
 
   //
   // -- form
-  // Note: those events are generic for any form plugin to allow replace the `reacticoon-form` plugin
+  // Note: those events are generic for any form plugin to allow replace the `reacticoon-plugin-form` plugin
   // We consider it as a reacticoon/event, since form handling should be used on any Reacticoon
   // app.
   //

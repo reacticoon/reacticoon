@@ -26,7 +26,7 @@ function renderContainer() {
         loadParameter: 'test',
       }}
     >
-      {({ isFetching, data, error }) => <div />}
+      {({ isPending, data, error }) => <div />}
     </container>
   )
 }

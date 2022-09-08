@@ -27,7 +27,9 @@ const createAsyncPage = loader => createLoadable(loader, () => <PageLoader />)
 const routes = [
   {
     // route definition
-    definition: RoutingEnum.LOGIN,
+    name: 'LOGIN',
+    path: '/login',
+    authRequired: false,
     // define the file to import, and that's it !
     handler: createAsyncPage(() => import(/*  webpackChunkName: "LoginPage" */ '../pages/login')),
   },

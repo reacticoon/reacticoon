@@ -1,9 +1,11 @@
 import isNil from 'lodash/isNil'
-import startsWith from 'lodash/startsWith'
 import invariant from 'invariant'
+import isFunction from 'lodash/isFunction'
 import isArray from 'lodash/isArray'
 import forEach from 'lodash/forEach'
+import get from 'lodash/get'
 
+import { isMakeSelector } from 'reacticoon/selector/utils'
 import { connect } from 'reacticoon/view'
 
 /**
@@ -23,6 +25,8 @@ import { connect } from 'reacticoon/view'
  * import bookmarkReducer from './reducer'
  *
  * const bookmarkModule = createModule('Bookmark', {
+ *   // TODO: use noReducer instead of reducer null on generateModuleEntities
+ *   noReducer: true, // if you explicitely do not want a reducer, or use reducer: null
  *   actions,
  *   reducer: bookmarkReducer,
  *   selectors,
@@ -31,11 +35,16 @@ import { connect } from 'reacticoon/view'
  * export default bookmarkModule
  * ```
  */
-const createModule = (name, content) => {
+const createModule = (moduleName, content) => {
+
+  const getSubModules = () => {
+    return content.subModules || []
+  }
+  
   const getAction = actionName => {
     const action = content.actions[actionName]
 
-    invariant(!isNil(action), `Module ${name}, action not found: ${actionName}`)
+    invariant(!isNil(action), `Module ${moduleName}, action not found: ${actionName}`)
 
     return action
   }
@@ -49,11 +58,16 @@ const createModule = (name, content) => {
   }
 
   const getSelector = selectorName => {
-    const selector = content.selectors[selectorName]
+    const selector = get(content.selectors, selectorName)
 
-    invariant(!isNil(selector), `Module ${name}, selector not found: ${selectorName}`)
+    invariant(!isNil(selector), `Module ${moduleName}, selector not found: ${selectorName}`)
 
     return selector
+  }
+
+  const getOptionalSelector = selectorName => {
+    const selector = get(content.selectors, selectorName)
+    return selector || (() => null)
   }
 
   /**
@@ -63,27 +77,36 @@ const createModule = (name, content) => {
    * <pre>
    * {
    *    data: 'getData',
-   *    isFetching: 'makeIsFetching'
+   *    isPending: 'makeisPending'
    * }
    * </pre>
    */
   const getMapStateToProps = selectorsNames => {
-    let isMake = false
-    forEach(selectorsNames, selectorName => {
-      if (startsWith(selectorName, 'make')) {
-        isMake = true
-        return false // quit loop
+    let hasAMakeSelector = false
+
+    forEach(selectorsNames, (selectorName, valueName) => {
+      if (!isFunction(selectorName)) {
+        const selector = getSelector(selectorName)
+        if (isMakeSelector(selectorName, selector)) {
+          hasAMakeSelector = true
+          return false // quit loop
+        }
       }
     })
 
     const createMapStateToProps = () => {
       const selectorsMap = {}
       forEach(selectorsNames, (selectorName, valueName) => {
-        const selector = getSelector(selectorName)
-        if (startsWith(selectorName, 'make')) {
-          selectorsMap[valueName] = selector()
+        if (isFunction(selectorName)) { 
+          selectorsMap[valueName] = selectorName
         } else {
-          selectorsMap[valueName] = selector
+          const selector = getSelector(selectorName)
+
+          if (isMakeSelector(selectorName, selector)) {
+            selectorsMap[valueName] = selector()
+          } else {
+            selectorsMap[valueName] = selector
+          }
         }
       })
 
@@ -97,7 +120,7 @@ const createModule = (name, content) => {
       return mapStateToProps
     }
 
-    if (isMake) {
+    if (hasAMakeSelector) {
       return () => createMapStateToProps()
     } else {
       return createMapStateToProps()
@@ -111,7 +134,7 @@ const createModule = (name, content) => {
    * MyModule.connect(
    *    MyContainer,
    *   {
-   *     isFetching: 'makeIsFetching',
+   *     isPending: 'makeisPending',
    *     data: 'makeGetData',
    *   },
    *   'fetchData',
@@ -121,7 +144,7 @@ const createModule = (name, content) => {
    * )(MyContainer)
    * </pre>
    */
-  const connectModule = (container, mapStateToProps, actionsParam, options = {}) => {
+  const connectModule = (mapStateToProps, actionsParam, options = {}) => container => {
     const actions = isArray(actionsParam) ? actionsParam : [actionsParam]
 
     const connected = connect(
@@ -129,21 +152,28 @@ const createModule = (name, content) => {
       getActionsMap.apply(null, actions)
     )(container)
 
+    // TODO: which other options could we have ?
+    // should we spread the options ?
     if (options.defaultProps) {
       connected.defaultProps = options.defaultProps
     }
+
+    const displayName = `${connected.displayName} (${moduleName})`
+    connected.displayName = displayName
 
     return connected
   }
 
   return {
-    name,
+    name: moduleName,
     content,
     getAction,
     getSelector,
+    getOptionalSelector,
     getActionsMap,
     getMapStateToProps,
     connect: connectModule,
+    getSubModules,
     __IS_MODULE: true,
   }
 }

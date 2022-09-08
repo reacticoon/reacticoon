@@ -11,12 +11,13 @@ import configureRootReducer from './utils/configureRootReducer'
 import generateEnvironment from './generateEnvironment'
 
 import { beginMark, endMark } from 'reacticoon/performance'
-import { setCurrentEnv, __DEV__ } from '../environment'
+import { setCurrentEnv } from '../environment'
 import { registerModules } from '../module'
 import OnModuleRegistered from './events/OnModuleRegistered'
-import { registerHistory, registerRoutesConfig } from '../routing/config'
+import { registerHistory, registerAppRouting } from '../routing/config'
 import { registerStore } from '../store'
 import { configureI18n } from '../i18n/index'
+import { getLogLevel } from 'reacticoon/environment'
 import configureStore from './store/configureStore'
 import {
   registerPlugins,
@@ -66,6 +67,13 @@ const Application = appOptions => {
   const environment = appOptions.environment
   setCurrentEnv(environment)
 
+  console.info(`[Reacticoon][init] LogLevel: ${getLogLevel()}`)
+
+  //
+  // routes
+  //
+  registerAppRouting(appOptions)
+
   //
   // plugins
   //
@@ -74,14 +82,19 @@ const Application = appOptions => {
     // add dev reacticoon plugin on __DEV__.
     appOptions.plugins = [
       {
-        plugin: require('reacticoon/reacticoon-dev-plugin/index').default,
+        plugin: require('reacticoon-plugin-testing/index').default,
         config: {},
       },
       {
-        plugin: require('reacticoon/reacticoon-testing-plugin/index').default,
+        plugin: require('reacticoon-plugin-git/index').default,
         config: {},
       },
-      ...appOptions.plugins,
+      ...(appOptions.plugins || []),
+      // must be final to handle 404
+      {
+        plugin: require('reacticoon-plugin-dev/index').default,
+        config: {},
+      },
     ]
   }
 
@@ -102,6 +115,7 @@ const Application = appOptions => {
 
   registerHistory(history)
 
+  // TODO: add routing data
   history.listen(location =>
     EventManager.dispatch(EventManager.Event.ON_HISTORY_CHANGE, {
       location,
@@ -144,18 +158,14 @@ const Application = appOptions => {
   // configureI18n(appOptions.i18n)
 
   //
-  // routes
-  //
-  registerRoutesConfig(appOptions)
-
-  //
   // Api manager
   //
 
   // TODO: remove
-  appOptions.ApiManagerOptions.store = store
-
-  ApiManager.configure(appOptions.ApiManagerOptions())
+  if (appOptions.ApiManagerOptions) {
+    appOptions.ApiManagerOptions.store = store
+    ApiManager.configure(appOptions.ApiManagerOptions())
+  }
 
   //
   // Event: ON_APP_INIT
@@ -168,6 +178,11 @@ const Application = appOptions => {
   endMark('ON_APP_INIT dispatched', 'Dispatch ON_APP_INIT')
 
   endMark('Reacticoon Application started', 'Reacticoon Application')
+
+  // TODO: allow to register events on app
+  if (appOptions.onAppInit) {
+    appOptions.onAppInit()
+  }
 
   //
   // RENDER

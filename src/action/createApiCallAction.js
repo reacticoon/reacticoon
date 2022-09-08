@@ -1,8 +1,10 @@
 import isFunction from 'lodash/isFunction'
 
+import createAction from './createAction'
 import createApiEnumAction from '../api/utils/createApiEnumAction'
-import { getParamNames } from 'reacticoon/utils'
-import { API_CALL, TYPES, REQUEST, DATA } from '../api/constants'
+import { getParamNames, defineFunctionName } from 'reacticoon/utils'
+import { isDebugLogLevel } from 'reacticoon/environment'
+import { API_CALL, TYPES, REQUEST, DATA, META } from '../api/constants'
 
 const getData = (dataOrCallback, params) =>
   isFunction(dataOrCallback) ? dataOrCallback.apply(null, params) : dataOrCallback
@@ -13,7 +15,7 @@ const getData = (dataOrCallback, params) =>
  * @param {*} request api call or function. Function will receive arguments sent to the action
  * @param {*} data object or function. Function will receive arguments sent to the action
  */
-const createApiCallAction = (type, request, data = null) => {
+const createApiCallAction = (type, request, data = null, meta = null) => {
   const actionType = createApiEnumAction(type)
   const func = (...params) => {
     // TODO: refactor createApiCallAction to follow flux-standard-action
@@ -27,12 +29,19 @@ const createApiCallAction = (type, request, data = null) => {
     // }
     const action = {
       [API_CALL]: {
-        [TYPES]: [actionType.REQUEST, actionType.SUCCESS, actionType.FAILURE],
+        [TYPES]: [
+          actionType.REQUEST, 
+          actionType.SUCCESS, 
+          actionType.FAILURE, 
+          actionType.CANCEL, 
+          actionType.RESET,
+          actionType.SET_DATA,
+        ],
         [REQUEST]: getData(request, params),
         [DATA]: getData(data, params),
+        [META]: getData(meta, params)
       },
     }
-
     return action
   }
 
@@ -44,14 +53,28 @@ const createApiCallAction = (type, request, data = null) => {
   func.REQUEST = actionType.REQUEST
   func.SUCCESS = actionType.SUCCESS
   func.FAILURE = actionType.FAILURE
+  func.CANCEL = actionType.CANCEL
+  func.RESET = actionType.RESET
+  func.SET_DATA = actionType.SET_DATA
+
   // requried by `isActionType`
   func.isActionType = true
   func.TYPE = API_CALL
   func.__type = type
   func.toString = () => `${API_CALL} ${type}`
 
-  // TODO: only in dev
-  func.__parameters = isFunction(request) ? getParamNames(request) : []
+  if (isDebugLogLevel()) {
+    func.__parameters = isFunction(request) ? getParamNames(request) : []
+    defineFunctionName(func, `ApiCallAction ${API_CALL} ${type}`)
+  }
+
+  // add action to cancel this api call action.
+  func.cancelRequest = (actionHandler) => createAction(actionType.CANCEL, actionHandler)
+
+  // add action to reset this api call action data.
+  func.resetRequestData = (actionHandler) => createAction(actionType.RESET, actionHandler)
+
+  func.setData = (actionHandler) => createAction(actionType.SET_DATA, actionHandler)
 
   return func
 }

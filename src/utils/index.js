@@ -42,3 +42,13 @@ export function getCircularCulprit(data) {
   JSON.stringify(data, getCircularReplacer())
   return culprit
 }
+
+/**
+ * Allow to define a name for an anonymous function
+ */
+export function defineFunctionName(func, name) {
+  Object.defineProperty(func, 'name', {
+    value: name,
+    writable: false,
+  })
+}
